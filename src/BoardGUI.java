@@ -1,47 +1,52 @@
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Vector;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
-import javax.swing.JFrame;
+import java.awt.*;
 
-public class BoardGUI {
+public class BoardGUI extends JPanel {
 
-    public BoardGUI(Game g){
-        JFrame window = new JFrame("Chess");
-        window.setSize(1000, 800);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setLocationRelativeTo(null);
-        window.setResizable(true);
-        window.setBackground(Color.WHITE);
-        window.setVisible(true);
+    private static final int tileSize = 80; 
+    private static final int board = 8; 
+    private static final Color beige = new Color(248,231,187);
+    private static final Color brown = new Color(150, 77, 34); 
+
+    public BoardGUI(){
     }
 
-   public void createBoardGraphics(){
-    for(int i = 0; i < 8; i++){ // i = file
-        for(int j = 0; j < 8; j++){ // j = rank
-            boolean isWhiteSquare = (i + j) % 2 != 0;
-            int squareColor = (isWhiteSquare) ? 8 : 16; // 8 = white, 16 = black
-            var position = new Vector<Float>();
 
-            drawSquare(squareColor, position);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (int i = 0; i < board; i++) { // i = row
+            for (int j = 0; j < board; j++) { // j = col
+                boolean isWhite = (i + j) % 2 == 0;
+                g.setColor(isWhite ? beige : brown);
+                g.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
             }
         }
     }
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(board * tileSize, board * tileSize);
+    }
 
-    public void drawSquare(int squareColor, Vector<Float> position){
-        Color color = (squareColor == 8)? Color.WHITE : Color.BLACK;
-        Graphics2D g = new position.getGraphics();
-        g.setColor(color);
-        float x = (float) position.getX();
-        float y = (float) position.getY();
-        float width = 50.0f;
-        float height = 50.0f;
 
-        Rectangle2D square = new Rectangle2D.Float(x,y,width,height);
-        g.fill(square);
-    } 
+    public void loadGUI() {
+        JFrame mainFrame = new JFrame("Chess");
+            mainFrame.setSize(1000, 800); 
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+            mainFrame.setLayout(new BorderLayout()); 
+
+            BoardGUI board = new BoardGUI();
+            JPanel boardFrame = new JPanel();
+            boardFrame.setLayout(new GridBagLayout()); 
+            boardFrame.add(board);
+            boardFrame.setBorder(new EmptyBorder(50, 50, 50, 50));
+            mainFrame.add(boardFrame, BorderLayout.WEST);
+
+            mainFrame.setLocationRelativeTo(null); 
+            mainFrame.setVisible(true);
+    }
+
 }

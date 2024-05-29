@@ -1,12 +1,11 @@
-
+import javax.swing.SwingUtilities;
 
 public class Game {
-    public BoardGUI window; 
-    public static void main(String[] args) throws Exception {
-        new Game();
-    }
-
-    public Game(){
-        window = new BoardGUI(this);
+    public BoardGUI window;
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            BoardGUI boardGUI = new BoardGUI();
+            boardGUI.loadGUI();
+        });
     }
 }

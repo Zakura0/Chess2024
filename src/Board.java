@@ -1,13 +1,21 @@
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class Board {
     
-    public void Board(){
-        // Initialize the board
-    }
+    public static int [] square;
+    public boolean isWhiteToMove;
+    public int plyCount;
 
-    public void initializeBoard(){
-    // Initialize the board with empty spaces
+    public  Board(){
+        square = new int[64];
+    }
+    /*
+     * Anhand der FEN wird das Board initialisiert.
+     */
+    public void initializeBoard() { 
+
+
     }
 
 
