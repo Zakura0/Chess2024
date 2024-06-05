@@ -88,6 +88,7 @@ public abstract class Piece {
             case 'P' -> PAWN;
             default -> NONE;
         };
+        
     }
 }
 
