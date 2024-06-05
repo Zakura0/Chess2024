@@ -1,4 +1,7 @@
-public class Piece {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Piece {
     // Piece Types
     public final int NONE = 0;
     public final int PAWN = 1;
@@ -27,14 +30,20 @@ public class Piece {
     public final int BLACK_QUEEN = QUEEN | BLACK; // 13
     public final int BLACK_KING = KING | BLACK; // 14
 
-    public final int piecePosition;
+    public int _row;
+    public int _col;
+    public boolean _color;
+    public List<Move> _possibleMoves;
 
     // Bit Masks
     private static final int TYPE_MASK = 0b0111;
     private static final int COLOUR_MASK = 0b1000;
 
-    public Piece(final int piecePosition, boolean color){ 
-        //TODO
+    public Piece(int row, int col, boolean color){ 
+        this._row = row;
+        this._col = col;
+        this._color = color;
+        this._possibleMoves = new ArrayList<>();
     }
 
     // Returns true if given piece matches the given colour. If piece is of type 'none', result will always be false.
