@@ -46,6 +46,22 @@ public abstract class Piece {
         this._possibleMoves = new ArrayList<>();
     }
 
+    private boolean isBlocked(int row, int col) {
+        if(Board.board[row][col] != null) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isOpponent(int row, int col) {
+        if(Board.board[row][col] != null) {
+            if(Board.board[row][col]._color != this._color) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Returns true if given piece matches the given colour. If piece is of type 'none', result will always be false.
     public static boolean isColour(int piece, int colour) {
         return (piece & COLOUR_MASK) == colour && piece != 0;
