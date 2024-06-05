@@ -1,13 +1,10 @@
 public class Board {
     
-    public Piece[][] board;
+    public static Piece[][] board;
 
-    public  Board(){
+    public Board(){
         board = new Piece[8][8];
-    }
-
-    public Piece[][] getBoard() {
-        return board;
+        initializeBoard();
     }
 
     public void initializeBoard() {
