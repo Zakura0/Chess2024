@@ -3,9 +3,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
+import java.awt.BorderLayout;
 
 public class BoardGUI extends JPanel {
 
+    
     private static final int tileSize = 80; 
     private static final int board = 8; 
     private static final Color beige = new Color(248,231,187);
@@ -48,5 +50,4 @@ public class BoardGUI extends JPanel {
             mainFrame.setLocationRelativeTo(null); 
             mainFrame.setVisible(true);
     }
-
 }

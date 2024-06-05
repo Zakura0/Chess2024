@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class Board {
     
     public static int [] square;
@@ -11,7 +8,7 @@ public class Board {
         square = new int[64];
     }
     /*
-     * Anhand der FEN wird das Board initialisiert.
+     * Using FEN to initialize the board
      */
     public void initializeBoard() { 
 
