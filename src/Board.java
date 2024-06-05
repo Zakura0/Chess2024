@@ -1,17 +1,15 @@
 public class Board {
     
-    public static int [] square;
-    public boolean isWhiteToMove;
-    public int plyCount;
+    public static Piece [][] board;
 
     public  Board(){
-        square = new int[64];
+        board = new Piece[8][8];
     }
     /*
      * Using FEN to initialize the board
      */
-    public void initializeBoard() { 
-
+    public void initializeBoard() {
+        
 
     }
 
