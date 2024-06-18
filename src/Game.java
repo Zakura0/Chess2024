@@ -2,10 +2,37 @@ import javax.swing.SwingUtilities;
 
 public class Game {
     public BoardGUI window;
+    private boolean _isWhiteTurn;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            BoardGUI boardGUI = new BoardGUI();
-            boardGUI.loadGUI();
+            Game game = new Game();
+            BoardGUI boardGUI = new BoardGUI(game);
+            boardGUI.loadGUI();            
         });
+    }
+
+    public Game() {
+        Board board = new Board();
+        calculateAllMoves();
+    }
+
+    public void calculateAllMoves() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = Board.board[i][j];
+                if (piece == null) {
+                    continue;
+                }
+                piece.calculatePossibleMoves();
+            }
+        }
+    }
+
+    private void changeTurn() {
+        _isWhiteTurn = !_isWhiteTurn;
+    }
+
+    public boolean isWhiteTurn() {
+        return _isWhiteTurn;
     }
 }

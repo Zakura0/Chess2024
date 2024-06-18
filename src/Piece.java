@@ -15,6 +15,13 @@ public abstract class Piece {
         this._possibleMoves = new ArrayList<>();
     }
 
+    public void move(int row, int col){
+        Board.board[this._row][this._col] = null;
+        Board.board[row][col] = this;
+        this._row = row;
+        this._col = col;
+    }
+
     public int getCol(){
         return this._col;
     }

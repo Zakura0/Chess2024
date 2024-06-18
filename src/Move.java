@@ -35,5 +35,28 @@ public class Move {
     public int getDestCol() {
         return _dest_col;
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Move move = (Move) obj;
+        return this.getDestRow() == move.getDestRow() &&
+                this.getDestCol() == move.getDestCol() &&
+                this.getCurrRow() == move.getCurrRow() &&
+                this.getCurrCol() == move.getCurrCol();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + this.getDestRow();
+        result = 31 * result + this.getDestCol();
+        result = 31 * result + this.getCurrRow();
+        result = 31 * result + this.getCurrCol();
+        return result;
+    }
+
 }
