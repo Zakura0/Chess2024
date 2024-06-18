@@ -6,16 +6,36 @@ public class Pawn extends Piece {
         super(row, col, color);
     }
 
-    public void setPossibleMoves(int row, int col) {
+    public void calculatePossibleMoves() {
         List<Move> moves = new ArrayList<>();
+        int row = this.getRow();
+        int col = this.getCol();
+        int direction = this.getColor() ? 1 : -1; // true für Weiß (bewegt sich nach oben), false für Schwarz (bewegt sich nach unten)
     
-        
-
-        this._possibleMoves = moves;
-    }
-
-    public List<Move> getPossibleMoves() {
-        return this._possibleMoves;
+        // Gerade Bewegung
+        int straightRow = row + direction;
+        // Prüfe, ob der gerade Weg frei ist
+        if (straightRow >= 0 && straightRow < 8 && !isBlocked(straightRow, col)) {
+            moves.add(new Move(row, col, straightRow, col));
+    
+            // Für den ersten Zug kann der Bauer zwei Felder vorrücken
+            if ((this.getColor() && row == 1) || (!this.getColor() && row == 6)) {
+                int jumpRow = row + (2 * direction);
+                if (!isBlocked(jumpRow, col)) {
+                    moves.add(new Move(row, col, jumpRow, col));
+                } 
+            }
+        }
+    
+        // Diagonale Schlagbewegungen
+        int[] attackCols = {col - 1, col + 1};
+        for (int attackCol : attackCols) {
+            if (attackCol >= 0 && attackCol < 8 && isOpponent(straightRow, attackCol)) {
+                moves.add(new Move(row, col, straightRow, attackCol));
+            }
+        }
+    
+        this.setPossibleMoves(moves);
     }
 
     public boolean enPassantAvailable(Move move) {
@@ -44,3 +64,4 @@ public class Pawn extends Piece {
         // If condition is met, en Passant must be available
         return true;
     }
+}

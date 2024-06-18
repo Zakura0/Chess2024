@@ -12,6 +12,14 @@ public class Move {
         _dest_col = dest_col;
     }
 
+    public Piece getMovingPiece() {
+        return Board.board[_curr_row][_curr_col];
+    }
+
+    public Piece getCapturedPiece() {
+        return Board.board[_dest_row][_dest_col];
+    }
+
     public int getCurrRow() {
         return _curr_row;
     }

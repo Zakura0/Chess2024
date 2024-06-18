@@ -7,15 +7,44 @@ public class Bishop extends Piece {
         super(row, col, color);
     }
 
-    public void setPossibleMoves(int row, int col) {
+    public void calculatePossibleMoves() {
         List<Move> moves = new ArrayList<>();
-
-        
-
-        this._possibleMoves = moves;
-    }
-
-    public List<Move> getPossibleMoves() {
-        return this._possibleMoves;
+        int row = this.getRow();
+        int col = this.getCol();
+        // Richtungsvektoren nur für die vier Diagonalen
+        int[][] directions = {
+            {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
+        };
+    
+        for (int[] direction : directions) {
+            int dRow = direction[0];
+            int dCol = direction[1];
+            int targetRow = row;
+            int targetCol = col;
+    
+            while (true) {
+                targetRow += dRow;
+                targetCol += dCol;
+    
+                // Prüfe, ob die neue Position außerhalb des Bretts liegt
+                if (targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+                    break;
+                }
+    
+                // Prüfe, ob die neue Position blockiert ist
+                if (isBlocked(targetRow, targetCol)) {
+                    // Wenn ein Gegner blockiert, füge den Schlag hinzu
+                    if (isOpponent(targetRow, targetCol)) {
+                        moves.add(new Move(row, col, targetRow, targetCol));
+                    }
+                    break; // Breche die Schleife ab, da der Weg blockiert ist
+                }
+    
+                // Füge den Zug hinzu, wenn nicht blockiert
+                moves.add(new Move(row, col, targetRow, targetCol));
+            }
+        }
+    
+        this.setPossibleMoves(moves);
     }
 }
