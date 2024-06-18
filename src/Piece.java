@@ -46,6 +46,15 @@ public abstract class Piece {
         this._possibleMoves = new ArrayList<>();
     }
 
+    public int getCol(Piece p){
+        return p._col;
+    }
+
+    public int getRow(Piece p){
+        return p._row;
+    }
+
+
     private boolean isBlocked(int row, int col) {
         if(Board.board[row][col] != null) {
             return true;
@@ -105,6 +114,20 @@ public abstract class Piece {
             default -> NONE;
         };
         
+    }
+
+    List<Move> moveQueue = new ArrayList<>();
+
+    public void addMoveToQueue(Move move) {
+        this.moveQueue.add(move);
+    }
+
+    public List<Move> getQueue() {
+        return this.moveQueue;
+    }
+
+    public void clearQueue() {
+        this.moveQueue.clear();
     }
 }
 
