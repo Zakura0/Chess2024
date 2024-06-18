@@ -34,4 +34,12 @@ public class King extends Piece{
     
         this.setPossibleMoves(moves);
     }
+
+    public String getName() {
+        if (this.getColor()) {
+            return "king_w";
+        } else {
+            return "king_b";
+        }
+    }
 }

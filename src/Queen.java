@@ -47,4 +47,12 @@ public class Queen extends Piece {
     
         this.setPossibleMoves(moves);
     }
+
+    public String getName() {
+        if (this.getColor()) {
+            return "queen_w";
+        } else {
+            return "queen_b";
+        }
+    }
 }

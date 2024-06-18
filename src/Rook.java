@@ -43,4 +43,12 @@ public class Rook extends Piece {
     
         setPossibleMoves(moves);
     }
+
+    public String getName() {
+        if (this.getColor()) {
+            return "rook_w";
+        } else {
+            return "rook_b";
+        }
+    }
 }

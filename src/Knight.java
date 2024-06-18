@@ -32,4 +32,12 @@ public class Knight extends Piece {
     
         this.setPossibleMoves(moves);
     }
+
+    public String getName() {
+        if (this.getColor()) {
+            return "knight_w";
+        } else {
+            return "knight_b";
+        }
+    }
 }

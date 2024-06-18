@@ -64,4 +64,12 @@ public class Pawn extends Piece {
         // If condition is met, en Passant must be available
         return true;
     }
+
+    public String getName() {
+        if (this.getColor()) {
+            return "pawn_w";
+        } else {
+            return "pawn_b";
+        }
+    }
 }

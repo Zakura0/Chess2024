@@ -44,6 +44,8 @@ public abstract class Piece {
 
     public abstract void calculatePossibleMoves();
 
+    public abstract String getName();
+
     protected boolean isBlocked(int row, int col) {
         if(Board.board[row][col] != null) {
             return true;

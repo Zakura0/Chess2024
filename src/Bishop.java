@@ -47,4 +47,12 @@ public class Bishop extends Piece {
     
         this.setPossibleMoves(moves);
     }
+
+    public String getName() {
+        if (this.getColor()) {
+            return "bishop_w";
+        } else {
+            return "bishop_b";
+        }
+    }
 }
