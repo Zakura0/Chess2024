@@ -15,6 +15,7 @@ public class Game {
         Board board = new Board();
         _isWhiteTurn = true;
         calculateAllMoves();
+        int test = 9;
     }
 
     public void calculateAllMoves() {
