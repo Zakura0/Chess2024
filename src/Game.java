@@ -15,10 +15,10 @@ public class Game {
 
     public Game() {
         Board board = new Board();
+        _isWhiteTurn = true;
         _castleSmall = true;
         _castleBig = true;
         calculateAllMoves();
-        int test = 9;
     }
 
     public void calculateAllMoves() {
@@ -48,4 +48,13 @@ public class Game {
     public static boolean isCastleBig() {
         return _castleBig;
     }
+
+    public void performMove(Piece piece, Move move) {
+        if (piece.getColor() == _isWhiteTurn) {
+            changeTurn();
+        }
+        piece.move(move.getDestRow(), move.getDestCol());
+        calculateAllMoves();
+    }
+
 }
