@@ -12,6 +12,10 @@ public class Move {
         _dest_col = dest_col;
     }
 
+    public Move(int curr_row, int curr_col, int dest_row, int dest_col, int dest_row_rook, int dest_col_rook) {
+        
+    }
+
     public Piece getMovingPiece() {
         return Board.board[_curr_row][_curr_col];
     }

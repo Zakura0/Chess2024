@@ -35,6 +35,40 @@ public class King extends Piece{
         this.setPossibleMoves(moves);
     }
 
+    private Move castleSmall() {
+        int row;
+        if (Game.isCastleSmall() == false) {
+            if (this.getColor() == true) {
+                row = 7;                //WHITE
+            } else {
+                row = 0;                //BLACK
+            }
+            if (!isBlocked(row, 5) || !isBlocked(row, 6)) {
+                return new Move(row, 4, row, 6, row, 5);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    private Move castleBig() {
+        int row;
+        if (Game.isCastleBig() == false) {
+            if (this.getColor() == true) {  
+                row = 7;                //WHITE
+            } else {
+                row = 0;                //BLACK
+            }
+            if (!isBlocked(row, 1) || !isBlocked(row, 2) || !isBlocked(row, 3)) {
+                return new Move(row, 4, row, 2, row, 3);
+            } else {
+                return null;
+            }
+        }
+    }
+
     public String getName() {
         if (this.getColor()) {
             return "king_w";

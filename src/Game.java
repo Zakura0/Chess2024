@@ -3,6 +3,8 @@ import javax.swing.SwingUtilities;
 public class Game {
     public BoardGUI window;
     private boolean _isWhiteTurn;
+    private static boolean _castleSmall;
+    private static boolean _castleBig;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Game game = new Game();
@@ -13,7 +15,8 @@ public class Game {
 
     public Game() {
         Board board = new Board();
-        _isWhiteTurn = true;
+        _castleSmall = true;
+        _castleBig = true;
         calculateAllMoves();
     }
 
@@ -37,11 +40,11 @@ public class Game {
         return _isWhiteTurn;
     }
 
-    public void performMove(Piece piece, Move move) {
-        if (piece.getColor() == _isWhiteTurn) {
-            changeTurn();
-        }
-        piece.move(move.getDestRow(), move.getDestCol());
-        calculateAllMoves();
+    public static boolean isCastleSmall() {
+        return _castleSmall;
+    }
+
+    public static boolean isCastleBig() {
+        return _castleBig;
     }
 }
