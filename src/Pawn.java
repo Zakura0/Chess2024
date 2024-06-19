@@ -10,7 +10,7 @@ public class Pawn extends Piece {
         List<Move> moves = new ArrayList<>();
         int row = this.getRow();
         int col = this.getCol();
-        int direction = this.getColor() ? 1 : -1; // true für Weiß (bewegt sich nach oben), false für Schwarz (bewegt sich nach unten)
+        int direction = this.getColor() ? -1 : 1; // true für Weiß (bewegt sich nach oben), false für Schwarz (bewegt sich nach unten)
     
         // Gerade Bewegung
         int straightRow = row + direction;
@@ -19,7 +19,7 @@ public class Pawn extends Piece {
             moves.add(new Move(row, col, straightRow, col));
     
             // Für den ersten Zug kann der Bauer zwei Felder vorrücken
-            if ((this.getColor() && row == 1) || (!this.getColor() && row == 6)) {
+            if ((this.getColor() && row == 6) || (!this.getColor() && row == 1)) {
                 int jumpRow = row + (2 * direction);
                 if (!isBlocked(jumpRow, col)) {
                     moves.add(new Move(row, col, jumpRow, col));

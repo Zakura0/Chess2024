@@ -13,6 +13,7 @@ public class Game {
 
     public Game() {
         Board board = new Board();
+        _isWhiteTurn = true;
         calculateAllMoves();
     }
 
@@ -34,5 +35,13 @@ public class Game {
 
     public boolean isWhiteTurn() {
         return _isWhiteTurn;
+    }
+
+    public void performMove(Piece piece, Move move) {
+        if (piece.getColor() == _isWhiteTurn) {
+            changeTurn();
+        }
+        piece.move(move.getDestRow(), move.getDestCol());
+        calculateAllMoves();
     }
 }

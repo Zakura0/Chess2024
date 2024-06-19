@@ -26,59 +26,76 @@ public class BoardGUI extends JPanel {
     private Map<String, BufferedImage> pieceImages = new HashMap<>();
 
     public BoardGUI(Game game) {
-        loadPieceImages();
         _game = game;
+        loadPieceImages();
+        initializeListener();
+    }
+
+    private void initializeListener()
+    {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int col = e.getX() / tileSize;
                 int row = e.getY() / tileSize;
-                if (!pieceSelected) {
-                    // Erster Klick: Wähle das Piece aus und zeige mögliche Züge
-                    selectedRow = row;
-                    selectedCol = col;
-                    showMoves(row, col);
-                    pieceSelected = true;
-                } else {
-                    // Zweiter Klick: Führe den Zug aus, wenn er gültig ist
-                    performMove(selectedRow, selectedCol, row, col);
-                }
+                evaluateClick(row, col);
             }
         });
     }
 
-    // Debigging purposes
+    private void evaluateClick(int row, int col)
+    {
+        if (!pieceSelected) {
+            // Erster Klick: Wähle das Piece aus und zeige mögliche Züge
+            selectedRow = row;
+            selectedCol = col;
+            Piece piece = Board.board[selectedRow][selectedCol];
+            if (piece == null) {
+                return;
+            }
+            if (piece.getColor() != _game.isWhiteTurn()) {
+                System.out.println("It's not your turn!");
+                repaintBoard();
+                return;
+            }
+            showMoves(row, col);
+            pieceSelected = true;
+        } else {
+            // Zweiter Klick: Führe den Zug aus, wenn er gültig ist
+            Piece piece = Board.board[selectedRow][selectedCol];
+            Move move = new Move(selectedRow, selectedCol, row, col);
+            if (piece.getPossibleMoves().contains(move)) {
+                _game.performMove(piece, move);
+                pieceSelected = false;
+                paintComponent(getGraphics());
+            } else {
+                pieceSelected = false;
+                repaintBoard();
+            }
+        }
+
+    }
+
     public void showMoves(int row, int col) {
         Piece piece = Board.board[row][col];
         List<Move> moves = piece.getPossibleMoves();
         for (Move move : moves) {
             Graphics g = getGraphics();
             g.setColor(Color.GREEN);
-            g.fillRect(move.getDestCol() * tileSize, move.getDestRow() * tileSize, tileSize, tileSize);
-            System.out.println("This " + piece + " Can Move to: " + move.getDestRow() + ", " + move.getDestCol());
+            int targetRow = move.getDestRow();
+            int targetCol = move.getDestCol();
+            g.fillRect(targetCol * tileSize, targetRow * tileSize, tileSize, tileSize);
         }
     }
 
-    // Debigging purposes
-    private void performMove(int startRow, int startCol, int destRow, int destCol) {
-        Piece piece = Board.board[startRow][startCol];
-        Move move = new Move(startRow, startCol, destRow, destCol);
-        if (piece.getPossibleMoves().contains(move)) {
-            piece.move(move.getDestRow(), move.getDestCol());
-            pieceSelected = false;
-            paintComponent(getGraphics());
-            _game.calculateAllMoves();
-            System.out.println("Moved " + piece + " from " + startRow + ", " + startCol + " to " + destRow + ", " + destCol);
-        }
-        else {
-            System.out.println("Invalid Move");
-        }
-        
+    private void repaintBoard() {
+        paintComponent(getGraphics());
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         for (int i = 0; i < board; i++) { // i = row
             for (int j = 0; j < board; j++) { // j = col
                 boolean isWhite = (i + j) % 2 == 0;
