@@ -3,6 +3,7 @@ public class Board {
     public static Piece[][] board;
 
     public static void initializeBoard() {
+        board = new Piece[8][8];
         for (int i = 0; i < 8; i++) {
             board[1][i] = new Pawn(1, i, false);
             board[6][i] = new Pawn(6, i, true);
