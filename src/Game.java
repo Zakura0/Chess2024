@@ -14,7 +14,8 @@ public class Game {
     }
 
     public Game() {
-        Board board = new Board();
+        Board.board = new Piece[8][8];
+        Board.initializeBoard();
         _isWhiteTurn = true;
         _castleSmall = true;
         _castleBig = true;

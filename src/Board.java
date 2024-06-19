@@ -2,12 +2,7 @@ public class Board {
     
     public static Piece[][] board;
 
-    public Board(){
-        board = new Piece[8][8];
-        initializeBoard();
-    }
-
-    public void initializeBoard() {
+    public static void initializeBoard() {
         for (int i = 0; i < 8; i++) {
             board[1][i] = new Pawn(1, i, false);
             board[6][i] = new Pawn(6, i, true);
