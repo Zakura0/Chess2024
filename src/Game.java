@@ -18,6 +18,7 @@ public class Game {
         _castleSmall = true;
         _castleBig = true;
         calculateAllMoves();
+        int test = 9;
     }
 
     public void calculateAllMoves() {
