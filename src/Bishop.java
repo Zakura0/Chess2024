@@ -35,6 +35,9 @@ public class Bishop extends Piece {
                 if (isBlocked(targetRow, targetCol)) {
                     // Wenn ein Gegner blockiert, füge den Schlag hinzu
                     if (isOpponent(targetRow, targetCol)) {
+                        if (isOpposingKing(targetRow, targetCol)) {
+                            Game.setCheck(!this.getColor());
+                        }                        
                         moves.add(new Move(row, col, targetRow, targetCol));
                     }
                     break; // Breche die Schleife ab, da der Weg blockiert ist

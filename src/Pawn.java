@@ -31,6 +31,9 @@ public class Pawn extends Piece {
         int[] attackCols = {col - 1, col + 1};
         for (int attackCol : attackCols) {
             if (attackCol >= 0 && attackCol < 8 && isOpponent(straightRow, attackCol)) {
+                if (isOpposingKing(straightRow, attackCol)) {
+                    Game.setCheck(!this.getColor());
+                }  
                 moves.add(new Move(row, col, straightRow, attackCol));
             }
         }

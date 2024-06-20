@@ -31,8 +31,7 @@ public class BoardGUI extends JPanel {
         initializeListener();
     }
 
-    private void initializeListener()
-    {
+    private void initializeListener() {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -43,8 +42,7 @@ public class BoardGUI extends JPanel {
         });
     }
 
-    private void evaluateClick(int row, int col)
-    {
+    private void evaluateClick(int row, int col) {
         if (!pieceSelected) {
             // Erster Klick: Wähle das Piece aus und zeige mögliche Züge
             selectedRow = row;
@@ -81,10 +79,17 @@ public class BoardGUI extends JPanel {
         List<Move> moves = piece.getPossibleMoves();
         for (Move move : moves) {
             Graphics g = getGraphics();
-            g.setColor(Color.GREEN);
+            Graphics2D g2 = (Graphics2D) g;
             int targetRow = move.getDestRow();
             int targetCol = move.getDestCol();
-            g.fillRect(targetCol * tileSize, targetRow * tileSize, tileSize, tileSize);
+            Piece opponent = Board.board[targetRow][targetCol];
+            if (opponent != null && opponent.getColor() != piece.getColor()) {
+                g2.setColor(Color.RED);
+            } else {
+                g2.setColor(Color.GREEN);
+            }
+            g2.setStroke(new BasicStroke(5));
+            g2.drawRect(targetCol * tileSize, targetRow * tileSize, tileSize, tileSize);
         }
     }
 

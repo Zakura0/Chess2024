@@ -5,6 +5,8 @@ public class Game {
     private boolean _isWhiteTurn;
     private static boolean _castleSmall;
     private static boolean _castleBig;
+    private static boolean _isWhiteCheck;
+    private static boolean _isBlackCheck;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Game game = new Game();
@@ -15,6 +17,8 @@ public class Game {
 
     public Game() {
         Board.initializeBoard();
+        _isWhiteCheck = false;
+        _isBlackCheck = false;
         _isWhiteTurn = true;
         _castleSmall = true;
         _castleBig = true;
@@ -55,6 +59,26 @@ public class Game {
         }
         piece.move(move.getDestRow(), move.getDestCol());
         calculateAllMoves();
+        if (_isWhiteCheck) {
+            System.out.println("White is in check");
+            _isWhiteCheck = false;
+        } 
+        else if (_isBlackCheck) {
+            System.out.println("Black is in check");
+            _isBlackCheck = false;
+        }
+    }
+
+    public static void setCheck(boolean color)
+    {
+        if(color)
+        {
+            _isWhiteCheck = true;
+        }
+        else
+        {
+            _isBlackCheck = true;
+        }
     }
 
 }
