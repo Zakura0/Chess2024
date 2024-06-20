@@ -75,6 +75,7 @@ public class King extends Piece{
                 return null;
             }
         }
+        return null;
     }
 
     public String getName() {
