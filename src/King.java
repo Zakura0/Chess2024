@@ -27,9 +27,6 @@ public class King extends Piece{
                 // Prüfe, ob die neue Position blockiert ist
                 if (isBlocked(targetRow, targetCol)) {
                     if (isOpponent(targetRow, targetCol)) {
-                        if (isOpposingKing(targetRow, targetCol)) {
-                            Game.setCheck(!this.getColor());
-                        }
                         moves.add(new Move(row, col, targetRow, targetCol));
                     }
                 }

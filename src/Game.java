@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.SwingUtilities;
 
 public class Game {
@@ -7,21 +10,26 @@ public class Game {
     private static boolean _castleBig;
     private static boolean _isWhiteCheck;
     private static boolean _isBlackCheck;
+    public static List<Piece> whitePieces;
+    public static List<Piece> blackPieces;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Game game = new Game();
             BoardGUI boardGUI = new BoardGUI(game);
-            boardGUI.loadGUI();            
+            boardGUI.loadGUI();
         });
     }
 
     public Game() {
-        Board.initializeBoard();
+        whitePieces = new ArrayList<Piece>();
+        blackPieces = new ArrayList<Piece>();
         _isWhiteCheck = false;
         _isBlackCheck = false;
         _isWhiteTurn = true;
         _castleSmall = true;
         _castleBig = true;
+        Board.initializeBoard();
         calculateAllMoves();
     }
 
@@ -53,30 +61,138 @@ public class Game {
         return _castleBig;
     }
 
+    public boolean checkKingInCheck(boolean color) {
+        List<Piece> kingPieces = color ? whitePieces : blackPieces;
+        String opponentKnight = color ? "knight_b" : "knight_w";
+        String opponentPawn = color ? "pawn_b" : "pawn_w";
+        String opponentRook = color ? "rook_b" : "rook_w";
+        String opponentBishop = color ? "bishop_b" : "bishop_w";
+        String opponentQueen = "queen_" + (color ? "b" : "w");
+    
+        int KingRow = kingPieces.get(0).getRow();
+        int KingCol = kingPieces.get(0).getCol();
+    
+        // Knight moves
+        int[][] movesVectorsKnight = {
+            { -2, -1 }, { -2, 1 },
+            { 2, -1 }, { 2, 1 }, 
+            { -1, -2 }, { 1, -2 }, 
+            { -1, 2 }, { 1, 2 } 
+        };
+    
+        for (int[] moveVector : movesVectorsKnight) {
+            int targetRow = KingRow + moveVector[0];
+            int targetCol = KingCol + moveVector[1];
+            if (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
+                Piece piece = Board.board[targetRow][targetCol];
+                if (piece != null && !piece.getColor() == color && piece.getName().equals(opponentKnight)) {
+                    return true;
+                }
+            }
+        }
+    
+        // Pawn moves
+        int pawnDirection = color ? -1 : 1;
+        int straightRow = KingRow + pawnDirection;
+        int[] attackCols = { KingCol - 1, KingCol + 1 };
+    
+        for (int attackCol : attackCols) {
+            if (straightRow >= 0 && straightRow < 8 && attackCol >= 0 && attackCol < 8) {
+                Piece piece = Board.board[straightRow][attackCol];
+                if (piece != null && !piece.getColor() == color && piece.getName().equals(opponentPawn)) {
+                    return true;
+                }
+            }
+        }
+    
+        // Rook and Queen moves
+        int[][] directionsRook = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+        for (int[] direction : directionsRook) {
+            if (checkDirectionForOpponent(KingRow, KingCol, direction, color, opponentRook, opponentQueen)) {
+                return true;
+            }
+        }
+    
+        // Bishop and Queen moves
+        int[][] directionsBishop = { { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 } };
+        for (int[] direction : directionsBishop) {
+            if (checkDirectionForOpponent(KingRow, KingCol, direction, color, opponentBishop, opponentQueen)) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+    
+    private boolean checkDirectionForOpponent(int KingRow, int KingCol, int[] direction, boolean color, String opponentPiece1, String opponentPiece2) {
+        int dRow = direction[0];
+        int dCol = direction[1];
+        int targetRow = KingRow + dRow;
+        int targetCol = KingCol + dCol;
+        while (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
+            Piece piece = Board.board[targetRow][targetCol];
+            if (piece != null) {
+                if (!piece.getColor() == color && (piece.getName().equals(opponentPiece1) || piece.getName().equals(opponentPiece2))) {
+                    return true;
+                }
+                break;
+            }
+            targetRow += dRow;
+            targetCol += dCol;
+        }
+        return false;
+    }
+
     public void performMove(Piece piece, Move move) {
+        int startRow = piece.getRow();
+        int startCol = piece.getCol();
+        Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
+        piece.move(move.getDestRow(), move.getDestCol());
+        if(checkKingInCheck(piece.getColor())) {
+            piece.move(startRow, startCol);
+            Board.board[move.getDestRow()][move.getDestCol()] = destPiece;
+            System.out.println("Invalid move, friendly king would be in check");
+            return;
+        }
+        if(checkKingInCheck(!piece.getColor())) {
+            String color = piece.getColor() ? "black" : "white";
+            setCheck(!piece.getColor());
+            System.out.println("The " + color + " king is in check!");
+            checkForMate();
+        }
         if (piece.getColor() == _isWhiteTurn) {
             changeTurn();
         }
-        piece.move(move.getDestRow(), move.getDestCol());
         calculateAllMoves();
-        if (_isWhiteCheck) {
-            System.out.println("White is in check");
-            _isWhiteCheck = false;
-        } 
-        else if (_isBlackCheck) {
-            System.out.println("Black is in check");
-            _isBlackCheck = false;
+    }
+
+    private void checkForMate() {
+        boolean isWhiteMate = true;
+        boolean isBlackMate = true;
+        for (Piece piece : whitePieces) {
+            if (!piece.getPossibleMoves().isEmpty()) {
+                isWhiteMate = false;
+                break;
+            }
+        }
+        for (Piece piece : blackPieces) {
+            if (!piece.getPossibleMoves().isEmpty()) {
+                isBlackMate = false;
+                break;
+            }
+        }
+        if (isWhiteMate) {
+            System.out.println("White is in checkmate!");
+        }
+        if (isBlackMate) {
+            System.out.println("Black is in checkmate!");
         }
     }
 
-    public static void setCheck(boolean color)
-    {
-        if(color)
-        {
+    public static void setCheck(boolean color) {
+        if (color) {
             _isWhiteCheck = true;
-        }
-        else
-        {
+        } else {
             _isBlackCheck = true;
         }
     }

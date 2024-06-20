@@ -62,16 +62,6 @@ public abstract class Piece {
         return false;
     }
 
-    protected boolean isOpposingKing(int targetRow, int targetCol)
-    {
-        Piece opponent = Board.board[targetRow][targetCol];
-        if (opponent instanceof King)
-        {
-            return true;
-        }
-        return false;
-    }
-
     List<Move> moveQueue = new ArrayList<>();
 
     public void addMoveToQueue(Move move) {
