@@ -22,10 +22,6 @@ public abstract class Piece {
         this._col = col;
     }
 
-    public void move(int rowKing, int colKing, int rowRook, int colRook) {
-        
-    }
-
     public int getCol(){
         return this._col;
     }
@@ -66,6 +62,14 @@ public abstract class Piece {
         return false;
     }
 
+    protected boolean isFriendlyRook(int row, int col) {
+        if (Board.board[row][col] instanceof Rook && !isOpponent(row, col)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     List<Move> moveQueue = new ArrayList<>();
 
     public void addMoveToQueue(Move move) {
@@ -79,5 +83,6 @@ public abstract class Piece {
     public void clearQueue() {
         this.moveQueue.clear();
     }
+
 }
 

@@ -6,14 +6,12 @@ import javax.swing.SwingUtilities;
 public class Game {
     public BoardGUI window;
     private boolean _isWhiteTurn;
-    private static boolean _castleSmallWhite;
-    private static boolean _castleBigWhite;
-    private static boolean _castleSmallBlack;
-    private static boolean _castleBigBlack;
     private static boolean _isWhiteCheck;
     private static boolean _isBlackCheck;
     public static List<Piece> whitePieces;
     public static List<Piece> blackPieces;
+    public static King whiteKing;
+    public static King blackKing;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -29,11 +27,9 @@ public class Game {
         _isWhiteCheck = false;
         _isBlackCheck = false;
         _isWhiteTurn = true;
-        _castleSmallWhite = true;
-        _castleBigWhite = true;
-        _castleSmallBlack = true;
-        _castleBigBlack = true;
         Board.initializeBoard();
+        whiteKing = (King) Board.board[7][4];
+        blackKing = (King) Board.board[0][4];
         calculateAllMoves();
     }
 
@@ -55,20 +51,6 @@ public class Game {
 
     public boolean isWhiteTurn() {
         return _isWhiteTurn;
-    }
-
-    public static boolean isCastleSmall() {
-        if (_castleSmallBlack || _castleSmallWhite) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isCastleBig() {
-        if (_castleBigBlack || _castleBigWhite) {
-            return true;
-        }
-        return false;
     }
 
     public boolean checkKingInCheck(boolean color) {
@@ -173,8 +155,9 @@ public class Game {
         if (piece.getColor() == _isWhiteTurn) {
             changeTurn();
         }
-        checkCastling(piece);
         piece.move(move.getDestRow(), move.getDestCol());
+        performCastleMove(piece, move);
+        checkCastling(piece);
         calculateAllMoves();
     }
 
@@ -210,34 +193,54 @@ public class Game {
     }
 
     private void checkCastling(Piece piece) {
-        int king = 4;
-        int leftRook = 0;
-        int rightRook = 7;
-        if (piece.getColor()) {
-            if (piece.getCol() == king) {
-                _castleSmallWhite = false;
-                _castleBigWhite = false;
-            } else { 
-                if (piece.getCol() == leftRook) {
-                    _castleBigWhite = false;
-                }
-                if (piece.getCol() == rightRook) {
-                    _castleSmallWhite = false;
-                }
+        if (piece instanceof King) {
+            if (piece.getColor()) {
+                whiteKing.setCastleBig(false);
+                whiteKing.setCastleSmall(false);
+            } else {
+                blackKing.setCastleBig(false);
+                blackKing.setCastleSmall(false);
             }
-        } else {
-            if (piece.getCol() == king) {
-                _castleSmallBlack = false;
-                _castleBigBlack = false;
-            } else { 
-                if (piece.getCol() == leftRook) {
-                    _castleBigBlack = false;
+        } else if (piece instanceof Rook) {
+            System.out.println("Is Rook move");
+            if (piece.getColor()) {
+                if (piece.getCol() == 0) {
+                    System.out.println("Is left Rook move");
+                    whiteKing.setCastleBig(false);
+                } else if (piece.getCol() == 7) {
+                    System.out.println("Is right Rook move");
+                    whiteKing.setCastleSmall(false);
                 }
-                if (piece.getCol() == rightRook) {
-                    _castleSmallBlack = false;
+            } else {
+                if (piece.getCol() == 0) {
+                    blackKing.setCastleBig(false);
+                } else if (piece.getCol() == 7) {
+                    blackKing.setCastleSmall(false);
                 }
             }
         }
     }
 
+    private void performCastleMove(Piece piece, Move move) {
+        int blackRow = 0;
+        int whiteRow = 7;
+        Piece whiteLeftRook = Board.board[whiteRow][0];
+        Piece whiteRightRook = Board.board[whiteRow][7]; 
+        Piece blackLeftRook = Board.board[blackRow][0]; 
+        Piece blackRightRook = Board.board[blackRow][7]; 
+
+        if (piece instanceof King && piece.getColor() == true) {
+            if (move.getDestCol() == 2) {
+                whiteLeftRook.move(whiteRow, 3);
+            } else if (move.getDestCol() == 6) {
+                whiteRightRook.move(whiteRow, 5);
+            }
+        } else if (piece instanceof King && piece.getColor() == false) {
+            if (move.getDestCol() == 2) {
+                blackLeftRook.move(blackRow, 3);
+            } else if (move.getDestCol() == 6) {
+                blackRightRook.move(blackRow, 5);
+            }
+        }
+    }
 }

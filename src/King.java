@@ -2,8 +2,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class King extends Piece{
+    private boolean _smallCastle;
+    private boolean _bigCastle;
+
     public King(int row, int col, boolean color) {
         super(row, col, color);
+        _smallCastle = true;
+        _bigCastle = true;
+    }
+
+    public boolean getCastleSmall() {
+        return _smallCastle;
+    }
+
+    public boolean getCastleBig() {
+        return _bigCastle;
+    }
+
+    public void setCastleSmall(boolean isPossible) {
+        _smallCastle = isPossible;
+    }
+
+    public void setCastleBig(boolean isPossible) {
+        _bigCastle = isPossible;
     }
 
     public void calculatePossibleMoves() {
@@ -36,23 +57,23 @@ public class King extends Piece{
                 }
             }
         }
-        if (Game.isCastleSmall()) {
+        if (_smallCastle) {
             int targetRowKing = row;
             int targetColKing = col + 2;
-            int targetRowRook = row;
-            int targetColRook = col - 2;
             if (!isBlocked(row, 5) && !isBlocked(row, 6)) {
-                moves.add(new Move(row, col, targetRowKing, targetColKing, targetRowRook, targetColRook));
+                if (isFriendlyRook(row, 7)) {
+                    moves.add(new Move(row, col, targetRowKing, targetColKing));
+                }
             }
             
         }
-        if (Game.isCastleBig()) {
+        if (_bigCastle) {
             int targetRowKing = row;
             int targetColKing = col - 2;
-            int targetRowRook = row;
-            int targetColRook = col + 3;
             if (!isBlocked(row, 1) && !isBlocked(row, 2) && !isBlocked(row, 3)) {
-                moves.add(new Move(row, col, targetRowKing, targetColKing, targetRowRook, targetColRook));
+                if (isFriendlyRook(row, 0)) {
+                    moves.add(new Move(row, col, targetRowKing, targetColKing));
+                }
             }
         }
     
