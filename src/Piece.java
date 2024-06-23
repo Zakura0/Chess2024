@@ -22,6 +22,10 @@ public abstract class Piece {
         this._col = col;
     }
 
+    public void move(int rowKing, int colKing, int rowRook, int colRook) {
+        
+    }
+
     public int getCol(){
         return this._col;
     }

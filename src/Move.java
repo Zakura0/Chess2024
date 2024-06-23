@@ -4,6 +4,9 @@ public class Move {
     private int _curr_col;
     private int _dest_row;
     private int _dest_col;
+    private int _dest_row_rook;
+    private int _dest_col_rook;
+    private boolean _isCastle;
 
     public Move(int curr_row, int curr_col, int dest_row, int dest_col) {
         _curr_row = curr_row;
@@ -12,8 +15,14 @@ public class Move {
         _dest_col = dest_col;
     }
 
-    public Move(int curr_row, int curr_col, int dest_row, int dest_col, int dest_row_rook, int dest_col_rook) {
-        
+    public Move(int curr_row, int curr_col, int dest_row, int dest_col, int dest_row_rook, int dest_col_rook, boolean isCastle) {
+        _curr_row = curr_row;
+        _curr_col = curr_col;
+        _dest_row = dest_row;
+        _dest_col = dest_col;
+        _dest_row_rook = dest_row_rook;
+        _dest_col_rook = dest_col_rook;
+        _isCastle = isCastle;
     }
 
     public Piece getMovingPiece() {

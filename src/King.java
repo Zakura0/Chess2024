@@ -31,44 +31,29 @@ public class King extends Piece{
                 }
             }
         }
+        if (Game.isCastleSmall()) {
+            int targetRowKing = row;
+            int targetColKing = col + 2;
+            int targetRowRook = row;
+            int targetColRook = col - 2;
+            if (!isBlocked(row, 5) && !isBlocked(row, 6)) {
+                moves.add(new Move(row, col, targetRowKing, targetColKing, targetRowRook, targetColRook));
+            }
+            
+        }
+        if (Game.isCastleBig()) {
+            int targetRowKing = row;
+            int targetColKing = col - 2;
+            int targetRowRook = row;
+            int targetColRook = col + 3;
+            if (!isBlocked(row, 1) && !isBlocked(row, 2) && !isBlocked(row, 3)) {
+                moves.add(new Move(row, col, targetRowKing, targetColKing, targetRowRook, targetColRook));
+            }
+        }
     
         this.setPossibleMoves(moves);
     }
-
-    private Move castleSmall() {
-        int row;
-        if (Game.isCastleSmall() == false) {
-            if (this.getColor() == true) {
-                row = 7;                //WHITE
-            } else {
-                row = 0;                //BLACK
-            }
-            if (!isBlocked(row, 5) || !isBlocked(row, 6)) {
-                return new Move(row, 4, row, 6, row, 5);
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    private Move castleBig() {
-        int row;
-        if (Game.isCastleBig() == false) {
-            if (this.getColor() == true) {  
-                row = 7;                //WHITE
-            } else {
-                row = 0;                //BLACK
-            }
-            if (!isBlocked(row, 1) || !isBlocked(row, 2) || !isBlocked(row, 3)) {
-                return new Move(row, 4, row, 2, row, 3);
-            } else {
-                return null;
-            }
-        }
-    }
-
+    
     public String getName() {
         if (this.getColor()) {
             return "king_w";
