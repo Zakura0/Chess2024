@@ -11,25 +11,31 @@ public class Knight extends Piece {
         int row = this.getRow();
         int col = this.getCol();
         int[][] movesVectors = {
-            {-2, -1}, {-2, 1}, // Oben links, Oben rechts
-            {2, -1}, {2, 1}, // Unten links, Unten rechts
-            {-1, -2}, {1, -2}, // Links oben, Links unten
-            {-1, 2}, {1, 2} // Rechts oben, Rechts unten
+                { -2, -1 }, { -2, 1 }, // Oben links, Oben rechts
+                { 2, -1 }, { 2, 1 }, // Unten links, Unten rechts
+                { -1, -2 }, { 1, -2 }, // Links oben, Links unten
+                { -1, 2 }, { 1, 2 } // Rechts oben, Rechts unten
         };
-    
+
         for (int[] moveVector : movesVectors) {
             int targetRow = row + moveVector[0];
             int targetCol = col + moveVector[1];
-    
+
             // Prüfe, ob die neue Position innerhalb des Bretts liegt
             if (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
                 // Prüfe, ob die neue Position blockiert ist oder ein Gegner steht
-                if (!isBlocked(targetRow, targetCol) || isOpponent(targetRow, targetCol)) {
+                if (isBlocked(targetRow, targetCol)) {
+                    if (isOpponent(targetRow, targetCol)) {
+                        moves.add(new Move(row, col, targetRow, targetCol));
+                    }
+                }
+                else
+                {
                     moves.add(new Move(row, col, targetRow, targetCol));
                 }
             }
         }
-    
+
         this.setPossibleMoves(moves);
     }
 

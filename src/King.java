@@ -25,8 +25,13 @@ public class King extends Piece{
             // Prüfe, ob die neue Position außerhalb des Bretts liegt
             if (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
                 // Prüfe, ob die neue Position blockiert ist
-                if (!isBlocked(targetRow, targetCol) || isOpponent(targetRow, targetCol)) {
-                    // Füge den Zug hinzu, wenn nicht blockiert oder ein Gegner geschlagen werden kann
+                if (isBlocked(targetRow, targetCol)) {
+                    if (isOpponent(targetRow, targetCol)) {
+                        moves.add(new Move(row, col, targetRow, targetCol));
+                    }
+                }
+                else
+                {
                     moves.add(new Move(row, col, targetRow, targetCol));
                 }
             }
