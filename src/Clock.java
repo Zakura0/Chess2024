@@ -32,4 +32,10 @@ public class Clock {
         String fTime = fHrs + ":" + fMins + ":" + fSecs;
         return fTime;
     }
+
+    public void start(){
+        while (!outOfTime()) {
+            decr();
+        }
+    }
 }

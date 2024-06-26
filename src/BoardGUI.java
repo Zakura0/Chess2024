@@ -78,20 +78,30 @@ public class BoardGUI extends JPanel {
         Piece piece = Board.board[row][col];
         List<Move> moves = piece.getPossibleMoves();
         for (Move move : moves) {
-            Graphics g = getGraphics();
-            Graphics2D g2 = (Graphics2D) g;
+            Graphics2D g2 = (Graphics2D) getGraphics();
             int targetRow = move.getDestRow();
             int targetCol = move.getDestCol();
             Piece opponent = Board.board[targetRow][targetCol];
             if (opponent != null && opponent.getColor() != piece.getColor()) {
-                g2.setColor(Color.RED);
+                g2.setColor(new Color(0, 0,0, 100)); 
+                g2.setStroke(new BasicStroke(5));
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
+                int centerX = targetCol * tileSize + tileSize / 2;
+                int centerY = targetRow * tileSize + tileSize / 2;
+                g2.setStroke(new BasicStroke(5));
+                g2.drawOval(centerX - 37, centerY - 37, 75, 75);
             } else {
-                g2.setColor(Color.GREEN);
+                g2.setColor(new Color(0, 0, 0, 100)); 
+                g2.setStroke(new BasicStroke(5));
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f)); 
+                int centerX = targetCol * tileSize + tileSize / 2;
+                int centerY = targetRow * tileSize + tileSize / 2;
+                g2.fillOval(centerX - 12, centerY - 12, 25, 25);
             }
-            g2.setStroke(new BasicStroke(5));
-            g2.drawRect(targetCol * tileSize, targetRow * tileSize, tileSize, tileSize);
         }
     }
+
+    
 
     private void repaintBoard() {
         paintComponent(getGraphics());
@@ -138,22 +148,24 @@ public class BoardGUI extends JPanel {
 
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
+
     }
+
 
     private void loadPieceImages() {
         try {
-            pieceImages.put("pawn_w", ImageIO.read(new File("src/figures_img/w_pawn.png")));
-            pieceImages.put("rook_w", ImageIO.read(new File("src/figures_img/w_rook.png")));
-            pieceImages.put("knight_w", ImageIO.read(new File("src/figures_img/w_knight.png")));
-            pieceImages.put("bishop_w", ImageIO.read(new File("src/figures_img/w_bishop.png")));
-            pieceImages.put("queen_w", ImageIO.read(new File("src/figures_img/w_queen.png")));
-            pieceImages.put("king_w", ImageIO.read(new File("src/figures_img/w_king.png")));
-            pieceImages.put("pawn_b", ImageIO.read(new File("src/figures_img/b_pawn.png")));
-            pieceImages.put("rook_b", ImageIO.read(new File("src/figures_img/b_rook.png")));
-            pieceImages.put("knight_b", ImageIO.read(new File("src/figures_img/b_knight.png")));
-            pieceImages.put("bishop_b", ImageIO.read(new File("src/figures_img/b_bishop.png")));
-            pieceImages.put("queen_b", ImageIO.read(new File("src/figures_img/b_queen.png")));
-            pieceImages.put("king_b", ImageIO.read(new File("src/figures_img/b_king.png")));
+            pieceImages.put("pawn_w", ImageIO.read(new File("src/figures_img/white-pawn.png")));
+            pieceImages.put("rook_w", ImageIO.read(new File("src/figures_img/white-rook.png")));
+            pieceImages.put("knight_w", ImageIO.read(new File("src/figures_img/white-knight.png")));
+            pieceImages.put("bishop_w", ImageIO.read(new File("src/figures_img/white-bishop.png")));
+            pieceImages.put("queen_w", ImageIO.read(new File("src/figures_img/white-queen.png")));
+            pieceImages.put("king_w", ImageIO.read(new File("src/figures_img/white-king.png")));
+            pieceImages.put("pawn_b", ImageIO.read(new File("src/figures_img/black-pawn.png")));
+            pieceImages.put("rook_b", ImageIO.read(new File("src/figures_img/black-rook.png")));
+            pieceImages.put("knight_b", ImageIO.read(new File("src/figures_img/black-knight.png")));
+            pieceImages.put("bishop_b", ImageIO.read(new File("src/figures_img/black-bishop.png")));
+            pieceImages.put("queen_b", ImageIO.read(new File("src/figures_img/black-queen.png")));
+            pieceImages.put("king_b", ImageIO.read(new File("src/figures_img/black-king.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
