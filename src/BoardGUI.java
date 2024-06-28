@@ -1,13 +1,13 @@
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +20,24 @@ public class BoardGUI extends JPanel {
     private static final Color beige = new Color(248, 231, 187);
     private static final Color brown = new Color(150, 77, 34);
     private boolean pieceSelected = false;
-    private int selectedRow = -1;
-    private int selectedCol = -1;
+    private int selectedRow;
+    private int selectedCol;
     private Game _game;
     private Map<String, BufferedImage> pieceImages = new HashMap<>();
+    private static Map<String, ImageIcon> pieceIcons = new HashMap<>();
+    private JFrame mainFrame;
+    private JLayeredPane layers;
+    private JPanel boardFrame;
+    private JPanel transformPanel;
+    private static Dimension frameDim = new Dimension(1000, 800);
+    private static Dimension boardDim = new Dimension(800, 800);
+    private static int xBoardOffset = 40;
+    private static int yBoardOffset = 40;
 
     public BoardGUI(Game game) {
         _game = game;
         loadPieceImages();
+        loadPieceIcons();
         initializeListener();
     }
 
@@ -103,7 +113,7 @@ public class BoardGUI extends JPanel {
 
     
 
-    private void repaintBoard() {
+    public void repaintBoard() {
         paintComponent(getGraphics());
     }
 
@@ -134,21 +144,57 @@ public class BoardGUI extends JPanel {
     }
 
     public void loadGUI() {
-        JFrame mainFrame = new JFrame("Chess");
-        mainFrame.setSize(1000, 800);
+        mainFrame = new JFrame("Chess");
+        mainFrame.setSize(frameDim);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout());
 
-        BoardGUI board = new BoardGUI(_game);
-        JPanel boardFrame = new JPanel();
-        boardFrame.setLayout(new GridBagLayout());
-        boardFrame.add(board);
-        boardFrame.setBorder(new EmptyBorder(50, 50, 50, 50));
-        mainFrame.add(boardFrame, BorderLayout.WEST);
+        layers = new JLayeredPane();
+        layers.setPreferredSize(boardDim);
 
+        BoardGUI boardGui = new BoardGUI(_game);
+        boardFrame = new JPanel();
+        boardFrame.setLayout(new GridBagLayout());
+        boardFrame.add(boardGui);
+        boardFrame.setBounds(xBoardOffset, yBoardOffset, board * tileSize, board * tileSize);
+        boardFrame.setVisible(true);
+
+        layers.add(boardFrame, JLayeredPane.DEFAULT_LAYER);
+        layers.setVisible(true);
+    
+        mainFrame.add(layers, BorderLayout.CENTER);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
 
+    }
+
+    public void showTransform(Piece piece) {
+        int row = piece.getRow();
+        int col = piece.getCol();
+        boolean color = piece.getColor();
+        transformPanel = new JPanel();
+        List<JButton> buttons = setButtons(color);
+        transformPanel.setLayout(new GridLayout(2, 2, 20, 20));
+        transformPanel.setOpaque(false);
+        for (JButton button : buttons) {
+            button.setSize(new Dimension(40, 40));
+            transformPanel.add(button);
+        }
+        int x = (row*80)-40+xBoardOffset;
+        int y = (col*80)-40+yBoardOffset;
+        transformPanel.setBounds(y, x, 160, 160);
+        layers.add(transformPanel, JLayeredPane.PALETTE_LAYER);
+        layers.revalidate();
+        layers.repaint();
+    }
+
+    public void hideTransform() {
+        transformPanel.removeAll();
+        if (transformPanel != null) {
+            layers.remove(transformPanel);
+            layers.revalidate();
+            layers.repaint();
+        }
     }
 
 
@@ -169,5 +215,40 @@ public class BoardGUI extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadPieceIcons() {
+        for (Map.Entry<String, BufferedImage> entry : pieceImages.entrySet()) {
+            Image img = entry.getValue().getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
+            pieceIcons.put(entry.getKey(), new ImageIcon(img));
+        }
+    }
+
+    private List<JButton> setButtons(boolean color) {
+        JButton rook;
+        JButton bishop;
+        JButton knight;
+        JButton queen;
+        if (color) {
+            rook = new JButton(pieceIcons.get("rook_w"));
+            rook.addActionListener(new TransformActionListener("rook"));
+            bishop = new JButton(pieceIcons.get("bishop_w"));
+            bishop.addActionListener(new TransformActionListener("bishop"));
+            knight = new JButton(pieceIcons.get("knight_w"));
+            knight.addActionListener(new TransformActionListener("knight"));
+            queen = new JButton(pieceIcons.get("queen_w"));
+            queen.addActionListener(new TransformActionListener("queen"));
+        } else {
+            rook = new JButton(pieceIcons.get("rook_b"));
+            rook.addActionListener(new TransformActionListener("rook"));
+            bishop = new JButton(pieceIcons.get("bishop_b"));
+            bishop.addActionListener(new TransformActionListener("bishop"));
+            knight = new JButton(pieceIcons.get("knight_b"));
+            knight.addActionListener(new TransformActionListener("knight"));
+            queen = new JButton(pieceIcons.get("queen_b"));
+            queen.addActionListener(new TransformActionListener("queen"));
+        }
+        List<JButton> buttons = Arrays.asList(rook, bishop, knight, queen);
+        return buttons;
     }
 }

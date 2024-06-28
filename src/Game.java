@@ -12,11 +12,13 @@ public class Game {
     public static List<Piece> blackPieces;
     public static King whiteKing;
     public static King blackKing;
+    private static BoardGUI boardGUI;
+    private static Pawn transformingPawn;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Game game = new Game();
-            BoardGUI boardGUI = new BoardGUI(game);
+            boardGUI = new BoardGUI(game);
             boardGUI.loadGUI();
         });
     }
@@ -152,6 +154,9 @@ public class Game {
             System.out.println("The " + color + " king is in check!");
             //checkForMate();
         }
+        if (piece instanceof Pawn) {
+            checkTransform(move, piece);
+        }
         if (piece.getColor() == _isWhiteTurn) {
             changeTurn();
         }
@@ -243,4 +248,29 @@ public class Game {
         return this.moveQueue.get(this.moveQueue.size() - 1);
     }
 
+
+    private void checkTransform(Move move, Piece piece) {
+        if (move.getDestRow() == 0) {
+            transformingPawn = (Pawn) piece;
+            boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
+        } else if (move.getDestRow() == 7) {
+            transformingPawn = (Pawn) piece;
+            boardGUI.showTransform(piece);; // Schwarz, da nur diese Pawns zu Rank 7 kommen können, 6 aud testgründen
+        }
+    }
+
+    public static void performTransform(String piece) {
+        Pawn p = transformingPawn;
+        if (piece.equals("rook")) {
+            Board.board[p.getRow()][p.getCol()] = new Rook(p.getRow(), p.getCol(), p.getColor());
+        } else if (piece.equals("bishop")) {
+            Board.board[p.getRow()][p.getCol()] = new Bishop(p.getRow(), p.getCol(), p.getColor());
+        } else if (piece.equals("knight")) {
+            Board.board[p.getRow()][p.getCol()] = new Knight(p.getRow(), p.getCol(), p.getColor());
+        } else if (piece.equals("queen")) {
+            Board.board[p.getRow()][p.getCol()] = new Queen(p.getRow(), p.getCol(), p.getColor());
+        }
+        boardGUI.hideTransform();
+        transformingPawn = null;
+    }
 }
