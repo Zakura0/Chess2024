@@ -3,11 +3,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +27,14 @@ public class BoardGUI extends JPanel {
     private int selectedCol = -1;
     private Game _game;
     private Map<String, BufferedImage> pieceImages = new HashMap<>();
+    private static Map<String, Icon> pieceIcons = new HashMap<>();
+    private JFrame mainFrame;
+    private JPanel transformPanel;
 
     public BoardGUI(Game game) {
         _game = game;
         loadPieceImages();
+        loadPieceIcons();
         initializeListener();
     }
 
@@ -93,7 +100,7 @@ public class BoardGUI extends JPanel {
         }
     }
 
-    private void repaintBoard() {
+    public void repaintBoard() {
         paintComponent(getGraphics());
     }
 
@@ -124,20 +131,40 @@ public class BoardGUI extends JPanel {
     }
 
     public void loadGUI() {
-        JFrame mainFrame = new JFrame("Chess");
+        mainFrame = new JFrame("Chess");
         mainFrame.setSize(1000, 800);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout());
 
-        BoardGUI board = new BoardGUI(_game);
+        BoardGUI boardGui = new BoardGUI(_game);
         JPanel boardFrame = new JPanel();
         boardFrame.setLayout(new GridBagLayout());
-        boardFrame.add(board);
-        boardFrame.setBorder(new EmptyBorder(50, 50, 50, 50));
+        boardFrame.add(boardGui);
+        boardFrame.setBorder(new EmptyBorder(50, 50, 50, 0));
         mainFrame.add(boardFrame, BorderLayout.WEST);
 
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
+
+    }
+
+    public void transform(Boolean color) {
+        transformPanel = new JPanel();
+        List<JButton> buttons = setButtons(color);
+        transformPanel.setLayout(new GridLayout(2, 2));
+        transformPanel.setBorder(setTransformBorder(color));
+        for (JButton button : buttons) {
+            transformPanel.add(button);
+        }
+        transformPanel.setVisible(true);
+        mainFrame.add(transformPanel, BorderLayout.EAST);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
+    }
+
+    public void hideTransform() {
+        transformPanel.setVisible(false);
+        repaintBoard();
     }
 
     private void loadPieceImages() {
@@ -157,5 +184,53 @@ public class BoardGUI extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadPieceIcons() {
+        for (Map.Entry<String, BufferedImage> entry : pieceImages.entrySet()) {
+            pieceIcons.put(entry.getKey(), new ImageIcon(entry.getValue()));
+        }
+    }
+
+    private EmptyBorder setTransformBorder(Boolean color) {
+        EmptyBorder whiteBorder = new EmptyBorder(50, 0, 590, 50);
+        EmptyBorder blackBorder = new EmptyBorder(590, 0, 50, 50);
+        if (color) {
+            return whiteBorder;
+        } else {
+            return blackBorder;
+        }
+    }
+
+    private List<JButton> setButtons(boolean color) {
+        JButton rook;
+        JButton bishop;
+        JButton knight;
+        JButton queen;
+        if (color) {
+            rook = new JButton(pieceIcons.get("rook_w"));
+            rook.addActionListener(new TransformActionListener("rook"));
+            bishop = new JButton(pieceIcons.get("bishop_w"));
+            bishop.addActionListener(new TransformActionListener("bishop"));
+            knight = new JButton(pieceIcons.get("knight_w"));
+            knight.addActionListener(new TransformActionListener("knight"));
+            queen = new JButton(pieceIcons.get("queen_w"));
+            queen.addActionListener(new TransformActionListener("queen"));
+        } else {
+            rook = new JButton(pieceIcons.get("rook_b"));
+            rook.addActionListener(new TransformActionListener("rook"));
+            bishop = new JButton(pieceIcons.get("bishop_b"));
+            bishop.addActionListener(new TransformActionListener("bishop"));
+            knight = new JButton(pieceIcons.get("knight_b"));
+            knight.addActionListener(new TransformActionListener("knight"));
+            queen = new JButton(pieceIcons.get("queen_b"));
+            queen.addActionListener(new TransformActionListener("queen"));
+        }
+        List<JButton> buttons = new ArrayList<>();
+        buttons.add(rook);
+        buttons.add(bishop);
+        buttons.add(knight);
+        buttons.add(queen);
+        return buttons;
     }
 }
