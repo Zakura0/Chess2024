@@ -3,8 +3,8 @@ import java.util.List;
 
 public class Bishop extends Piece {
 
-    public Bishop(int row, int col, boolean color) {
-        super(row, col, color);
+    public Bishop(int row, int col, boolean color, boolean dead) {
+        super(row, col, color, dead);
     }
 
     public void calculatePossibleMoves() {

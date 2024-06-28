@@ -7,11 +7,13 @@ public abstract class Piece {
     private int _col;
     private boolean _color;
     private List<Move> _possibleMoves;
+    private boolean _dead;
 
-    public Piece(int row, int col, boolean color){ 
+    public Piece(int row, int col, boolean color, boolean dead){ 
         this._row = row;
         this._col = col;
         this._color = color;
+        this._dead = dead;
         this._possibleMoves = new ArrayList<>();
     }
 
@@ -24,6 +26,14 @@ public abstract class Piece {
 
     public static Piece getPiece(int row, int col) {
         return Board.board[row][col];
+    }
+
+    public void setDead(boolean status){
+        this._dead = status;
+    }
+
+    public boolean isDead(){
+        return this._dead;
     }
 
     public int getCol(){

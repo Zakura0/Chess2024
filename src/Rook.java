@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
-    public Rook(int row, int col, boolean color) {
-        super(row, col, color);
+    public Rook(int row, int col, boolean color, boolean dead) {
+        super(row, col, color, dead);
     }
 
     public void calculatePossibleMoves() {

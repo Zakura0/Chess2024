@@ -5,8 +5,8 @@ public class King extends Piece{
     private boolean _smallCastle;
     private boolean _bigCastle;
 
-    public King(int row, int col, boolean color) {
-        super(row, col, color);
+    public King(int row, int col, boolean color, boolean dead) {
+        super(row, col, color, dead);
         _smallCastle = true;
         _bigCastle = true;
     }
