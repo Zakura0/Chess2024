@@ -38,10 +38,11 @@ public class Pawn extends Piece {
         }
 
         // en Passant
+        /*
         if (enPassant(row, col) == true) {
             moves.add(new Move(row, col, row + direction, col + 1));
             moves.add(new Move(row, col, row + direction, col - 1));
-        }
+        } */
 
         this.setPossibleMoves(moves);
     }
