@@ -6,6 +6,13 @@
       "name": "Game",
       "request": "launch",
       "mainClass": "Game",
+      "projectName": "ptp-chess-mi-gruppe-02_3cacd95e"
+    },
+    {
+      "type": "java",
+      "name": "Game",
+      "request": "launch",
+      "mainClass": "Game",
       "projectName": "ptp-chess-mi-gruppe-02_e7cf1f0d"
     },
     {

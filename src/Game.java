@@ -154,6 +154,10 @@ public class Game {
             System.out.println("The " + color + " king is in check!");
             //checkForMate();
         }
+        else {
+            _isWhiteCheck = false;
+            _isBlackCheck = false;
+        }
         if (piece instanceof Pawn) {
             checkTransform(move, piece);
         }

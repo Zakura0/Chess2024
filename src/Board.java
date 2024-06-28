@@ -19,7 +19,7 @@ public class Board {
         board[0][3] = new Queen(0, 3, false);
         Game.blackPieces.add(board[0][3]);
         board[0][4] = new King(0, 4, false);
-        Game.blackPieces.add(board[0][4]);
+        Game.blackPieces.addFirst(board[0][4]);
         board[0][5] = new Bishop(0, 5, false);
         Game.blackPieces.add(board[0][5]);
         board[0][6] = new Knight(0, 6, false);
@@ -35,7 +35,7 @@ public class Board {
         board[7][3] = new Queen(7, 3, true);
         Game.whitePieces.add(board[7][3]);
         board[7][4] = new King(7, 4, true);
-        Game.whitePieces.add(board[7][4]);
+        Game.whitePieces.addFirst(board[7][4]);
         board[7][5] = new Bishop(7, 5, true);
         Game.whitePieces.add(board[7][5]);                
         board[7][6] = new Knight(7, 6, true);
