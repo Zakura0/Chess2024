@@ -150,7 +150,7 @@ public class Game {
             String color = piece.getColor() ? "black" : "white";
             setCheck(!piece.getColor());
             System.out.println("The " + color + " king is in check!");
-            checkForMate();
+            //checkForMate();
         }
         if (piece.getColor() == _isWhiteTurn) {
             changeTurn();
@@ -160,29 +160,6 @@ public class Game {
         checkCastling(piece);
         calculateAllMoves();
         addMoveToQueue(move);
-    }
-
-    private void checkForMate() {
-        boolean isWhiteMate = true;
-        boolean isBlackMate = true;
-        for (Piece piece : whitePieces) {
-            if (!piece.getPossibleMoves().isEmpty()) {
-                isWhiteMate = false;
-                break;
-            }
-        }
-        for (Piece piece : blackPieces) {
-            if (!piece.getPossibleMoves().isEmpty()) {
-                isBlackMate = false;
-                break;
-            }
-        }
-        if (isWhiteMate) {
-            System.out.println("White is in checkmate!");
-        }
-        if (isBlackMate) {
-            System.out.println("Black is in checkmate!");
-        }
     }
 
     public static void setCheck(boolean color) {
