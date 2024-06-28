@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Move {
 
     private int _curr_row;
@@ -58,5 +61,6 @@ public class Move {
         result = 31 * result + this.getCurrCol();
         return result;
     }
+
 
 }

@@ -164,6 +164,7 @@ public class Game {
         performCastleMove(piece, move);
         checkCastling(piece);
         calculateAllMoves();
+        addMoveToQueue(move);
     }
 
     private void checkForMate() {
@@ -248,6 +249,28 @@ public class Game {
             }
         }
     }
+
+    List<Move> moveQueue = new ArrayList<>();
+
+    public void addMoveToQueue(Move move) {
+        this.moveQueue.add(move);
+    }
+
+    public List<Move> getQueue() {
+        return this.moveQueue;
+    }
+
+    public void clearQueue() {
+        this.moveQueue.clear();
+    }
+
+    public Move getLastMove() {
+        if (this.moveQueue.isEmpty()) {
+            return null;
+        }
+        return this.moveQueue.get(this.moveQueue.size() - 1);
+    }
+
 
     private void checkTransform(Move move, Piece piece) {
         if (move.getDestRow() == 1) {

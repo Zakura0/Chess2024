@@ -22,6 +22,10 @@ public abstract class Piece {
         this._col = col;
     }
 
+    public static Piece getPiece(int row, int col) {
+        return Board.board[row][col];
+    }
+
     public int getCol(){
         return this._col;
     }
@@ -70,19 +74,6 @@ public abstract class Piece {
         }
     }
 
-    List<Move> moveQueue = new ArrayList<>();
-
-    public void addMoveToQueue(Move move) {
-        this.moveQueue.add(move);
-    }
-
-    public List<Move> getQueue() {
-        return this.moveQueue;
-    }
-
-    public void clearQueue() {
-        this.moveQueue.clear();
-    }
 
 }
 
