@@ -32,8 +32,10 @@ public class Pawn extends Piece {
         // Diagonale Schlagbewegungen
         int[] attackCols = { col - 1, col + 1 };
         for (int attackCol : attackCols) {
-            if (attackCol >= 0 && attackCol < 8 && isOpponent(straightRow, attackCol)) {
-                moves.add(new Move(row, col, straightRow, attackCol));
+            if (attackCol >= 0 && attackCol < 8 && straightRow >= 0 && straightRow < 8) {
+                if (isOpponent(straightRow, attackCol)) {
+                    moves.add(new Move(row, col, straightRow, attackCol));
+                }
             }
         }
 

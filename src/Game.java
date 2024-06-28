@@ -273,10 +273,10 @@ public class Game {
 
 
     private void checkTransform(Move move, Piece piece) {
-        if (move.getDestRow() == 1) {
+        if (move.getDestRow() == 0) {
             transformingPawn = (Pawn) piece;
             boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
-        } else if (move.getDestRow() == 6) {
+        } else if (move.getDestRow() == 7) {
             transformingPawn = (Pawn) piece;
             boardGUI.showTransform(piece);; // Schwarz, da nur diese Pawns zu Rank 7 kommen können, 6 aud testgründen
         }

@@ -189,6 +189,7 @@ public class BoardGUI extends JPanel {
     }
 
     public void hideTransform() {
+        transformPanel.removeAll();
         if (transformPanel != null) {
             layers.remove(transformPanel);
             layers.revalidate();
