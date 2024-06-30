@@ -143,15 +143,7 @@ public class Game {
 
     public void performMove(Piece piece, Move move) {
         Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
-        if (destPiece != null) {
-            if (destPiece.getColor()) {
-                whiteAlive.remove(destPiece);
-                whiteDead.add(destPiece);
-            } else {
-                blackAlive.remove(destPiece);
-                blackDead.add(destPiece);
-            }
-        }
+        killPiece(destPiece);
         piece.move(move.getDestRow(), move.getDestCol());
         calculateAllMoves();
         if(checkForCheck(!piece.getColor())) {
@@ -190,6 +182,18 @@ public class Game {
             }            
         }
         return true;   
+    }
+
+    private void killPiece(Piece piece) {
+        if (piece != null) {
+            if (piece.getColor()) {
+                whiteAlive.remove(piece);
+                whiteDead.add(piece);
+            } else {
+                blackAlive.remove(piece);
+                blackDead.add(piece);
+            }
+        }        
     }
 
     public void setCheck(boolean color) {
