@@ -3,8 +3,8 @@ import java.util.List;
 
 public class Pawn extends Piece {
 
-    public Pawn(int row, int col, boolean color, boolean dead) {
-        super(row, col, color, dead);
+    public Pawn(int row, int col, boolean color) {
+        super(row, col, color);
     }
 
     public void calculatePossibleMoves() {
@@ -17,14 +17,19 @@ public class Pawn extends Piece {
         // Gerade Bewegung
         int straightRow = row + direction;
         // Prüfe, ob der gerade Weg frei ist
+        Move move = new Move(row, col, straightRow, col);
         if (straightRow >= 0 && straightRow < 8 && !isBlocked(straightRow, col)) {
-            moves.add(new Move(row, col, straightRow, col));
-
+            if (checkMoveValid(move)) {
+                moves.add(move);
+            }
             // Für den ersten Zug kann der Bauer zwei Felder vorrücken
             if ((this.getColor() && row == 6) || (!this.getColor() && row == 1)) {
                 int jumpRow = row + (2 * direction);
+                move = new Move(row, col, jumpRow, col);
                 if (!isBlocked(jumpRow, col)) {
-                    moves.add(new Move(row, col, jumpRow, col));
+                    if (checkMoveValid(move)) {
+                        moves.add(move);
+                    }
                 }
             }
         }
@@ -33,8 +38,11 @@ public class Pawn extends Piece {
         int[] attackCols = { col - 1, col + 1 };
         for (int attackCol : attackCols) {
             if (attackCol >= 0 && attackCol < 8 && straightRow >= 0 && straightRow < 8) {
+                move = new Move(row, col, straightRow, attackCol);
                 if (isOpponent(straightRow, attackCol)) {
-                    moves.add(new Move(row, col, straightRow, attackCol));
+                    if (checkMoveValid(move)) {
+                        moves.add(move);
+                    }
                 }
             }
         }

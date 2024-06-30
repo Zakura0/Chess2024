@@ -8,8 +8,10 @@ public class Game {
     private boolean _isWhiteTurn;
     private boolean _isWhiteCheck; //Später für UI
     private boolean _isBlackCheck; //Später für UI
-    public static List<Piece> whitePieces;
-    public static List<Piece> blackPieces;
+    public static List<Piece> whiteAlive;
+    public static List<Piece> blackAlive;
+    public static List<Piece> whiteDead;
+    public static List<Piece> blackDead;
     public static King whiteKing;
     public static King blackKing;
     private static BoardGUI boardGUI;
@@ -24,8 +26,10 @@ public class Game {
     }
 
     public Game() {
-        whitePieces = new ArrayList<Piece>();
-        blackPieces = new ArrayList<Piece>();
+        whiteAlive = new ArrayList<Piece>();
+        blackAlive = new ArrayList<Piece>();
+        whiteDead = new ArrayList<Piece>();
+        blackDead = new ArrayList<Piece>();
         _isWhiteCheck = false;
         _isBlackCheck = false;
         _isWhiteTurn = true;
@@ -55,8 +59,8 @@ public class Game {
         return _isWhiteTurn;
     }
 
-    public boolean checkKingInCheck(boolean color) {
-        List<Piece> kingPieces = color ? whitePieces : blackPieces;
+    public static boolean checkForCheck(boolean color) {
+        List<Piece> kingPieces = color ? whiteAlive : blackAlive;
         String opponentKnight = color ? "knight_b" : "knight_w";
         String opponentPawn = color ? "pawn_b" : "pawn_w";
         String opponentRook = color ? "rook_b" : "rook_w";
@@ -118,7 +122,7 @@ public class Game {
         return false;
     }
     
-    private boolean checkDirectionForOpponent(int KingRow, int KingCol, int[] direction, boolean color, String opponentPiece1, String opponentPiece2) {
+    private static boolean checkDirectionForOpponent(int KingRow, int KingCol, int[] direction, boolean color, String opponentPiece1, String opponentPiece2) {
         int dRow = direction[0];
         int dCol = direction[1];
         int targetRow = KingRow + dRow;
@@ -138,42 +142,35 @@ public class Game {
     }
 
     public void performMove(Piece piece, Move move) {
-        int startRow = piece.getRow();
-        int startCol = piece.getCol();
         Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
         if (destPiece != null) {
-            destPiece.setDead(true);
+            if (destPiece.getColor()) {
+                whiteAlive.remove(destPiece);
+                whiteDead.add(destPiece);
+            } else {
+                blackAlive.remove(destPiece);
+                blackDead.add(destPiece);
+            }
         }
         piece.move(move.getDestRow(), move.getDestCol());
-        if(checkKingInCheck(piece.getColor())) {
-            piece.move(startRow, startCol);
-            Board.board[move.getDestRow()][move.getDestCol()] = destPiece;
-            destPiece.setDead(false);
-            System.out.println("Invalid move, friendly king would be in check"); //Später für UI
-            return;
-        }
         calculateAllMoves();
-        if(checkKingInCheck(!piece.getColor())) {
+        if(checkForCheck(!piece.getColor())) {
             String color = piece.getColor() ? "black" : "white";
             setCheck(!piece.getColor());
             System.out.println("The " + color + " king is in check!"); //Später für UI
-            checkForMate(!piece.getColor());
+            if (checkForMateOrStalemate(!piece.getColor()))
+            {
+                System.out.println("Checkmate!"); //Später für UI
+            }
         }
-        // else {
-        //     _isWhiteCheck = false;
-        //     _isBlackCheck = false;
-        //     int moves = 0;
-        //     List<Piece> opponentPieces = !piece.getColor() ? blackPieces : whitePieces;
-        //     for (Piece opponentPiece : opponentPieces) {
-        //         if (opponentPiece.isDead()) {
-        //             continue;
-        //         }
-        //         moves += opponentPiece.getPossibleMoves().size();
-        //     }
-        //     if (moves == 0) {
-        //         System.out.println("Stalemate!");
-        //     }
-        // } TODO
+        else if (checkForMateOrStalemate(!piece.getColor()))
+        {
+            System.out.println("Stalemate!"); //Später für UI
+        }
+        else {
+            setUncheck(!piece.getColor());
+        }
+        //TODO: Muss vermutlich nach Oben verschoben werden.
         if (piece instanceof Pawn) {
             checkTransform(move, piece);
         }
@@ -185,28 +182,14 @@ public class Game {
         addMoveToQueue(move);
     }
 
-    private void checkForMate(boolean color) {
-        List<Piece> kingPieces = color ? whitePieces : blackPieces;
+    private boolean checkForMateOrStalemate(boolean color) {
+        List<Piece> kingPieces = color ? whiteAlive : blackAlive;
         for (Piece piece : kingPieces) {
-            if (!piece.isDead())
-            {
-                for (Move move : piece.getPossibleMoves()) {
-                    int startRow = piece.getRow();
-                    int startCol = piece.getCol();
-                    Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
-                    piece.move(move.getDestRow(), move.getDestCol());
-                    if (!checkKingInCheck(color)) {
-                        piece.move(startRow, startCol);
-                        Board.board[move.getDestRow()][move.getDestCol()] = destPiece;
-                        return;
-                    }
-                    piece.move(startRow, startCol);
-                    Board.board[move.getDestRow()][move.getDestCol()] = destPiece;
-                }
-            }
+            if (piece.getPossibleMoves().size() > 0) {
+                return false;
+            }            
         }
-        System.out.println("Checkmate!");
-        
+        return true;   
     }
 
     public void setCheck(boolean color) {
@@ -214,6 +197,14 @@ public class Game {
             _isWhiteCheck = true;
         } else {
             _isBlackCheck = true;
+        }
+    }
+
+    public void setUncheck(boolean color) {
+        if (color) {
+            _isWhiteCheck = false;
+        } else {
+            _isBlackCheck = false;
         }
     }
 
@@ -304,13 +295,13 @@ public class Game {
     public static void performTransform(String piece) {
         Pawn p = transformingPawn;
         if (piece.equals("rook")) {
-            Board.board[p.getRow()][p.getCol()] = new Rook(p.getRow(), p.getCol(), p.getColor(), p.isDead());
+            Board.board[p.getRow()][p.getCol()] = new Rook(p.getRow(), p.getCol(), p.getColor());
         } else if (piece.equals("bishop")) {
-            Board.board[p.getRow()][p.getCol()] = new Bishop(p.getRow(), p.getCol(), p.getColor(), p.isDead());
+            Board.board[p.getRow()][p.getCol()] = new Bishop(p.getRow(), p.getCol(), p.getColor());
         } else if (piece.equals("knight")) {
-            Board.board[p.getRow()][p.getCol()] = new Knight(p.getRow(), p.getCol(), p.getColor(), p.isDead());
+            Board.board[p.getRow()][p.getCol()] = new Knight(p.getRow(), p.getCol(), p.getColor());
         } else if (piece.equals("queen")) {
-            Board.board[p.getRow()][p.getCol()] = new Queen(p.getRow(), p.getCol(), p.getColor(), p.isDead());
+            Board.board[p.getRow()][p.getCol()] = new Queen(p.getRow(), p.getCol(), p.getColor());
         }
         boardGUI.hideTransform();
         transformingPawn = null;

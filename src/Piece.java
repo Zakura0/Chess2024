@@ -7,13 +7,11 @@ public abstract class Piece {
     private int _col;
     private boolean _color;
     private List<Move> _possibleMoves;
-    private boolean _dead;
 
-    public Piece(int row, int col, boolean color, boolean dead){ 
+    public Piece(int row, int col, boolean color){ 
         this._row = row;
         this._col = col;
         this._color = color;
-        this._dead = dead;
         this._possibleMoves = new ArrayList<>();
     }
 
@@ -26,14 +24,6 @@ public abstract class Piece {
 
     public static Piece getPiece(int row, int col) {
         return Board.board[row][col];
-    }
-
-    public void setDead(boolean status){
-        this._dead = status;
-    }
-
-    public boolean isDead(){
-        return this._dead;
     }
 
     public int getCol(){
@@ -54,6 +44,23 @@ public abstract class Piece {
 
     public void setPossibleMoves(List<Move> moves){
         this._possibleMoves = moves;
+    }
+
+    protected boolean checkMoveValid(Move move){
+        int startRow = move.getCurrRow();
+        int startCol = move.getCurrCol();
+        Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
+        this.move(move.getDestRow(), move.getDestCol());
+        if(Game.checkForCheck(this.getColor())) {
+            this.move(startRow, startCol);
+            Board.board[move.getDestRow()][move.getDestCol()] = destPiece;
+            return false;
+        }
+        else {
+            this.move(startRow, startCol);
+            Board.board[move.getDestRow()][move.getDestCol()] = destPiece;
+            return true;
+        }
     }
 
     public abstract void calculatePossibleMoves();

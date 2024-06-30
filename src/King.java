@@ -5,8 +5,8 @@ public class King extends Piece{
     private boolean _smallCastle;
     private boolean _bigCastle;
 
-    public King(int row, int col, boolean color, boolean dead) {
-        super(row, col, color, dead);
+    public King(int row, int col, boolean color) {
+        super(row, col, color);
         _smallCastle = true;
         _bigCastle = true;
     }
@@ -42,18 +42,22 @@ public class King extends Piece{
             int dCol = direction[1];
             int targetRow = row + dRow;
             int targetCol = col + dCol;
-    
+            Move move = new Move(row, col, targetRow, targetCol);    
             // Prüfe, ob die neue Position außerhalb des Bretts liegt
             if (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
                 // Prüfe, ob die neue Position blockiert ist
                 if (isBlocked(targetRow, targetCol)) {
                     if (isOpponent(targetRow, targetCol)) {
-                        moves.add(new Move(row, col, targetRow, targetCol));
+                        if (checkMoveValid(move)) {
+                            moves.add(move);
+                        }
                     }
                 }
                 else
                 {
-                    moves.add(new Move(row, col, targetRow, targetCol));
+                    if (checkMoveValid(move)) {
+                        moves.add(move);
+                    }
                 }
             }
         }

@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Knight extends Piece {
-    public Knight(int row, int col, boolean color, boolean dead) {
-        super(row, col, color, dead);
+    public Knight(int row, int col, boolean color) {
+        super(row, col, color);
     }
 
     public void calculatePossibleMoves() {
@@ -20,18 +20,22 @@ public class Knight extends Piece {
         for (int[] moveVector : movesVectors) {
             int targetRow = row + moveVector[0];
             int targetCol = col + moveVector[1];
-
+            Move move = new Move(row, col, targetRow, targetCol);
             // Prüfe, ob die neue Position innerhalb des Bretts liegt
             if (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
                 // Prüfe, ob die neue Position blockiert ist oder ein Gegner steht
                 if (isBlocked(targetRow, targetCol)) {
                     if (isOpponent(targetRow, targetCol)) {
-                        moves.add(new Move(row, col, targetRow, targetCol));
+                        if (checkMoveValid(move)) {
+                            moves.add(move);
+                        }
                     }
                 }
                 else
                 {
-                    moves.add(new Move(row, col, targetRow, targetCol));
+                    if (checkMoveValid(move)) {
+                        moves.add(move);
+                    }
                 }
             }
         }

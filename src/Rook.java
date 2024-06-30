@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
-    public Rook(int row, int col, boolean color, boolean dead) {
-        super(row, col, color, dead);
+    public Rook(int row, int col, boolean color) {
+        super(row, col, color);
     }
 
     public void calculatePossibleMoves() {
@@ -26,18 +26,22 @@ public class Rook extends Piece {
                 if (targetRow < 0 || targetRow > 7 || targetCol < 0 || targetCol > 7) {
                     break;
                 }
-    
+                Move move = new Move(row, col, targetRow, targetCol);    
                 // Prüfe, ob die neue Position blockiert ist
                 if (isBlocked(targetRow, targetCol)) {
                     // Wenn ein Gegner blockiert, füge den Schlag hinzu
                     if (isOpponent(targetRow, targetCol)) {
-                        moves.add(new Move(row, col, targetRow, targetCol));
+                        if (checkMoveValid(move)) {
+                            moves.add(move);
+                        }
                     }
                     break; // Breche die Schleife ab, da der Weg blockiert ist
                 }
     
                 // Füge den Zug hinzu, wenn nicht blockiert
-                moves.add(new Move(row, col, targetRow, targetCol));
+                if (checkMoveValid(move)) {
+                    moves.add(move);
+                }
             }
         }
     
