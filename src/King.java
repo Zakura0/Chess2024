@@ -64,8 +64,14 @@ public class King extends Piece{
         if (_smallCastle) {
             int targetRowKing = row;
             int targetColKing = col + 2;
+            boolean castleUnderAttack = false;
             if (!isBlocked(row, 5) && !isBlocked(row, 6)) {
-                if (isFriendlyRook(row, 7)) {
+                for (int i = 5; i < 7; i++) {
+                    if (Game.tileUnderAttack(row, i, this.getColor())) {
+                        castleUnderAttack = true;
+                    }
+                }
+                if (isFriendlyRook(row, 7) && !castleUnderAttack) {
                     moves.add(new Move(row, col, targetRowKing, targetColKing));
                 }
             }
@@ -74,8 +80,14 @@ public class King extends Piece{
         if (_bigCastle) {
             int targetRowKing = row;
             int targetColKing = col - 2;
+            boolean castleUnderAttack = false;
             if (!isBlocked(row, 1) && !isBlocked(row, 2) && !isBlocked(row, 3)) {
-                if (isFriendlyRook(row, 0)) {
+                for (int i = 2; i < 4; i++) {
+                    if (Game.tileUnderAttack(row, i, this.getColor())) {
+                        castleUnderAttack = true;
+                    }
+                }
+                if (isFriendlyRook(row, 0) && !castleUnderAttack) {
                     moves.add(new Move(row, col, targetRowKing, targetColKing));
                 }
             }

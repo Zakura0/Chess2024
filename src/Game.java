@@ -17,6 +17,7 @@ public class Game {
     private static BoardGUI boardGUI;
     private static Pawn transformingPawn;
     private static Clock clock = new Clock();
+    public static List<Move> moveQueue;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -31,6 +32,7 @@ public class Game {
         blackAlive = new ArrayList<Piece>();
         whiteDead = new ArrayList<Piece>();
         blackDead = new ArrayList<Piece>();
+        moveQueue = new ArrayList<Move>();
         _isWhiteCheck = false;
         _isBlackCheck = false;
         _isWhiteTurn = true;
@@ -62,14 +64,17 @@ public class Game {
 
     public static boolean checkForCheck(boolean color) {
         List<Piece> kingPieces = color ? whiteAlive : blackAlive;
+        int KingRow = kingPieces.get(0).getRow();
+        int KingCol = kingPieces.get(0).getCol();
+        return tileUnderAttack(KingRow, KingCol, color);
+    }
+
+    public static boolean tileUnderAttack(int row, int col, boolean color) {
         String opponentKnight = color ? "knight_b" : "knight_w";
         String opponentPawn = color ? "pawn_b" : "pawn_w";
         String opponentRook = color ? "rook_b" : "rook_w";
         String opponentBishop = color ? "bishop_b" : "bishop_w";
         String opponentQueen = "queen_" + (color ? "b" : "w");
-    
-        int KingRow = kingPieces.get(0).getRow();
-        int KingCol = kingPieces.get(0).getCol();
     
         // Knight moves
         int[][] movesVectorsKnight = {
@@ -80,8 +85,8 @@ public class Game {
         };
     
         for (int[] moveVector : movesVectorsKnight) {
-            int targetRow = KingRow + moveVector[0];
-            int targetCol = KingCol + moveVector[1];
+            int targetRow = row + moveVector[0];
+            int targetCol = col + moveVector[1];
             if (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
                 Piece piece = Board.board[targetRow][targetCol];
                 if (piece != null && !piece.getColor() == color && piece.getName().equals(opponentKnight)) {
@@ -92,8 +97,8 @@ public class Game {
     
         // Pawn moves
         int pawnDirection = color ? -1 : 1;
-        int straightRow = KingRow + pawnDirection;
-        int[] attackCols = { KingCol - 1, KingCol + 1 };
+        int straightRow = row + pawnDirection;
+        int[] attackCols = { col - 1, col + 1 };
     
         for (int attackCol : attackCols) {
             if (straightRow >= 0 && straightRow < 8 && attackCol >= 0 && attackCol < 8) {
@@ -107,7 +112,7 @@ public class Game {
         // Rook and Queen moves
         int[][] directionsRook = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
         for (int[] direction : directionsRook) {
-            if (checkDirectionForOpponent(KingRow, KingCol, direction, color, opponentRook, opponentQueen)) {
+            if (checkDirectionForOpponent(row, col, direction, color, opponentRook, opponentQueen)) {
                 return true;
             }
         }
@@ -115,7 +120,7 @@ public class Game {
         // Bishop and Queen moves
         int[][] directionsBishop = { { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 } };
         for (int[] direction : directionsBishop) {
-            if (checkDirectionForOpponent(KingRow, KingCol, direction, color, opponentBishop, opponentQueen)) {
+            if (checkDirectionForOpponent(row, col, direction, color, opponentBishop, opponentQueen)) {
                 return true;
             }
         }
@@ -123,11 +128,11 @@ public class Game {
         return false;
     }
     
-    private static boolean checkDirectionForOpponent(int KingRow, int KingCol, int[] direction, boolean color, String opponentPiece1, String opponentPiece2) {
+    private static boolean checkDirectionForOpponent(int row, int col, int[] direction, boolean color, String opponentPiece1, String opponentPiece2) {
         int dRow = direction[0];
         int dCol = direction[1];
-        int targetRow = KingRow + dRow;
-        int targetCol = KingCol + dCol;
+        int targetRow = row + dRow;
+        int targetCol = col + dCol;
         while (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
             Piece piece = Board.board[targetRow][targetCol];
             if (piece != null) {
@@ -155,11 +160,18 @@ public class Game {
         Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
         killPiece(destPiece);
         piece.move(move.getDestRow(), move.getDestCol());
+        addMoveToQueue(move);
+        if (piece instanceof Pawn) {
+            checkTransform((Pawn) piece);
+        }
+        checkEnPassant(piece, move, destPiece);
+        performCastleMove(piece, move);
+        checkCastling(piece);
         calculateAllMoves();
         if(checkForCheck(!piece.getColor())) {
             String color = piece.getColor() ? "black" : "white";
             setCheck(!piece.getColor());
-            System.out.println("The " + color + " king is in check!"); //Später für UI
+            Clock.winner.setText("The " + color + " king is in check!"); //Später für UI
             if (checkForMateOrStalemate(!piece.getColor()))
             {
                 if (Clock.isWhite = true){
@@ -180,16 +192,7 @@ public class Game {
         else {
             setUncheck(!piece.getColor());
         }
-        //TODO: Muss vermutlich nach Oben verschoben werden.
-        if (piece instanceof Pawn) {
-            checkTransform(move, piece);
-        }
-        if (piece.getColor() == _isWhiteTurn) {
-            changeTurn();
-        }
-        performCastleMove(piece, move);
-        checkCastling(piece);
-        addMoveToQueue(move);
+        changeTurn();        
     }
 
     private boolean checkForMateOrStalemate(boolean color) {
@@ -282,35 +285,41 @@ public class Game {
         }
     }
 
-    List<Move> moveQueue = new ArrayList<>();
-
-    public void addMoveToQueue(Move move) {
-        this.moveQueue.add(move);
+    private void checkEnPassant(Piece piece, Move move, Piece destPiece) {
+        if (piece instanceof Pawn) {
+            if (move.getCurrCol() != move.getDestCol() && destPiece == null){
+                if (move.getCurrRow() < move.getDestRow()) {
+                    killPiece(Board.board[move.getDestRow() - 1][move.getDestCol()]);
+                    Board.board[move.getDestRow() - 1][move.getDestCol()] = null;                    
+                } else {
+                    killPiece(Board.board[move.getDestRow() + 1][move.getDestCol()]);
+                    Board.board[move.getDestRow() + 1][move.getDestCol()] = null;
+                }
+            }
+        }
     }
 
-    public List<Move> getQueue() {
-        return this.moveQueue;
+    public static void addMoveToQueue(Move move) {
+        moveQueue.add(move);
     }
 
-    public void clearQueue() {
-        this.moveQueue.clear();
+    public static void clearQueue() {
+        moveQueue.clear();
     }
 
-    public Move getLastMove() {
-        if (this.moveQueue.isEmpty()) {
+    public static Move getLastMove() {
+        if (moveQueue.isEmpty()) {
             return null;
         }
-        return this.moveQueue.get(this.moveQueue.size() - 1);
+        return moveQueue.get(moveQueue.size() - 1);
     }
 
 
-    private void checkTransform(Move move, Piece piece) {
-        if (move.getDestRow() == 0) {
-            transformingPawn = (Pawn) piece;
+    private void checkTransform(Pawn piece) {
+        if (piece.getRow() == 0) {
             boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
-        } else if (move.getDestRow() == 7) {
-            transformingPawn = (Pawn) piece;
-            boardGUI.showTransform(piece);; // Schwarz, da nur diese Pawns zu Rank 7 kommen können, 6 aud testgründen
+        } else if (piece.getRow() == 7) {
+            boardGUI.showTransform(piece); // Schwarz, da nur diese Pawns zu Rank 7 kommen können, 6 aud testgründen
         }
     }
 
