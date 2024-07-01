@@ -144,8 +144,8 @@ public class BoardGUI extends JPanel {
     }
 
     public void loadGUI() {
-        mainFrame = new JFrame("Chess");
-        mainFrame.setSize(frameDim);
+        JFrame mainFrame = new JFrame("Chess");
+        mainFrame.setSize(1000, 800);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout());
 
