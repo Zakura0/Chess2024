@@ -328,4 +328,8 @@ public class Game {
         boardGUI.hideTransform();
         transformingPawn = null;
     }
+
+    public static void newGame(){
+        new Game();
+    }
 }
