@@ -57,15 +57,14 @@ public class Pawn extends Piece {
         this.setPossibleMoves(moves);
     }
 
-    public boolean enPassant(int row, int col) {
+    /*public boolean enPassant(int row, int col) {
 
 
         if ((this.getColor() && row == 4) || (!this.getColor() && row == 3)) {
             Piece[] adjacentPieces = { getPiece(row, col - 1), getPiece(row, col + 1) };
             for (Piece piece : adjacentPieces) {
                 if (piece != null && piece.getColor() != this.getColor() && piece instanceof Pawn) {
-                    Game g = new Game();
-                    Move m = new Move(0,0,0,0);
+                    //TODO
                     if (g.getQueue() != null && m.getMovingPiece() == piece && Math.abs(m.getCurrRow() - m.getDestRow()) == 2) {
                         return true;  
                     }
@@ -73,7 +72,7 @@ public class Pawn extends Piece {
             }
         }
         return false;
-    }
+    } */
 
     public String getName() {
         if (this.getColor()) {

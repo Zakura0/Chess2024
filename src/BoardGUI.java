@@ -33,7 +33,7 @@ public class BoardGUI extends JPanel {
     private static Dimension boardDim = new Dimension(800, 800);
     private static int xBoardOffset = 40;
     private static int yBoardOffset = 40;
-
+    private static Clock clock = new Clock();
     public BoardGUI(Game game) {
         _game = game;
         loadPieceImages();
@@ -113,7 +113,7 @@ public class BoardGUI extends JPanel {
 
     
 
-    public void repaintBoard() {
+    private void repaintBoard() {
         paintComponent(getGraphics());
     }
 
@@ -165,6 +165,7 @@ public class BoardGUI extends JPanel {
         mainFrame.add(layers, BorderLayout.CENTER);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
+        mainFrame.add(clock);
 
     }
 
@@ -251,4 +252,6 @@ public class BoardGUI extends JPanel {
         List<JButton> buttons = Arrays.asList(rook, bishop, knight, queen);
         return buttons;
     }
+
+
 }

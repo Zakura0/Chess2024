@@ -16,6 +16,7 @@ public class Game {
     public static King blackKing;
     private static BoardGUI boardGUI;
     private static Pawn transformingPawn;
+    private static Clock clock = new Clock();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -142,6 +143,15 @@ public class Game {
     }
 
     public void performMove(Piece piece, Move move) {
+        if (Clock.started == false) {
+            Clock.started = true; Clock.counter.start(); 
+        }
+		if (Clock.isWhite) {
+            Clock.isWhite = false;
+        } 
+        else {
+            Clock.isWhite = true;
+        }
         Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
         killPiece(destPiece);
         piece.move(move.getDestRow(), move.getDestCol());
@@ -152,12 +162,20 @@ public class Game {
             System.out.println("The " + color + " king is in check!"); //Später für UI
             if (checkForMateOrStalemate(!piece.getColor()))
             {
-                System.out.println("Checkmate!"); //Später für UI
+                if (Clock.isWhite = true){
+                    Clock.winner.setText("White won!");
+                    Clock.draw.setEnabled(false);
+                }
+                else {
+                    Clock.winner.setText("Black won!");
+                    Clock.draw.setEnabled(false);
+                }
             }
         }
         else if (checkForMateOrStalemate(!piece.getColor()))
         {
-            System.out.println("Stalemate!"); //Später für UI
+            Clock.winner.setText("Stalemate!");
+            Clock.draw.setEnabled(false);
         }
         else {
             setUncheck(!piece.getColor());
