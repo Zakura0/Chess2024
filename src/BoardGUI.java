@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class BoardGUI extends JPanel {
     private JFrame mainFrame;
     private JLayeredPane layers;
     private JPanel boardFrame;
+    private JPanel layeredGlassPane;
     private JPanel transformPanel;
     private static Dimension frameDim = new Dimension(1000, 800);
     private static Dimension boardDim = new Dimension(800, 800);
@@ -170,7 +172,15 @@ public class BoardGUI extends JPanel {
         boardFrame.setBounds(xBoardOffset, yBoardOffset, board * tileSize, board * tileSize);
         boardFrame.setVisible(true);
 
+        layeredGlassPane = new JPanel();
+        layeredGlassPane.setOpaque(false);
+        layeredGlassPane.addMouseListener(new MouseAdapter() {});
+        layeredGlassPane.addMouseMotionListener(new MouseMotionAdapter() {});
+        layeredGlassPane.setBounds(boardFrame.getBounds());
+        layeredGlassPane.setVisible(false);
+
         layers.add(boardFrame, JLayeredPane.DEFAULT_LAYER);
+        layers.add(layeredGlassPane, JLayeredPane.PALETTE_LAYER);
         layers.setVisible(true);
     
         mainFrame.add(layers, BorderLayout.CENTER);
@@ -181,6 +191,7 @@ public class BoardGUI extends JPanel {
     }
 
     public void showTransform(Piece piece) {
+        layeredGlassPane.setVisible(true);
         int row = piece.getRow();
         int col = piece.getCol();
         boolean color = piece.getColor();
@@ -195,12 +206,13 @@ public class BoardGUI extends JPanel {
         int x = (row*80)-40+xBoardOffset;
         int y = (col*80)-40+yBoardOffset;
         transformPanel.setBounds(y, x, 160, 160);
-        layers.add(transformPanel, JLayeredPane.PALETTE_LAYER);
+        layers.add(transformPanel, JLayeredPane.POPUP_LAYER);
         layers.revalidate();
         layers.repaint();
     }
 
     public void hideTransform() {
+        layeredGlassPane.setVisible(false);
         transformPanel.removeAll();
         if (transformPanel != null) {
             layers.remove(transformPanel);
