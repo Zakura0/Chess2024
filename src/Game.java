@@ -74,7 +74,7 @@ public class Game {
         String opponentPawn = color ? "pawn_b" : "pawn_w";
         String opponentRook = color ? "rook_b" : "rook_w";
         String opponentBishop = color ? "bishop_b" : "bishop_w";
-        String opponentQueen = "queen_" + (color ? "b" : "w");
+        String opponentQueen = color ? "queen_b" : "queen_w";
     
         // Knight moves
         int[][] movesVectorsKnight = {
@@ -166,7 +166,7 @@ public class Game {
         }
         checkEnPassant(piece, move, destPiece);
         performCastleMove(piece, move);
-        checkCastling(piece);
+        checkForCastleMove(piece);
         calculateAllMoves();
         if(checkForCheck(!piece.getColor())) {
             String color = piece.getColor() ? "black" : "white";
@@ -233,7 +233,7 @@ public class Game {
         }
     }
 
-    private void checkCastling(Piece piece) {
+    private void checkForCastleMove(Piece piece) {
         if (piece instanceof King) {
             if (piece.getColor()) {
                 whiteKing.setCastleBig(false);
@@ -246,10 +246,8 @@ public class Game {
             System.out.println("Is Rook move");
             if (piece.getColor()) {
                 if (piece.getCol() == 0) {
-                    System.out.println("Is left Rook move");
                     whiteKing.setCastleBig(false);
                 } else if (piece.getCol() == 7) {
-                    System.out.println("Is right Rook move");
                     whiteKing.setCastleSmall(false);
                 }
             } else {
@@ -288,13 +286,9 @@ public class Game {
     private void checkEnPassant(Piece piece, Move move, Piece destPiece) {
         if (piece instanceof Pawn) {
             if (move.getCurrCol() != move.getDestCol() && destPiece == null){
-                if (move.getCurrRow() < move.getDestRow()) {
-                    killPiece(Board.board[move.getDestRow() - 1][move.getDestCol()]);
-                    Board.board[move.getDestRow() - 1][move.getDestCol()] = null;                    
-                } else {
-                    killPiece(Board.board[move.getDestRow() + 1][move.getDestCol()]);
-                    Board.board[move.getDestRow() + 1][move.getDestCol()] = null;
-                }
+                int direction = move.getCurrCol() < move.getDestCol() ? -1 : 1;
+                killPiece(Board.board[move.getDestRow() + direction][move.getDestCol()]);
+                Board.board[move.getDestRow() + direction][move.getDestCol()] = null;
             }
         }
     }
@@ -317,9 +311,9 @@ public class Game {
 
     private void checkTransform(Pawn piece) {
         if (piece.getRow() == 0) {
-            boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
+            boardGUI.showTransform(piece);
         } else if (piece.getRow() == 7) {
-            boardGUI.showTransform(piece); // Schwarz, da nur diese Pawns zu Rank 7 kommen können, 6 aud testgründen
+            boardGUI.showTransform(piece);
         }
     }
 
