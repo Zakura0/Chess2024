@@ -66,7 +66,11 @@ public class BoardGUI extends JPanel {
                 repaintBoard();
                 return;
             }
-            showMoves(row, col);
+            List<Move> moves = piece.getPossibleMoves();
+            if (moves.isEmpty()) {
+                return;
+            }
+            showMoves(moves, row, col);
             pieceSelected = true;
         } else {
             // Zweiter Klick: Führe den Zug aus, wenn er gültig ist
@@ -76,7 +80,13 @@ public class BoardGUI extends JPanel {
                 _game.performMove(piece, move);
                 pieceSelected = false;
                 paintComponent(getGraphics());
-            } else {
+            }            
+            else if (Board.board[row][col] != null && Board.board[row][col] != piece && Board.board[row][col].getColor() == piece.getColor()) {
+                pieceSelected = false;
+                repaintBoard();
+                evaluateClick(row, col);
+            }
+            else {
                 pieceSelected = false;
                 repaintBoard();
             }
@@ -84,9 +94,8 @@ public class BoardGUI extends JPanel {
 
     }
 
-    public void showMoves(int row, int col) {
-        Piece piece = Board.board[row][col];
-        List<Move> moves = piece.getPossibleMoves();
+    public void showMoves(List<Move> moves, int row, int col) {
+        Piece piece = Board.board[row][col];        
         for (Move move : moves) {
             Graphics2D g2 = (Graphics2D) getGraphics();
             int targetRow = move.getDestRow();
