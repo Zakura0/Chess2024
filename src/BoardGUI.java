@@ -81,7 +81,8 @@ public class BoardGUI extends JPanel {
                 pieceSelected = false;
                 paintComponent(getGraphics());
             }            
-            else if (Board.board[row][col] != null && Board.board[row][col] != piece && Board.board[row][col].getColor() == piece.getColor()) {
+            else if (Board.board[row][col] != null && Board.board[row][col] != piece &&
+                        Board.board[row][col].getColor() == piece.getColor()) {
                 pieceSelected = false;
                 repaintBoard();
                 evaluateClick(row, col);
