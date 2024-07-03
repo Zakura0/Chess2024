@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
@@ -18,6 +20,7 @@ public class Game {
     private static Pawn transformingPawn;
     private static Clock clock = new Clock();
     public static List<Move> moveQueue;
+    private Map<String, Integer> boardStates;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -32,6 +35,7 @@ public class Game {
         blackAlive = new ArrayList<Piece>();
         whiteDead = new ArrayList<Piece>();
         blackDead = new ArrayList<Piece>();
+        boardStates = new HashMap<String, Integer>();
         moveQueue = new ArrayList<Move>();
         _isWhiteCheck = false;
         _isBlackCheck = false;
@@ -63,9 +67,9 @@ public class Game {
     }
 
     public static boolean checkForCheck(boolean color) {
-        List<Piece> kingPieces = color ? whiteAlive : blackAlive;
-        int KingRow = kingPieces.get(0).getRow();
-        int KingCol = kingPieces.get(0).getCol();
+        King king = color ? whiteKing : blackKing;
+        int KingRow = king.getRow();
+        int KingCol = king.getCol();
         return tileUnderAttack(KingRow, KingCol, color);
     }
 
@@ -191,8 +195,17 @@ public class Game {
         }
         else {
             setUncheck(!piece.getColor());
+            Clock.winner.setText("");
         }
-        changeTurn();        
+        addBoardAsString();
+        for (String key : boardStates.keySet()) {
+            if (boardStates.get(key) == 3) {
+                Clock.winner.setText("Draw by repetition!");
+                Clock.draw.setEnabled(false);
+            }
+        }
+        changeTurn();
+        
     }
 
     private boolean checkForMateOrStalemate(boolean color) {
@@ -308,12 +321,27 @@ public class Game {
         return moveQueue.get(moveQueue.size() - 1);
     }
 
+    private void addBoardAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = Board.board[i][j];
+                if (piece != null) {
+                    sb.append(piece.getName() + i + j + ",");
+                }
+            }
+        }
+        sb.append("cbw:" + whiteKing.getCastleBig() + ",csw:" + whiteKing.getCastleSmall() + ",");
+        sb.append("cbb:" + blackKing.getCastleBig() + ",csb:" + blackKing.getCastleSmall());
+        String boardState = sb.toString();
+        boardStates.put(boardState, boardStates.getOrDefault(boardState, 0) + 1);
+    }
+
 
     private void checkTransform(Pawn piece) {
-        if (piece.getRow() == 0) {
-            boardGUI.showTransform(piece);
-        } else if (piece.getRow() == 7) {
-            boardGUI.showTransform(piece);
+        if (piece.getRow() == 0 || piece.getRow() == 7) {
+            transformingPawn = piece;
+            boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
         }
     }
 
