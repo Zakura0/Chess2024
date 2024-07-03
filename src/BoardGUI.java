@@ -24,7 +24,8 @@ public class BoardGUI extends JPanel {
     private int selectedCol;
     private Game _game;
     private Map<String, BufferedImage> pieceImages = new HashMap<>();
-    private static Map<String, ImageIcon> pieceIcons = new HashMap<>();
+    private static Map<String, ImageIcon> transformIcons = new HashMap<>();
+    private static Map<String, ImageIcon> takenPiecesIcons = new HashMap<>();
     private JFrame mainFrame;
     private JLayeredPane layers;
     private JPanel boardFrame;
@@ -37,7 +38,8 @@ public class BoardGUI extends JPanel {
     public BoardGUI(Game game) {
         _game = game;
         loadPieceImages();
-        loadPieceIcons();
+        loadPieceIcons(40, 40, transformIcons);
+        loadPieceIcons(10, 10, takenPiecesIcons);
         initializeListener();
     }
 
@@ -228,10 +230,10 @@ public class BoardGUI extends JPanel {
         }
     }
 
-    private void loadPieceIcons() {
+    private void loadPieceIcons(int width, int height, Map<String, ImageIcon> icons) {
         for (Map.Entry<String, BufferedImage> entry : pieceImages.entrySet()) {
-            Image img = entry.getValue().getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
-            pieceIcons.put(entry.getKey(), new ImageIcon(img));
+            Image img = entry.getValue().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+            icons.put(entry.getKey(), new ImageIcon(img));
         }
     }
 
@@ -241,22 +243,22 @@ public class BoardGUI extends JPanel {
         JButton knight;
         JButton queen;
         if (color) {
-            rook = new JButton(pieceIcons.get("rook_w"));
+            rook = new JButton(transformIcons.get("rook_w"));
             rook.addActionListener(new TransformActionListener("rook"));
-            bishop = new JButton(pieceIcons.get("bishop_w"));
+            bishop = new JButton(transformIcons.get("bishop_w"));
             bishop.addActionListener(new TransformActionListener("bishop"));
-            knight = new JButton(pieceIcons.get("knight_w"));
+            knight = new JButton(transformIcons.get("knight_w"));
             knight.addActionListener(new TransformActionListener("knight"));
-            queen = new JButton(pieceIcons.get("queen_w"));
+            queen = new JButton(transformIcons.get("queen_w"));
             queen.addActionListener(new TransformActionListener("queen"));
         } else {
-            rook = new JButton(pieceIcons.get("rook_b"));
+            rook = new JButton(transformIcons.get("rook_b"));
             rook.addActionListener(new TransformActionListener("rook"));
-            bishop = new JButton(pieceIcons.get("bishop_b"));
+            bishop = new JButton(transformIcons.get("bishop_b"));
             bishop.addActionListener(new TransformActionListener("bishop"));
-            knight = new JButton(pieceIcons.get("knight_b"));
+            knight = new JButton(transformIcons.get("knight_b"));
             knight.addActionListener(new TransformActionListener("knight"));
-            queen = new JButton(pieceIcons.get("queen_b"));
+            queen = new JButton(transformIcons.get("queen_b"));
             queen.addActionListener(new TransformActionListener("queen"));
         }
         List<JButton> buttons = Arrays.asList(rook, bishop, knight, queen);

@@ -339,10 +339,9 @@ public class Game {
 
 
     private void checkTransform(Pawn piece) {
-        if (piece.getRow() == 0) {
-            boardGUI.showTransform(piece);
-        } else if (piece.getRow() == 7) {
-            boardGUI.showTransform(piece);
+        if (piece.getRow() == 0 || piece.getRow() == 7) {
+            transformingPawn = piece;
+            boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
         }
     }
 
