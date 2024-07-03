@@ -273,22 +273,22 @@ public class BoardGUI extends JPanel {
         JButton queen;
         if (color) {
             rook = new JButton(transformIcons.get("rook_w"));
-            rook.addActionListener(new TransformActionListener("rook"));
+            rook.addActionListener(new TransformActionListener("rook", _game));
             bishop = new JButton(transformIcons.get("bishop_w"));
-            bishop.addActionListener(new TransformActionListener("bishop"));
+            bishop.addActionListener(new TransformActionListener("bishop", _game));
             knight = new JButton(transformIcons.get("knight_w"));
-            knight.addActionListener(new TransformActionListener("knight"));
+            knight.addActionListener(new TransformActionListener("knight", _game));
             queen = new JButton(transformIcons.get("queen_w"));
-            queen.addActionListener(new TransformActionListener("queen"));
+            queen.addActionListener(new TransformActionListener("queen", _game));
         } else {
             rook = new JButton(transformIcons.get("rook_b"));
-            rook.addActionListener(new TransformActionListener("rook"));
+            rook.addActionListener(new TransformActionListener("rook", _game));
             bishop = new JButton(transformIcons.get("bishop_b"));
-            bishop.addActionListener(new TransformActionListener("bishop"));
+            bishop.addActionListener(new TransformActionListener("bishop", _game));
             knight = new JButton(transformIcons.get("knight_b"));
-            knight.addActionListener(new TransformActionListener("knight"));
+            knight.addActionListener(new TransformActionListener("knight", _game));
             queen = new JButton(transformIcons.get("queen_b"));
-            queen.addActionListener(new TransformActionListener("queen"));
+            queen.addActionListener(new TransformActionListener("queen", _game));
         }
         List<JButton> buttons = Arrays.asList(rook, bishop, knight, queen);
         return buttons;
