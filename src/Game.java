@@ -162,12 +162,15 @@ public class Game {
             Clock.isWhite = true;
         }
         Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
-        killPiece(destPiece);
+        if (destPiece != piece)
+        {
+            killPiece(destPiece);
+        }
         piece.move(move.getDestRow(), move.getDestCol());
         addMoveToQueue(move);
-        if (piece instanceof Pawn) {
-            checkTransform((Pawn) piece);
-        }
+        if (piece instanceof Pawn && checkTransform((Pawn) piece)){
+            return;
+        }        
         checkEnPassant(piece, move, destPiece);
         performCastleMove(piece, move);
         checkForCastleMove(piece);
@@ -338,14 +341,16 @@ public class Game {
     }
 
 
-    private void checkTransform(Pawn piece) {
+    private boolean checkTransform(Pawn piece) {
         if (piece.getRow() == 0 || piece.getRow() == 7) {
             transformingPawn = piece;
             boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
+            return true;
         }
+        return false;
     }
 
-    public static void performTransform(String piece) {
+    public void performTransform(String piece) {
         Pawn p = transformingPawn;
         if (piece.equals("rook")) {
             Board.board[p.getRow()][p.getCol()] = new Rook(p.getRow(), p.getCol(), p.getColor());
@@ -358,5 +363,6 @@ public class Game {
         }
         boardGUI.hideTransform();
         transformingPawn = null;
+        performMove(Board.board[p.getRow()][p.getCol()], new Move(p.getRow(), p.getCol(), p.getRow(), p.getCol()));
     }
 }
