@@ -17,29 +17,34 @@ import java.awt.*;
 
 public class BoardGUI extends JPanel {
 
-    private static final int tileSize = 80;
-    private static final int board = 8;
-    private static final Color beige = new Color(248, 231, 187);
-    private static final Color brown = new Color(150, 77, 34);
-    private boolean pieceSelected = false;
+    private final int tileSize = 80;
+    private final int board = 8;
+    private final Color beige = new Color(248, 231, 187);
+    private final Color brown = new Color(150, 77, 34);
+    private boolean pieceSelected;
     private int selectedRow;
     private int selectedCol;
     private Game _game;
     private Map<String, BufferedImage> pieceImages = new HashMap<>();
-    private static Map<String, ImageIcon> transformIcons = new HashMap<>();
-    private static Map<String, ImageIcon> takenPiecesIcons = new HashMap<>();
+    private Map<String, ImageIcon> transformIcons = new HashMap<>();
+    private Map<String, ImageIcon> takenPiecesIcons = new HashMap<>();
     private JFrame mainFrame;
     private JLayeredPane layers;
     private JPanel boardFrame;
     private JPanel layeredGlassPane;
     private JPanel transformPanel;
-    private static Dimension frameDim = new Dimension(1000, 800);
-    private static Dimension boardDim = new Dimension(800, 800);
-    private static int xBoardOffset = 40;
-    private static int yBoardOffset = 40;
+    private Dimension frameDim;
+    private Dimension boardDim;
+    private int xBoardOffset;
+    private int yBoardOffset;
     private static Clock clock = new Clock();
     public BoardGUI(Game game) {
         _game = game;
+        frameDim = new Dimension(1000, 800);
+        boardDim = new Dimension(800, 800);
+        yBoardOffset = 40;
+        xBoardOffset = 40;
+        pieceSelected = false;
         loadPieceImages();
         loadPieceIcons(40, 40, transformIcons);
         loadPieceIcons(10, 10, takenPiecesIcons);
@@ -175,8 +180,8 @@ public class BoardGUI extends JPanel {
     }
 
     public void loadGUI() {
-        JFrame mainFrame = new JFrame("Chess");
-        mainFrame.setSize(1000, 800);
+        mainFrame = new JFrame("Chess");
+        mainFrame.setSize(frameDim);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout());
 
