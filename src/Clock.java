@@ -24,7 +24,8 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 		int timeLimit = 10;									
 		timeLimit*=600;
 		counter = new Thread(this);
-		p1time = timeLimit; p2time = timeLimit;				
+		p1time = timeLimit; 
+		p2time = timeLimit;				
 		
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new GridLayout(6, 1));

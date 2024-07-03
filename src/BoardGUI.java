@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -129,12 +130,28 @@ public class BoardGUI extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        String alphabet = "8765432bcdefgh";
 
         for (int i = 0; i < board; i++) { // i = row
             for (int j = 0; j < board; j++) { // j = col
                 boolean isWhite = (i + j) % 2 == 0;
                 g.setColor(isWhite ? beige : brown);
                 g.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+                g.setColor(isWhite ? brown : beige); 
+                if ( i == 7 && j == 0){
+                    g.drawString("a", j * tileSize + 70 , i * tileSize + 70);
+                    g.drawString("1", j * tileSize + 4, i  * tileSize + 20);
+                } 
+                else if ( i == 7){
+                    String character = alphabet.substring(0, 1);
+                    alphabet = alphabet.substring(1, alphabet.length());
+                    g.drawString(character, j * tileSize + 70, i * tileSize + 70);
+                }
+                else if ( j == 0){
+                    String character = alphabet.substring(0,1);
+                    alphabet = alphabet.substring(1, alphabet.length());
+                    g.drawString(character, j * tileSize + 4 , i * tileSize + 20);
+                }
 
                 Piece piece = Board.board[i][j];
                 if (piece != null) {
