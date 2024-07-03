@@ -8,8 +8,6 @@ import javax.swing.SwingUtilities;
 public class Game {
     public BoardGUI window;
     private boolean _isWhiteTurn;
-    private boolean _isWhiteCheck; //Später für UI
-    private boolean _isBlackCheck; //Später für UI
     public static List<Piece> whiteAlive;
     public static List<Piece> blackAlive;
     public static List<Piece> whiteDead;
@@ -18,7 +16,6 @@ public class Game {
     public static King blackKing;
     private static BoardGUI boardGUI;
     private static Pawn transformingPawn;
-    private static Clock clock = new Clock();
     public static List<Move> moveQueue;
     private Map<String, Integer> boardStates;
 
@@ -37,8 +34,6 @@ public class Game {
         blackDead = new ArrayList<Piece>();
         boardStates = new HashMap<String, Integer>();
         moveQueue = new ArrayList<Move>();
-        _isWhiteCheck = false;
-        _isBlackCheck = false;
         _isWhiteTurn = true;
         Board.initializeBoard();
         whiteKing = (King) Board.board[7][4];
@@ -177,7 +172,6 @@ public class Game {
         calculateAllMoves();
         if(checkForCheck(!piece.getColor())) {
             String color = piece.getColor() ? "black" : "white";
-            setCheck(!piece.getColor());
             Clock.winner.setText("The " + color + " king is in check!"); //Später für UI
             if (checkForMateOrStalemate(!piece.getColor()))
             {
@@ -197,7 +191,6 @@ public class Game {
             Clock.draw.setEnabled(false);
         }
         else {
-            setUncheck(!piece.getColor());
             Clock.winner.setText("");
         }
         addBoardAsString();
@@ -231,22 +224,6 @@ public class Game {
                 blackDead.add(piece);
             }
         }        
-    }
-
-    public void setCheck(boolean color) {
-        if (color) {
-            _isWhiteCheck = true;
-        } else {
-            _isBlackCheck = true;
-        }
-    }
-
-    public void setUncheck(boolean color) {
-        if (color) {
-            _isWhiteCheck = false;
-        } else {
-            _isBlackCheck = false;
-        }
     }
 
     private void checkForCastleMove(Piece piece) {
