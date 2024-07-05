@@ -13,10 +13,6 @@ public class Move {
     }
 
     public Piece getMovingPiece() {
-        return Board.board[_curr_row][_curr_col];
-    }
-
-    public Piece getCapturedPiece() {
         return Board.board[_dest_row][_dest_col];
     }
 
