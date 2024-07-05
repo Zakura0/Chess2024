@@ -69,7 +69,7 @@ public class Pawn extends Piece {
                         Move m = Game.getLastMove();
                         if (m.getMovingPiece() == piece && Math.abs(m.getCurrRow() - m.getDestRow()) == 2) {
                             int attackdir = 0;
-                            if (row == 4)
+                            if (row == 4 || row == 3)
                             {
                                 if (m.getMovingPiece().getCol() < col)
                                 {
@@ -80,13 +80,6 @@ public class Pawn extends Piece {
                                     attackdir = 1;
                                 }
                                 move = new Move(row, col, row + direction, col + attackdir);
-                                if (checkMoveValid(move)) {
-                                    moves.add(move);
-                                }
-                            }
-                            else if (row == 3)
-                            {
-                                move = new Move(row, col, row + direction, col - 1);
                                 if (checkMoveValid(move)) {
                                     moves.add(move);
                                 }

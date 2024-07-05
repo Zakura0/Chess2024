@@ -279,7 +279,7 @@ public class Game {
     private void checkEnPassant(Piece piece, Move move, Piece destPiece) {
         if (piece instanceof Pawn) {
             if (move.getCurrCol() != move.getDestCol() && destPiece == null){
-                int direction = move.getCurrCol() < move.getDestCol() ? -1 : 1;
+                int direction = move.getCurrRow() < move.getDestRow() ? -1 : 1;
                 killPiece(Board.board[move.getDestRow() + direction][move.getDestCol()]);
                 Board.board[move.getDestRow() + direction][move.getDestCol()] = null;
             }
