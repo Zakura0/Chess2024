@@ -25,86 +25,83 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 	}
 
 	private void initializeClock() {
-		int timeLimit = 10;									
-		timeLimit*=600;
-		counter = new Thread(this);
-		p1time = timeLimit; 
-		p2time = timeLimit;	
-		
-		
-		JPanel black = new JPanel(new GridBagLayout());
-		JPanel white = new JPanel(new GridBagLayout());
+        int timeLimit = 10;
+        timeLimit*=600;
+        counter = new Thread(this);
+        p1time = timeLimit; 
+        p2time = timeLimit;
 
-		JPanel eastPanel = new JPanel();
-		eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
 
-		draw = new JButton("Draw");
+        JPanel black = new JPanel(new GridBagLayout());
+        JPanel white = new JPanel(new GridBagLayout());
+
+        JPanel eastPanel = new JPanel();
+        eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
+
+        draw = new JButton("Draw");
         draw.addActionListener(this);
 
 		JButton save = new JButton("Save");
-		save.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SaveGame.saveGame(Game.moveQueue);
-			}
-		});
-		JButton load = new JButton("load");	
-		
-		load.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				int returnValue = fileChooser.showOpenDialog(null);
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileChooser.getSelectedFile();
-					ArrayList<Move> loadedmoveQueue = SaveGame.loadGameMoves(selectedFile.getAbsolutePath());
-					game.resetGame();
-					SaveGame.loadGame(game, loadedmoveQueue);
-				}
-			}
-		});
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SaveGame.saveGame(Game.moveQueue);
+            }
+        });
+        JButton load = new JButton("load");
 
-		JButton reset = new JButton("Reset");
-		reset.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				game.resetGame();
-			}
-		});
-		
+        load.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    ArrayList<Move> loadedmoveQueue = SaveGame.loadGameMoves(selectedFile.getAbsolutePath());
+                    game.resetGame();
+                    SaveGame.loadGame(game, loadedmoveQueue);
+                }
+            }
+        });
 
-		whitetime = new JLabel(p1time/600 + ":" + String.format("%02d", p1time%60));
-		whitetime.setFont(new Font("Arial", Font.BOLD, 75));
-		whitetime.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		blacktime = new JLabel(p2time/600 + ":" + String.format("%02d", p2time%60));
-		blacktime.setFont(new Font("Arial", Font.BOLD, 75));
-		blacktime.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
-		winner = new JLabel("");
-		
-		// Hab versucht die Uhr mit EmptyBorder und gbc jz zu setzen, führt beides zu Problemen.
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, 0, 0, 100);
-		gbc.anchor = GridBagConstraints.LINE_START;
-		black.add(blacktime, gbc);
-		gbc.gridy = 1;
-		black.add(winner, gbc);
-	
-		gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0,0, 0, 100 );
-		gbc.anchor = GridBagConstraints.LINE_END;
-		white.add(whitetime, gbc);
-	
-		eastPanel.add(black);
-		eastPanel.add(white);
+        JButton reset = new JButton("Reset");
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.resetGame();
+            }
+        });
 
-		add(eastPanel, BorderLayout.EAST);
-		add(draw, BorderLayout.SOUTH);
-		add(black, BorderLayout.WEST);
-		add(white, BorderLayout.SOUTH);
-		add(draw, BorderLayout.NORTH);
-		add(save, BorderLayout.EAST);
-		add(load, BorderLayout.SOUTH);
-	}
+        whitetime = new JLabel(p1time/600 + ":" + String.format("%02d", p1time%60));
+        whitetime.setFont(new Font("Arial", Font.BOLD, 75));
+        whitetime.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        blacktime = new JLabel(p2time/600 + ":" + String.format("%02d", p2time%60));
+        blacktime.setFont(new Font("Arial", Font.BOLD, 75));
+        blacktime.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        winner = new JLabel("");
+
+        // Hab versucht die Uhr mit EmptyBorder und gbc jz zu setzen, führt beides zu Problemen.
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0, 0, 0, 100);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        black.add(blacktime, gbc);
+        gbc.gridy = 1;
+        black.add(winner, gbc);
+
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0,0, 0, 100 );
+        gbc.anchor = GridBagConstraints.LINE_END;
+        white.add(whitetime, gbc);
+
+        eastPanel.add(black);
+        eastPanel.add(white);
+		eastPanel.add(save);
+		eastPanel.add(load);
+		eastPanel.add(reset);
+
+        add(eastPanel, BorderLayout.EAST);
+        add(draw, BorderLayout.SOUTH);
+    }
 
 	@Override
 	public void run() {	
