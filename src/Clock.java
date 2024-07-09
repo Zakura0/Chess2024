@@ -25,30 +25,41 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 		timeLimit*=600;
 		counter = new Thread(this);
 		p1time = timeLimit; 
-		p2time = timeLimit;				
+		p2time = timeLimit;	
 		
-		JPanel rightPanel = new JPanel();
-		rightPanel.setLayout(new GridLayout(6, 1));
-		rightPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
+		JPanel black = new JPanel(new GridBagLayout());
+		JPanel white = new JPanel(new GridBagLayout());
 		
 		draw = new JButton("Draw");
         draw.addActionListener(this);
 
 		
-		JLabel white = new JLabel("White");
-		JLabel black = new JLabel("Black");
+
 		whitetime = new JLabel(p1time/600 + ":" + String.format("%02d", p1time%60));
+		whitetime.setFont(new Font("Arial", Font.BOLD, 25));
+		whitetime.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		blacktime = new JLabel(p2time/600 + ":" + String.format("%02d", p2time%60));
+		blacktime.setFont(new Font("Arial", Font.BOLD, 25));
+		blacktime.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
 		winner = new JLabel("");
 		
-		rightPanel.add(black);
-		rightPanel.add(blacktime);
-		rightPanel.add(winner);
-		rightPanel.add(whitetime);
-		rightPanel.add(white);
-		rightPanel.add(draw);
-		
-		add(rightPanel, BorderLayout.EAST);
+		// Hab versucht die Uhr mit EmptyBorder und gbc jz zu setzen, führt beides zu Problemen.
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(0, 55, 320, 0);
+		gbc.anchor = GridBagConstraints.LINE_START;
+		black.add(blacktime, gbc);
+		gbc.gridy = 1;
+		black.add(winner, gbc);
+	
+		gbc = new GridBagConstraints();
+		gbc.insets = new Insets(0, 0, 50, 908);
+		gbc.anchor = GridBagConstraints.LINE_END;
+		white.add(whitetime, gbc);
+	
+		add(black, BorderLayout.WEST);
+		add(white, BorderLayout.SOUTH);
+		add(draw, BorderLayout.NORTH);
 	}
 
 	@Override

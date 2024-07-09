@@ -40,15 +40,49 @@ public class BoardGUI extends JPanel {
     private static Clock clock = new Clock();
     public BoardGUI(Game game) {
         _game = game;
-        frameDim = new Dimension(1000, 800);
+        frameDim = new Dimension(1100, 850);
         boardDim = new Dimension(800, 800);
-        yBoardOffset = 40;
-        xBoardOffset = 40;
+        yBoardOffset = 80;
+        xBoardOffset = 55;
         pieceSelected = false;
         loadPieceImages();
         loadPieceIcons(40, 40, transformIcons);
         loadPieceIcons(10, 10, takenPiecesIcons);
         initializeListener();
+    }
+
+    public void loadGUI() {
+        mainFrame = new JFrame("Chess");
+        mainFrame.setSize(frameDim);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setLayout(new BorderLayout());
+
+        layers = new JLayeredPane();
+        layers.setPreferredSize(boardDim);
+
+        BoardGUI boardGui = new BoardGUI(_game);
+        boardFrame = new JPanel();
+        boardFrame.setLayout(new GridBagLayout());
+        boardFrame.add(boardGui);
+        boardFrame.setBounds(xBoardOffset, yBoardOffset, board * tileSize, board * tileSize);
+        boardFrame.setVisible(true);
+
+        layeredGlassPane = new JPanel();
+        layeredGlassPane.setOpaque(false);
+        layeredGlassPane.addMouseListener(new MouseAdapter() {});
+        layeredGlassPane.addMouseMotionListener(new MouseMotionAdapter() {});
+        layeredGlassPane.setBounds(boardFrame.getBounds());
+        layeredGlassPane.setVisible(false);
+
+        layers.add(boardFrame, JLayeredPane.DEFAULT_LAYER);
+        layers.add(layeredGlassPane, JLayeredPane.PALETTE_LAYER);
+        layers.setVisible(true);
+    
+        mainFrame.add(layers, BorderLayout.CENTER);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
+        mainFrame.add(clock);
+
     }
 
     private void initializeListener() {
@@ -179,39 +213,6 @@ public class BoardGUI extends JPanel {
         return new Dimension(board * tileSize, board * tileSize);
     }
 
-    public void loadGUI() {
-        mainFrame = new JFrame("Chess");
-        mainFrame.setSize(frameDim);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setLayout(new BorderLayout());
-
-        layers = new JLayeredPane();
-        layers.setPreferredSize(boardDim);
-
-        BoardGUI boardGui = new BoardGUI(_game);
-        boardFrame = new JPanel();
-        boardFrame.setLayout(new GridBagLayout());
-        boardFrame.add(boardGui);
-        boardFrame.setBounds(xBoardOffset, yBoardOffset, board * tileSize, board * tileSize);
-        boardFrame.setVisible(true);
-
-        layeredGlassPane = new JPanel();
-        layeredGlassPane.setOpaque(false);
-        layeredGlassPane.addMouseListener(new MouseAdapter() {});
-        layeredGlassPane.addMouseMotionListener(new MouseMotionAdapter() {});
-        layeredGlassPane.setBounds(boardFrame.getBounds());
-        layeredGlassPane.setVisible(false);
-
-        layers.add(boardFrame, JLayeredPane.DEFAULT_LAYER);
-        layers.add(layeredGlassPane, JLayeredPane.PALETTE_LAYER);
-        layers.setVisible(true);
-    
-        mainFrame.add(layers, BorderLayout.CENTER);
-        mainFrame.setLocationRelativeTo(null);
-        mainFrame.setVisible(true);
-        mainFrame.add(clock);
-
-    }
 
     public void showTransform(Piece piece) {
         layeredGlassPane.setVisible(true);
