@@ -21,13 +21,13 @@ public class Game {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Game game = new Game();
-            boardGUI = new BoardGUI(game);
-            boardGUI.loadGUI();
+            new Game();
         });
     }
 
     public Game() {
+        boardGUI = new BoardGUI(this);
+        boardGUI.loadGUI();
         whiteAlive = new ArrayList<Piece>();
         blackAlive = new ArrayList<Piece>();
         whiteDead = new ArrayList<Piece>();
@@ -341,5 +341,26 @@ public class Game {
         boardGUI.hideTransform();
         transformingPawn = null;
         performMove(Board.board[p.getRow()][p.getCol()], new Move(p.getRow(), p.getCol(), p.getRow(), p.getCol()));
+    }
+
+    public void resetGame()
+    {
+        whiteAlive.clear();
+        blackAlive.clear();
+        whiteDead.clear();
+        blackDead.clear();
+        boardStates.clear();
+        moveQueue.clear();
+        _isWhiteTurn = true;
+        Board.initializeBoard();
+        whiteKing = (King) Board.board[7][4];
+        blackKing = (King) Board.board[0][4];
+        calculateAllMoves();
+        boardGUI.repaint();
+    }
+
+    public void saveGame()
+    {
+        SaveGame.saveGame(moveQueue);
     }
 }

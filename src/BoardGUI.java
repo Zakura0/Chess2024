@@ -8,7 +8,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -37,9 +36,10 @@ public class BoardGUI extends JPanel {
     private Dimension boardDim;
     private int xBoardOffset;
     private int yBoardOffset;
-    private static Clock clock = new Clock();
+    private static Clock clock;
     public BoardGUI(Game game) {
         _game = game;
+        clock = new Clock(game);
         frameDim = new Dimension(1100, 850);
         boardDim = new Dimension(800, 800);
         yBoardOffset = 80;
@@ -60,10 +60,9 @@ public class BoardGUI extends JPanel {
         layers = new JLayeredPane();
         layers.setPreferredSize(boardDim);
 
-        BoardGUI boardGui = new BoardGUI(_game);
         boardFrame = new JPanel();
         boardFrame.setLayout(new GridBagLayout());
-        boardFrame.add(boardGui);
+        boardFrame.add(this);
         boardFrame.setBounds(xBoardOffset, yBoardOffset, board * tileSize, board * tileSize);
         boardFrame.setVisible(true);
 
@@ -167,7 +166,7 @@ public class BoardGUI extends JPanel {
 
     
 
-    private void repaintBoard() {
+    public void repaintBoard() {
         paintComponent(getGraphics());
     }
 

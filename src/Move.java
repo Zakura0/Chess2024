@@ -55,5 +55,9 @@ public class Move {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return _curr_row + "," + _curr_col + "," + _dest_row + "," + _dest_col + ":";
+    }
 
 }

@@ -1,9 +1,11 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 public class Clock extends JPanel implements Runnable, ActionListener {
 	
@@ -13,9 +15,11 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 	public static boolean started, isWhite = true;
     public static JLabel winner;
     public static JButton draw;
+	private Game game;
 
-	public Clock() {
+	public Clock(Game game) {
 		setLayout(new BorderLayout());
+		this.game = game;
 		initializeClock();
 		started = false;
 	}
@@ -34,6 +38,36 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 		draw = new JButton("Draw");
         draw.addActionListener(this);
 
+		JButton save = new JButton("Save");
+		save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SaveGame.saveGame(Game.moveQueue);
+			}
+		});
+		JButton load = new JButton("load");	
+		
+		load.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int returnValue = fileChooser.showOpenDialog(null);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					ArrayList<Move> loadedmoveQueue = SaveGame.loadGameMoves(selectedFile.getAbsolutePath());
+					game.resetGame();
+					SaveGame.loadGame(game, loadedmoveQueue);
+				}
+			}
+		});
+
+		JButton reset = new JButton("Reset");
+		reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				game.resetGame();
+			}
+		});
 		
 
 		whitetime = new JLabel(p1time/600 + ":" + String.format("%02d", p1time%60));
@@ -60,6 +94,8 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 		add(black, BorderLayout.WEST);
 		add(white, BorderLayout.SOUTH);
 		add(draw, BorderLayout.NORTH);
+		add(save, BorderLayout.EAST);
+		add(load, BorderLayout.SOUTH);
 	}
 
 	@Override
