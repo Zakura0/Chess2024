@@ -167,8 +167,7 @@ public class Game {
             return;
         }        
         checkEnPassant(piece, move, destPiece);
-        performCastleMove(piece, move);
-        checkForCastleMove(piece);
+        isCastleMove(piece, move);
         calculateAllMoves();
         if(checkForCheck(!piece.getColor())) {
             String color = piece.getColor() ? "black" : "white";
@@ -226,7 +225,8 @@ public class Game {
         }        
     }
 
-    private void checkForCastleMove(Piece piece) {
+    private void isCastleMove(Piece piece, Move move) {
+        performCastleMove(piece, move);
         if (piece instanceof King) {
             if (piece.getColor()) {
                 whiteKing.setCastleBig(false);
@@ -236,7 +236,6 @@ public class Game {
                 blackKing.setCastleSmall(false);
             }
         } else if (piece instanceof Rook) {
-            System.out.println("Is Rook move");
             if (piece.getColor()) {
                 if (piece.getCol() == 0) {
                     whiteKing.setCastleBig(false);
@@ -261,16 +260,16 @@ public class Game {
         Piece blackLeftRook = Board.board[blackRow][0]; 
         Piece blackRightRook = Board.board[blackRow][7]; 
 
-        if (piece instanceof King && piece.getColor() == true) {
-            if (move.getDestCol() == 2) {
+        if (piece instanceof King && piece.getColor()) {
+            if (move.getDestCol() == 2 && whiteLeftRook != null) {
                 whiteLeftRook.move(whiteRow, 3);
-            } else if (move.getDestCol() == 6) {
+            } else if (move.getDestCol() == 6 && whiteRightRook != null) {
                 whiteRightRook.move(whiteRow, 5);
             }
-        } else if (piece instanceof King && piece.getColor() == false) {
-            if (move.getDestCol() == 2) {
+        } else if (piece instanceof King && !piece.getColor()) {
+            if (move.getDestCol() == 2 && blackLeftRook != null) {
                 blackLeftRook.move(blackRow, 3);
-            } else if (move.getDestCol() == 6) {
+            } else if (move.getDestCol() == 6 && blackRightRook != null) {
                 blackRightRook.move(blackRow, 5);
             }
         }

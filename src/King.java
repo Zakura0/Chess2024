@@ -66,7 +66,7 @@ public class King extends Piece{
             int targetColKing = col + 2;
             boolean castleUnderAttack = false;
             if (!isBlocked(row, 5) && !isBlocked(row, 6)) {
-                for (int i = 5; i < 7; i++) {
+                for (int i = 4; i < 7; i++) {
                     if (Game.tileUnderAttack(row, i, this.getColor())) {
                         castleUnderAttack = true;
                     }
@@ -82,7 +82,7 @@ public class King extends Piece{
             int targetColKing = col - 2;
             boolean castleUnderAttack = false;
             if (!isBlocked(row, 1) && !isBlocked(row, 2) && !isBlocked(row, 3)) {
-                for (int i = 2; i < 4; i++) {
+                for (int i = 2; i < 5; i++) {
                     if (Game.tileUnderAttack(row, i, this.getColor())) {
                         castleUnderAttack = true;
                     }
