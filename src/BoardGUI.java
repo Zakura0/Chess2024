@@ -56,6 +56,7 @@ public class BoardGUI extends JPanel {
         mainFrame.setSize(frameDim);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout());
+        
 
         layers = new JLayeredPane();
         layers.setPreferredSize(boardDim);

@@ -176,10 +176,12 @@ public class Game {
             {
                 if (Clock.isWhite = true){
                     Clock.winner.setText("White won!");
+                    Clock.counter.interrupt();
                     Clock.draw.setEnabled(false);
                 }
                 else {
                     Clock.winner.setText("Black won!");
+                    Clock.counter.interrupt();
                     Clock.draw.setEnabled(false);
                 }
             }
@@ -187,6 +189,7 @@ public class Game {
         else if (checkForMateOrStalemate(!piece.getColor()))
         {
             Clock.winner.setText("Stalemate!");
+            Clock.counter.interrupt();
             Clock.draw.setEnabled(false);
         }
         else {
@@ -196,6 +199,7 @@ public class Game {
         for (String key : boardStates.keySet()) {
             if (boardStates.get(key) == 3) {
                 Clock.winner.setText("Draw by repetition!");
+                Clock.counter.interrupt();
                 Clock.draw.setEnabled(false);
             }
         }

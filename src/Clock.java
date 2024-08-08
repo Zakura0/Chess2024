@@ -26,7 +26,7 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 
 	private void initializeClock() {
         int timeLimit = 10;
-        timeLimit*=600;
+        timeLimit*=60;
         counter = new Thread(this);
         p1time = timeLimit; 
         p2time = timeLimit;
@@ -68,14 +68,16 @@ public class Clock extends JPanel implements Runnable, ActionListener {
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                counter.interrupt();
                 game.resetGame();
+                resetTimer();
             }
         });
 
-        whitetime = new JLabel(p1time/600 + ":" + String.format("%02d", p1time%60));
+        whitetime = new JLabel(p1time/60 + ":" + String.format("%02d", p1time%60));
         whitetime.setFont(new Font("Arial", Font.BOLD, 75));
         whitetime.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        blacktime = new JLabel(p2time/600 + ":" + String.format("%02d", p2time%60));
+        blacktime = new JLabel(p2time/60 + ":" + String.format("%02d", p2time%60));
         blacktime.setFont(new Font("Arial", Font.BOLD, 75));
         blacktime.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
         winner = new JLabel("");
@@ -109,38 +111,40 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 			try  {
 				Thread.sleep(1000);
 			}
-			catch (InterruptedException e) {}
+			catch (InterruptedException e) {
+                break;
+            }
 			//Wenn Weiß am Zug ist
 			if (isWhite) {
 				p1time--;
-				whitetime.setText(p1time/600 + ":" + String.format("%02d", p1time%60));
-				blacktime.setText(p2time/600 + ":" + String.format("%02d", p2time%60));
+				whitetime.setText(p1time/60 + ":" + String.format("%02d", p1time%60));
+				blacktime.setText(p2time/60 + ":" + String.format("%02d", p2time%60));
 				//Wenn Weiß keine Zeit mehr hat
 				if(p1time == 0) {
 					winner.setText("Black won!");
-					whitetime.setText(p1time/600 + ":" + String.format("%02d", p1time%60));
-					blacktime.setText(p2time/600 + ":" + String.format("%02d", p2time%60));
+					whitetime.setText(p1time/60 + ":" + String.format("%02d", p1time%60));
+					blacktime.setText(p2time/60 + ":" + String.format("%02d", p2time%60));
 					break;
 				}
 			}
 			//Wenn Schwarz am Zug ist
 			else {
 				p2time--;
-				whitetime.setText(p1time/600 + ":" + String.format("%02d", p1time%60));
-				blacktime.setText(p2time/600 + ":" + String.format("%02d", p2time%60));
+				whitetime.setText(p1time/60 + ":" + String.format("%02d", p1time%60));
+				blacktime.setText(p2time/60 + ":" + String.format("%02d", p2time%60));
 				//Wenn Schwarz keine Zeit mehr hat
 				if(p2time == 0) {
 					winner.setText("White won!");
-					whitetime.setText(p1time/600 + ":" + String.format("%02d", p1time%60));
-					blacktime.setText(p2time/600 + ":" + String.format("%02d", p2time%60));
+					whitetime.setText(p1time/60 + ":" + String.format("%02d", p1time%60));
+					blacktime.setText(p2time/60 + ":" + String.format("%02d", p2time%60));
 					break;
 				}
 			}
 		}
 		
 		if (!started) {
-			whitetime.setText(p1time/600 + ":" + String.format("%02d", p1time%60));
-			blacktime.setText(p2time/600 + ":" + String.format("%02d", p2time%60));
+			whitetime.setText(p1time/60 + ":" + String.format("%02d", p1time%60));
+			blacktime.setText(p2time/60 + ":" + String.format("%02d", p2time%60));
 		}
 	}
 
@@ -148,6 +152,19 @@ public class Clock extends JPanel implements Runnable, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		started = false;
+        Clock.counter.interrupt();
 		winner.setText("Draw");
 	}
+
+    public void resetTimer(){
+        int timeLimit = 10;
+        timeLimit*=60;
+        p1time = timeLimit; 
+        p2time = timeLimit;
+        winner.setText("");
+        whitetime.setText(p1time/60 + ":" + String.format("%02d", p1time%60));
+        blacktime.setText(p2time/60 + ":" + String.format("%02d", p2time%60));
+        counter = new Thread(this);
+        started = false;
+    }
 }
