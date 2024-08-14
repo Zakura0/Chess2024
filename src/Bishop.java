@@ -60,4 +60,9 @@ public class Bishop extends Piece {
             return "bishop_b";
         }
     }
+
+	@Override
+	public String getAlgebraicNotation() {
+		return "B";
+	}
 }

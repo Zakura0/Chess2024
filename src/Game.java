@@ -15,6 +15,7 @@ public class Game {
     public static List<Piece> blackDead;
     public static King whiteKing;
     public static King blackKing;
+    public static String algebraic;
     private GUI gui;
     public static List<Move> moveQueue;
     private Map<String, Integer> boardStates;
@@ -34,6 +35,7 @@ public class Game {
         boardStates = new HashMap<String, Integer>();
         moveQueue = new ArrayList<Move>();
         isWhite = true;
+        algebraic = "";
         Board.initializeBoard();
         whiteKing = (King) Board.board[7][4];
         blackKing = (King) Board.board[0][4];
@@ -178,14 +180,19 @@ public class Game {
     }
 
     public void performMove(Piece piece, Move move) {
+        String anStart = move.toAlgebraicNotationStart();
+        String anEnd = move.toAlgebraicNotationEnd();
+        String anPiece = piece.getAlgebraicNotation();
+        String anWholeMove = anPiece + anEnd;
         if (GUI.startedClock == false) {
             GUI.startedClock = true;
             GUI.counter.start(); 
         }
         Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
-        if (destPiece != piece)
+        if (destPiece != piece && destPiece != null)
         {
             killPiece(destPiece);
+            anWholeMove = anPiece + "x" + anEnd;
         }
         piece.move(move.getDestRow(), move.getDestCol());
         if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) {
@@ -213,14 +220,25 @@ public class Game {
             }
         }
         addMoveToQueue(move);    
-        checkEnPassant(piece, move, destPiece);
-        isCastleMove(piece, move);
+        boolean ep = checkEnPassant(piece, move, destPiece);
+        if (ep) {
+            anWholeMove += " e.p.";
+        }
+        boolean castle = isCastleMove(piece, move);
+        if (castle && anEnd.contains("c")) {
+            anWholeMove = "0-0-0";
+        } else if (castle && anEnd.contains("g")) {
+            anWholeMove = "0-0";
+        }
         calculateAllMoves();
         if(checkForCheck(!piece.getColor())) {
             String color = piece.getColor() ? "black" : "white";
             GUI.infoLabel.setText("The " + color + " king is in check!"); //Später für UI
+            anWholeMove += "+";
             if (checkForMateOrStalemate(!piece.getColor()))
             {
+                anWholeMove = anWholeMove.substring(0, anWholeMove.length() - 1);
+                anWholeMove += "#";
                 if (isWhite = true){
                     GUI.infoLabel.setText("White won!");
                     GUI.counter.interrupt();
@@ -237,7 +255,7 @@ public class Game {
             GUI.counter.interrupt();
         }
         else {
-            GUI.infoLabel.setText("");
+            GUI.infoLabel.setText(" ");
         }
         addBoardAsString();
         for (String key : boardStates.keySet()) {
@@ -246,6 +264,8 @@ public class Game {
                 GUI.counter.interrupt();
             }
         }
+        algebraic += anWholeMove + ";";
+        GUI.movesArea.append(anWholeMove + "\n");
         changeTurn();
         
     }
@@ -272,8 +292,11 @@ public class Game {
         }        
     }
 
-    private void isCastleMove(Piece piece, Move move) {
-        performCastleMove(piece, move);
+    private boolean isCastleMove(Piece piece, Move move) {
+        if(performCastleMove(piece, move))
+        {
+            return true;
+        }
         if (piece instanceof King) {
             if (piece.getColor()) {
                 whiteKing.setCastleBig(false);
@@ -297,9 +320,10 @@ public class Game {
                 }
             }
         }
+        return false;
     }
 
-    private void performCastleMove(Piece piece, Move move) {
+    private boolean performCastleMove(Piece piece, Move move) {
         int blackRow = 0;
         int whiteRow = 7;
         Piece whiteLeftRook = Board.board[whiteRow][0];
@@ -310,26 +334,33 @@ public class Game {
         if (piece instanceof King && piece.getColor()) {
             if (move.getDestCol() == 2 && whiteLeftRook != null) {
                 whiteLeftRook.move(whiteRow, 3);
+                return true;
             } else if (move.getDestCol() == 6 && whiteRightRook != null) {
                 whiteRightRook.move(whiteRow, 5);
+                return true;
             }
         } else if (piece instanceof King && !piece.getColor()) {
             if (move.getDestCol() == 2 && blackLeftRook != null) {
                 blackLeftRook.move(blackRow, 3);
+                return true;
             } else if (move.getDestCol() == 6 && blackRightRook != null) {
                 blackRightRook.move(blackRow, 5);
+                return true;
             }
         }
+        return false;
     }
 
-    private void checkEnPassant(Piece piece, Move move, Piece destPiece) {
+    private boolean checkEnPassant(Piece piece, Move move, Piece destPiece) {
         if (piece instanceof Pawn) {
             if (move.getCurrCol() != move.getDestCol() && destPiece == null){
                 int direction = move.getCurrRow() < move.getDestRow() ? -1 : 1;
                 killPiece(Board.board[move.getDestRow() + direction][move.getDestCol()]);
                 Board.board[move.getDestRow() + direction][move.getDestCol()] = null;
+                return true;
             }
         }
+        return false;
     }
 
     public static void addMoveToQueue(Move move) {
@@ -371,6 +402,8 @@ public class Game {
         blackDead.clear();
         boardStates.clear();
         moveQueue.clear();
+        algebraic = "";
+        GUI.movesArea.setText("");
         isWhite = true;
         Board.initializeBoard();
         whiteKing = (King) Board.board[7][4];

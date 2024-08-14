@@ -78,4 +78,14 @@ public class Move {
         return _curr_row + "," + _curr_col + "," + _dest_row + "," + _dest_col + "," + _transformation + ":";
     }
 
+    public String toAlgebraicNotationStart() {
+        char[] col = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+        return col[_curr_col] + "" + (8 - _curr_row);
+    }
+
+    public String toAlgebraicNotationEnd() {
+        char[] col = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+        return col[_dest_col] + "" + (8 - _dest_row);
+    }
+
 }

@@ -1,4 +1,6 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -12,6 +14,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 public class GUI extends JFrame implements Runnable{
     private Dimension frameDim = new Dimension(1500, 900);
@@ -28,6 +33,7 @@ public class GUI extends JFrame implements Runnable{
     public static Thread counter;
     private Game game;
     public static JLabel infoLabel;
+    public static JTextArea movesArea;
 
     public GUI(Game game) {
         this.game = game;
@@ -35,9 +41,11 @@ public class GUI extends JFrame implements Runnable{
         setSize(frameDim);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GridBagLayout layout = new GridBagLayout();
-        GridBagConstraints gbc = new GridBagConstraints();
-        setLayout(layout);
+        // GridBagLayout layout = new GridBagLayout();
+        // GridBagConstraints gbc = new GridBagConstraints();
+        // setLayout(layout);
+
+        setLayout(new BorderLayout());
 
         infoLabel = new JLabel("Welcome to Chess");
         boardGUI = new BoardGUI(game);
@@ -46,26 +54,25 @@ public class GUI extends JFrame implements Runnable{
         counter = new Thread(this);
         initButtons();
 
-        //add padding to layout
-        gbc.insets.set(10, 10, 10, 10);
-
-        //add board to upper left corner
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        add(boardGUI, gbc);
-
         //add clocks to upper right corner
         JPanel clockPanel = new JPanel();
         clockPanel.setLayout(new GridLayout(2, 1));
-        clockPanel.add(clockWhite);
         clockPanel.add(clockBlack);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        add(clockPanel, gbc);
+        clockPanel.add(clockWhite);
+        add(clockPanel, BorderLayout.EAST);
+        // gbc.gridx = 1;
+        // gbc.gridy = 0;
+        // gbc.gridwidth = 1;
+        // gbc.gridheight = 1;
+        // add(clockPanel, gbc);
+
+        // //add board to center
+        // gbc.gridx = 0;
+        // gbc.gridy = 0;
+        // gbc.gridwidth = 1;
+        // gbc.gridheight = 1;
+        // add(boardGUI, gbc);
+        add(boardGUI, BorderLayout.CENTER);
 
         //add buttons to lower left corner
         JPanel buttonPanel = new JPanel();
@@ -74,19 +81,39 @@ public class GUI extends JFrame implements Runnable{
         buttonPanel.add(save);
         buttonPanel.add(load);
         buttonPanel.add(reset);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        add(buttonPanel, gbc);
+        buttonPanel.setPreferredSize(new Dimension(1, 120));
+        add(buttonPanel, BorderLayout.SOUTH);
+        // gbc.gridx = 0;
+        // gbc.gridy = 1;
+        // gbc.gridwidth = 1;
+        // gbc.gridheight = 1;
+        // add(buttonPanel, gbc);
 
-        //add info label to lower right corner
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        add(infoLabel, gbc);
+        // //add info label to lower right corner
+        // gbc.gridx = 1;
+        // gbc.gridy = 1;
+        // gbc.gridwidth = 1;
+        // gbc.gridheight = 1;
+        // add(infoLabel, gbc);
+        add(infoLabel, BorderLayout.NORTH);
 
+        // //add moves area to upper left corner 
+        // gbc.gridx = 0;
+        // gbc.gridy = 0;
+        // gbc.gridwidth = 1;
+        // gbc.gridheight = 1;
+        // add(scrollPane, gbc);
+        movesArea = new JTextArea();
+        movesArea.setEditable(false);
+        Font font = new Font("Arial", Font.PLAIN, 25); // Erstelle ein Schriftobjekt mit Schriftart, Stil und Größe
+        movesArea.setFont(font); // Wende das Schriftobjekt auf das JTextArea an
+        JScrollPane scrollPane = new JScrollPane(movesArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new Dimension(200, 250));
+        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+        add(scrollPane, BorderLayout.WEST);
+        
+        pack();
         setResizable(false);
         setVisible(true);
     }

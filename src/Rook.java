@@ -55,4 +55,9 @@ public class Rook extends Piece {
             return "rook_b";
         }
     }
+
+	@Override
+	public String getAlgebraicNotation() {
+		return "R";
+	}
 }

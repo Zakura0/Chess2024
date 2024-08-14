@@ -60,4 +60,9 @@ public class Queen extends Piece {
             return "queen_b";
         }
     }
+
+	@Override
+	public String getAlgebraicNotation() {
+		return "Q";
+	}
 }

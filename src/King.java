@@ -104,4 +104,9 @@ public class King extends Piece{
             return "king_b";
         }
     }
+
+	@Override
+	public String getAlgebraicNotation() {
+		return "K";
+	}
 }

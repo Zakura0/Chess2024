@@ -100,4 +100,9 @@ public class Pawn extends Piece {
             return "pawn_b";
         }
     }
+
+	@Override
+	public String getAlgebraicNotation() {
+		return "";
+	}
 }

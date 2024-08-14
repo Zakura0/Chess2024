@@ -51,4 +51,9 @@ public class Knight extends Piece {
             return "knight_b";
         }
     }
+
+	@Override
+	public String getAlgebraicNotation() {
+		return "N";
+	}
 }
