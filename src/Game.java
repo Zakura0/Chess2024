@@ -7,15 +7,15 @@ import javax.swing.SwingUtilities;
 
 public class Game {
     public BoardGUI window;
-    private boolean _isWhiteTurn;
+    public static boolean isWhite;
     public static List<Piece> whiteAlive;
     public static List<Piece> blackAlive;
     public static List<Piece> whiteDead;
     public static List<Piece> blackDead;
     public static King whiteKing;
     public static King blackKing;
-    private static BoardGUI boardGUI;
     private static Pawn transformingPawn;
+    private GUI gui;
     public static List<Move> moveQueue;
     private Map<String, Integer> boardStates;
 
@@ -26,15 +26,14 @@ public class Game {
     }
 
     public Game() {
-        boardGUI = new BoardGUI(this);
-        boardGUI.loadGUI();
+        gui = new GUI(this);
         whiteAlive = new ArrayList<Piece>();
         blackAlive = new ArrayList<Piece>();
         whiteDead = new ArrayList<Piece>();
         blackDead = new ArrayList<Piece>();
         boardStates = new HashMap<String, Integer>();
         moveQueue = new ArrayList<Move>();
-        _isWhiteTurn = true;
+        isWhite = true;
         Board.initializeBoard();
         whiteKing = (King) Board.board[7][4];
         blackKing = (King) Board.board[0][4];
@@ -54,11 +53,11 @@ public class Game {
     }
 
     private void changeTurn() {
-        _isWhiteTurn = !_isWhiteTurn;
+        isWhite = !isWhite;
     }
 
     public boolean isWhiteTurn() {
-        return _isWhiteTurn;
+        return isWhite;
     }
 
     public static boolean checkForCheck(boolean color) {
@@ -147,14 +146,9 @@ public class Game {
     }
 
     public void performMove(Piece piece, Move move) {
-        if (Clock.started == false) {
-            Clock.started = true; Clock.counter.start(); 
-        }
-		if (Clock.isWhite) {
-            Clock.isWhite = false;
-        } 
-        else {
-            Clock.isWhite = true;
+        if (GUI.startedClock == false) {
+            GUI.startedClock = true;
+            GUI.counter.start(); 
         }
         Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
         if (destPiece != piece)
@@ -163,44 +157,40 @@ public class Game {
         }
         piece.move(move.getDestRow(), move.getDestCol());
         addMoveToQueue(move);
-        if (piece instanceof Pawn && checkTransform((Pawn) piece)){
-            return;
-        }        
+        // if (piece instanceof Pawn && checkTransform((Pawn) piece)){
+        //     return;
+        // }        
         checkEnPassant(piece, move, destPiece);
         isCastleMove(piece, move);
         calculateAllMoves();
         if(checkForCheck(!piece.getColor())) {
             String color = piece.getColor() ? "black" : "white";
-            Clock.winner.setText("The " + color + " king is in check!"); //Später für UI
+            GUI.infoLabel.setText("The " + color + " king is in check!"); //Später für UI
             if (checkForMateOrStalemate(!piece.getColor()))
             {
-                if (Clock.isWhite = true){
-                    Clock.winner.setText("White won!");
-                    Clock.counter.interrupt();
-                    Clock.draw.setEnabled(false);
+                if (isWhite = true){
+                    GUI.infoLabel.setText("White won!");
+                    GUI.counter.interrupt();
                 }
                 else {
-                    Clock.winner.setText("Black won!");
-                    Clock.counter.interrupt();
-                    Clock.draw.setEnabled(false);
+                    GUI.infoLabel.setText("Black won!");
+                    GUI.counter.interrupt();
                 }
             }
         }
         else if (checkForMateOrStalemate(!piece.getColor()))
         {
-            Clock.winner.setText("Stalemate!");
-            Clock.counter.interrupt();
-            Clock.draw.setEnabled(false);
+            GUI.infoLabel.setText("Stalemate!");
+            GUI.counter.interrupt();
         }
         else {
-            Clock.winner.setText("");
+            GUI.infoLabel.setText("");
         }
         addBoardAsString();
         for (String key : boardStates.keySet()) {
             if (boardStates.get(key) == 3) {
-                Clock.winner.setText("Draw by repetition!");
-                Clock.counter.interrupt();
-                Clock.draw.setEnabled(false);
+                GUI.infoLabel.setText("Draw by repetition!");
+                GUI.counter.interrupt();
             }
         }
         changeTurn();
@@ -321,30 +311,30 @@ public class Game {
     }
 
 
-    private boolean checkTransform(Pawn piece) {
-        if (piece.getRow() == 0 || piece.getRow() == 7) {
-            transformingPawn = piece;
-            boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
-            return true;
-        }
-        return false;
-    }
+    // private boolean checkTransform(Pawn piece) {
+    //     if (piece.getRow() == 0 || piece.getRow() == 7) {
+    //         transformingPawn = piece;
+    //         boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
-    public void performTransform(String piece) {
-        Pawn p = transformingPawn;
-        if (piece.equals("rook")) {
-            Board.board[p.getRow()][p.getCol()] = new Rook(p.getRow(), p.getCol(), p.getColor());
-        } else if (piece.equals("bishop")) {
-            Board.board[p.getRow()][p.getCol()] = new Bishop(p.getRow(), p.getCol(), p.getColor());
-        } else if (piece.equals("knight")) {
-            Board.board[p.getRow()][p.getCol()] = new Knight(p.getRow(), p.getCol(), p.getColor());
-        } else if (piece.equals("queen")) {
-            Board.board[p.getRow()][p.getCol()] = new Queen(p.getRow(), p.getCol(), p.getColor());
-        }
-        boardGUI.hideTransform();
-        transformingPawn = null;
-        performMove(Board.board[p.getRow()][p.getCol()], new Move(p.getRow(), p.getCol(), p.getRow(), p.getCol()));
-    }
+    // public void performTransform(String piece) {
+    //     Pawn p = transformingPawn;
+    //     if (piece.equals("rook")) {
+    //         Board.board[p.getRow()][p.getCol()] = new Rook(p.getRow(), p.getCol(), p.getColor());
+    //     } else if (piece.equals("bishop")) {
+    //         Board.board[p.getRow()][p.getCol()] = new Bishop(p.getRow(), p.getCol(), p.getColor());
+    //     } else if (piece.equals("knight")) {
+    //         Board.board[p.getRow()][p.getCol()] = new Knight(p.getRow(), p.getCol(), p.getColor());
+    //     } else if (piece.equals("queen")) {
+    //         Board.board[p.getRow()][p.getCol()] = new Queen(p.getRow(), p.getCol(), p.getColor());
+    //     }
+    //     boardGUI.hideTransform();
+    //     transformingPawn = null;
+    //     performMove(Board.board[p.getRow()][p.getCol()], new Move(p.getRow(), p.getCol(), p.getRow(), p.getCol()));
+    // }
 
     public void resetGame()
     {
@@ -354,12 +344,12 @@ public class Game {
         blackDead.clear();
         boardStates.clear();
         moveQueue.clear();
-        _isWhiteTurn = true;
+        isWhite = true;
         Board.initializeBoard();
         whiteKing = (King) Board.board[7][4];
         blackKing = (King) Board.board[0][4];
         calculateAllMoves();
-        boardGUI.repaint();
+        gui.repaintBoard();
     }
 
     public void saveGame()

@@ -27,62 +27,18 @@ public class BoardGUI extends JPanel {
     private Map<String, BufferedImage> pieceImages = new HashMap<>();
     private Map<String, ImageIcon> transformIcons = new HashMap<>();
     private Map<String, ImageIcon> takenPiecesIcons = new HashMap<>();
-    private JFrame mainFrame;
-    private JLayeredPane layers;
-    private JPanel boardFrame;
-    private JPanel layeredGlassPane;
-    private JPanel transformPanel;
-    private Dimension frameDim;
-    private Dimension boardDim;
     private int xBoardOffset;
     private int yBoardOffset;
-    private static Clock clock;
     public BoardGUI(Game game) {
         _game = game;
-        clock = new Clock(game);
-        frameDim = new Dimension(1100, 850);
-        boardDim = new Dimension(800, 800);
+        setSize(new Dimension(800, 800));
+        setBounds(xBoardOffset, yBoardOffset, board * tileSize, board * tileSize);
         yBoardOffset = 80;
         xBoardOffset = 55;
         pieceSelected = false;
         loadPieceImages();
-        loadPieceIcons(40, 40, transformIcons);
-        loadPieceIcons(10, 10, takenPiecesIcons);
         initializeListener();
-    }
-
-    public void loadGUI() {
-        mainFrame = new JFrame("Chess");
-        mainFrame.setSize(frameDim);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setLayout(new BorderLayout());
-        
-
-        layers = new JLayeredPane();
-        layers.setPreferredSize(boardDim);
-
-        boardFrame = new JPanel();
-        boardFrame.setLayout(new GridBagLayout());
-        boardFrame.add(this);
-        boardFrame.setBounds(xBoardOffset, yBoardOffset, board * tileSize, board * tileSize);
-        boardFrame.setVisible(true);
-
-        layeredGlassPane = new JPanel();
-        layeredGlassPane.setOpaque(false);
-        layeredGlassPane.addMouseListener(new MouseAdapter() {});
-        layeredGlassPane.addMouseMotionListener(new MouseMotionAdapter() {});
-        layeredGlassPane.setBounds(boardFrame.getBounds());
-        layeredGlassPane.setVisible(false);
-
-        layers.add(boardFrame, JLayeredPane.DEFAULT_LAYER);
-        layers.add(layeredGlassPane, JLayeredPane.PALETTE_LAYER);
-        layers.setVisible(true);
-    
-        mainFrame.add(layers, BorderLayout.CENTER);
-        mainFrame.setLocationRelativeTo(null);
-        mainFrame.setVisible(true);
-        mainFrame.add(clock);
-
+        setVisible(true);
     }
 
     private void initializeListener() {
@@ -163,9 +119,7 @@ public class BoardGUI extends JPanel {
                 g2.fillOval(centerX - 12, centerY - 12, 25, 25);
             }
         }
-    }
-
-    
+    }    
 
     public void repaintBoard() {
         paintComponent(getGraphics());
@@ -214,38 +168,6 @@ public class BoardGUI extends JPanel {
     }
 
 
-    public void showTransform(Piece piece) {
-        layeredGlassPane.setVisible(true);
-        int row = piece.getRow();
-        int col = piece.getCol();
-        boolean color = piece.getColor();
-        transformPanel = new JPanel();
-        List<JButton> buttons = setButtons(color);
-        transformPanel.setLayout(new GridLayout(2, 2, 20, 20));
-        transformPanel.setOpaque(false);
-        for (JButton button : buttons) {
-            button.setSize(new Dimension(40, 40));
-            transformPanel.add(button);
-        }
-        int x = (row*80)-40+xBoardOffset;
-        int y = (col*80)-40+yBoardOffset;
-        transformPanel.setBounds(y, x, 160, 160);
-        layers.add(transformPanel, JLayeredPane.POPUP_LAYER);
-        layers.revalidate();
-        layers.repaint();
-    }
-
-    public void hideTransform() {
-        layeredGlassPane.setVisible(false);
-        transformPanel.removeAll();
-        if (transformPanel != null) {
-            layers.remove(transformPanel);
-            layers.revalidate();
-            layers.repaint();
-        }
-    }
-
-
     private void loadPieceImages() {
         try {
             pieceImages.put("pawn_w", ImageIO.read(new File("src/figures_img/white-pawn.png")));
@@ -265,40 +187,70 @@ public class BoardGUI extends JPanel {
         }
     }
 
-    private void loadPieceIcons(int width, int height, Map<String, ImageIcon> icons) {
-        for (Map.Entry<String, BufferedImage> entry : pieceImages.entrySet()) {
-            Image img = entry.getValue().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
-            icons.put(entry.getKey(), new ImageIcon(img));
-        }
-    }
+    // public void showTransform(Piece piece) {
+    //     layeredGlassPane.setVisible(true);
+    //     int row = piece.getRow();
+    //     int col = piece.getCol();
+    //     boolean color = piece.getColor();
+    //     transformPanel = new JPanel();
+    //     List<JButton> buttons = setButtons(color);
+    //     transformPanel.setLayout(new GridLayout(2, 2, 20, 20));
+    //     transformPanel.setOpaque(false);
+    //     for (JButton button : buttons) {
+    //         button.setSize(new Dimension(40, 40));
+    //         transformPanel.add(button);
+    //     }
+    //     int x = (row*80)-40+xBoardOffset;
+    //     int y = (col*80)-40+yBoardOffset;
+    //     transformPanel.setBounds(y, x, 160, 160);
+    //     layers.add(transformPanel, JLayeredPane.POPUP_LAYER);
+    //     layers.revalidate();
+    //     layers.repaint();
+    // }
 
-    private List<JButton> setButtons(boolean color) {
-        JButton rook;
-        JButton bishop;
-        JButton knight;
-        JButton queen;
-        if (color) {
-            rook = new JButton(transformIcons.get("rook_w"));
-            rook.addActionListener(new TransformActionListener("rook", _game));
-            bishop = new JButton(transformIcons.get("bishop_w"));
-            bishop.addActionListener(new TransformActionListener("bishop", _game));
-            knight = new JButton(transformIcons.get("knight_w"));
-            knight.addActionListener(new TransformActionListener("knight", _game));
-            queen = new JButton(transformIcons.get("queen_w"));
-            queen.addActionListener(new TransformActionListener("queen", _game));
-        } else {
-            rook = new JButton(transformIcons.get("rook_b"));
-            rook.addActionListener(new TransformActionListener("rook", _game));
-            bishop = new JButton(transformIcons.get("bishop_b"));
-            bishop.addActionListener(new TransformActionListener("bishop", _game));
-            knight = new JButton(transformIcons.get("knight_b"));
-            knight.addActionListener(new TransformActionListener("knight", _game));
-            queen = new JButton(transformIcons.get("queen_b"));
-            queen.addActionListener(new TransformActionListener("queen", _game));
-        }
-        List<JButton> buttons = Arrays.asList(rook, bishop, knight, queen);
-        return buttons;
-    }
+    // public void hideTransform() {
+    //     layeredGlassPane.setVisible(false);
+    //     transformPanel.removeAll();
+    //     if (transformPanel != null) {
+    //         layers.remove(transformPanel);
+    //         layers.revalidate();
+    //         layers.repaint();
+    //     }
+    // }
 
+    // private void loadPieceIcons(int width, int height, Map<String, ImageIcon> icons) {
+    //     for (Map.Entry<String, BufferedImage> entry : pieceImages.entrySet()) {
+    //         Image img = entry.getValue().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+    //         icons.put(entry.getKey(), new ImageIcon(img));
+    //     }
+    // }
+
+    // private List<JButton> setButtons(boolean color) {
+    //     JButton rook;
+    //     JButton bishop;
+    //     JButton knight;
+    //     JButton queen;
+    //     if (color) {
+    //         rook = new JButton(transformIcons.get("rook_w"));
+    //         rook.addActionListener(new TransformActionListener("rook", _game));
+    //         bishop = new JButton(transformIcons.get("bishop_w"));
+    //         bishop.addActionListener(new TransformActionListener("bishop", _game));
+    //         knight = new JButton(transformIcons.get("knight_w"));
+    //         knight.addActionListener(new TransformActionListener("knight", _game));
+    //         queen = new JButton(transformIcons.get("queen_w"));
+    //         queen.addActionListener(new TransformActionListener("queen", _game));
+    //     } else {
+    //         rook = new JButton(transformIcons.get("rook_b"));
+    //         rook.addActionListener(new TransformActionListener("rook", _game));
+    //         bishop = new JButton(transformIcons.get("bishop_b"));
+    //         bishop.addActionListener(new TransformActionListener("bishop", _game));
+    //         knight = new JButton(transformIcons.get("knight_b"));
+    //         knight.addActionListener(new TransformActionListener("knight", _game));
+    //         queen = new JButton(transformIcons.get("queen_b"));
+    //         queen.addActionListener(new TransformActionListener("queen", _game));
+    //     }
+    //     List<JButton> buttons = Arrays.asList(rook, bishop, knight, queen);
+    //     return buttons;
+    // }
 
 }
