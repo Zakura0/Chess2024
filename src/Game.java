@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class Game {
@@ -14,7 +15,6 @@ public class Game {
     public static List<Piece> blackDead;
     public static King whiteKing;
     public static King blackKing;
-    private static Pawn transformingPawn;
     private GUI gui;
     public static List<Move> moveQueue;
     private Map<String, Integer> boardStates;
@@ -145,6 +145,38 @@ public class Game {
         return false;
     }
 
+    public int getPromotionChoice(Move move) {
+        String[] options = {"Queen", "Rook", "Bishop", "Knight"};
+        int choice = JOptionPane.showOptionDialog(
+            null,
+            "Choose a piece for promotion:",
+            "Pawn Promotion",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+
+        switch (choice) {
+            case 0:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(), move.getDestCol(), isWhite);
+                return 1;
+            case 1:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Rook(move.getDestRow(), move.getDestCol(), isWhite);
+                return 2;
+            case 2:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Bishop(move.getDestRow(), move.getDestCol(), isWhite);
+                return 3;
+            case 3:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Knight(move.getDestRow(), move.getDestCol(), isWhite);
+                return 4;
+            default:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(), move.getDestCol(), isWhite);
+                return 1;
+        }
+    }
+
     public void performMove(Piece piece, Move move) {
         if (GUI.startedClock == false) {
             GUI.startedClock = true;
@@ -156,10 +188,31 @@ public class Game {
             killPiece(destPiece);
         }
         piece.move(move.getDestRow(), move.getDestCol());
-        addMoveToQueue(move);
-        // if (piece instanceof Pawn && checkTransform((Pawn) piece)){
-        //     return;
-        // }        
+        if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) {
+            if (move.getTransformation() != 0) {
+                switch (move.getTransformation()) {
+                    case 1:
+                        Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(), move.getDestCol(), isWhite);
+                        break;
+                    case 2:
+                        Board.board[move.getDestRow()][move.getDestCol()] = new Rook(move.getDestRow(), move.getDestCol(), isWhite);
+                        break;
+                    case 3:
+                        Board.board[move.getDestRow()][move.getDestCol()] = new Bishop(move.getDestRow(), move.getDestCol(), isWhite);    
+                        break;
+                    case 4:
+                        Board.board[move.getDestRow()][move.getDestCol()] = new Knight(move.getDestRow(), move.getDestCol(), isWhite);       
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else{
+                int choice = getPromotionChoice(move);
+                move.setTransformation(choice);
+            }
+        }
+        addMoveToQueue(move);    
         checkEnPassant(piece, move, destPiece);
         isCastleMove(piece, move);
         calculateAllMoves();
@@ -309,32 +362,6 @@ public class Game {
         String boardState = sb.toString();
         boardStates.put(boardState, boardStates.getOrDefault(boardState, 0) + 1);
     }
-
-
-    // private boolean checkTransform(Pawn piece) {
-    //     if (piece.getRow() == 0 || piece.getRow() == 7) {
-    //         transformingPawn = piece;
-    //         boardGUI.showTransform(piece);  // Weiss, da nur diese Pawns zu Rank 0 kommen können, 1 aus testgründen
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    // public void performTransform(String piece) {
-    //     Pawn p = transformingPawn;
-    //     if (piece.equals("rook")) {
-    //         Board.board[p.getRow()][p.getCol()] = new Rook(p.getRow(), p.getCol(), p.getColor());
-    //     } else if (piece.equals("bishop")) {
-    //         Board.board[p.getRow()][p.getCol()] = new Bishop(p.getRow(), p.getCol(), p.getColor());
-    //     } else if (piece.equals("knight")) {
-    //         Board.board[p.getRow()][p.getCol()] = new Knight(p.getRow(), p.getCol(), p.getColor());
-    //     } else if (piece.equals("queen")) {
-    //         Board.board[p.getRow()][p.getCol()] = new Queen(p.getRow(), p.getCol(), p.getColor());
-    //     }
-    //     boardGUI.hideTransform();
-    //     transformingPawn = null;
-    //     performMove(Board.board[p.getRow()][p.getCol()], new Move(p.getRow(), p.getCol(), p.getRow(), p.getCol()));
-    // }
 
     public void resetGame()
     {

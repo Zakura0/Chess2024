@@ -22,6 +22,7 @@ public class SaveGame {
                 writer.write(move.toString());
 
             }
+            writer.write("*" + GUI.timeWhite + "," + GUI.timeBlack);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,18 +34,23 @@ public class SaveGame {
         try {
             File file = new File(fileName);
             Scanner scanner = new Scanner(file);
-            scanner.useDelimiter(":");
-            while (scanner.hasNext()) {
-                String moveString = scanner.next();
-                String[] moveFields = moveString.split(",");
+            String[] moves_and_times = scanner.nextLine().split("\\*");
+            String[] moves_strings = moves_and_times[0].split(":");
+            for (String string : moves_strings) {
+                String[] moveFields = string.split(",");
                 int currRow = Integer.parseInt(moveFields[0]);
                 int currCol = Integer.parseInt(moveFields[1]);
                 int destRow = Integer.parseInt(moveFields[2]);
                 int destCol = Integer.parseInt(moveFields[3]);
-                Move move = new Move(currRow, currCol, destRow, destCol);
+                int pieceType = Integer.parseInt(moveFields[4]);
+                Move move = new Move(currRow, currCol, destRow, destCol, pieceType);
                 moveQueue.add(move);
             }
             scanner.close();
+            int whiteTime = Integer.parseInt(moves_and_times[1].split(",")[0]);
+            int blackTime = Integer.parseInt(moves_and_times[1].split(",")[1]);
+            GUI.timeWhite = whiteTime;
+            GUI.timeBlack = blackTime;
         } catch (IOException e) {
             e.printStackTrace();
         }

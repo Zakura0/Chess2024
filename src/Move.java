@@ -4,12 +4,30 @@ public class Move {
     private int _curr_col;
     private int _dest_row;
     private int _dest_col;
+    private int _transformation;
 
     public Move(int curr_row, int curr_col, int dest_row, int dest_col) {
         _curr_row = curr_row;
         _curr_col = curr_col;
         _dest_row = dest_row;
         _dest_col = dest_col;
+        _transformation = 0;
+    }
+
+    public Move(int curr_row, int curr_col, int dest_row, int dest_col, int transformation) {
+        _curr_row = curr_row;
+        _curr_col = curr_col;
+        _dest_row = dest_row;
+        _dest_col = dest_col;
+        _transformation = transformation;
+    }
+
+    public void setTransformation(int transformation) {
+        _transformation = transformation;
+    }
+
+    public int getTransformation() {
+        return _transformation;
     }
 
     public Piece getMovingPiece() {
@@ -57,7 +75,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return _curr_row + "," + _curr_col + "," + _dest_row + "," + _dest_col + ":";
+        return _curr_row + "," + _curr_col + "," + _dest_row + "," + _dest_col + "," + _transformation + ":";
     }
 
 }

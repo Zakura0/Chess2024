@@ -22,8 +22,8 @@ public class GUI extends JFrame implements Runnable{
     private JButton save;
     private JButton load;
     private JButton reset;
-    private int timeWhite = 10*60;
-    private int timeBlack = 11*60;
+    public static int timeWhite = 10*60;
+    public static int timeBlack = 10*60;
     public static boolean startedClock;
     public static Thread counter;
     private Game game;
