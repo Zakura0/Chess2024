@@ -5,6 +5,7 @@ import javax.swing.*;
 public class Clock extends JPanel {
 	
 	private JLabel time;
+    public GUI gui;
 
 	public Clock(int timeLimit) {
         time = new JLabel(timeLimit/60 + ":" + String.format("%02d", timeLimit%60));
@@ -17,4 +18,5 @@ public class Clock extends JPanel {
     public JLabel getTime() {
         return time;
     }
+
 }

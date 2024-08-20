@@ -15,6 +15,11 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 
+/**
+ * In GUI werden neben dem Schachbrett die Haupt-GUI Komponenten dargestellt.
+ * @author Gruppe 02
+ * 
+ */
 public class GUI extends JFrame implements Runnable{
     private Dimension frameDim = new Dimension(1500, 900);
     private BoardGUI boardGUI;
@@ -101,13 +106,20 @@ public class GUI extends JFrame implements Runnable{
         Border matteBorder = BorderFactory.createMatteBorder(0, 0, 0, 20,new Color(238,238,238));
         scrollPane.setBorder(matteBorder);
         Border emptyBorder = BorderFactory.createEmptyBorder(20, 20, 50, 20);
-        
+
         this.getRootPane().setBorder(emptyBorder); 
         pack();
         setResizable(false);
         setVisible(true);
     }
 
+    /**
+     * Die Methode initialisiert alle Buttons (Draw, Save, Load, Reset).
+     * Hier bei stoppt das Schachspiel und die Uhr wenn auf "Draw" gedrückt wird. Das Spiel endet im Unentschieden.
+     * "Save" erzeugt eine .txt Datei und speichert alle Informationen über das aktuelle Schachbrett (Position, Rocharde, Wer dran ist).
+     * "Load" lädt eine gewisse Schachposition aus einer .txt Datei ("Save").
+     * "Reset" setzt das Schachbrett und die Uhr zurück. 
+     */
     private void initButtons(){
         draw = new JButton("Draw");
         draw.addActionListener(new ActionListener() {
@@ -123,7 +135,7 @@ public class GUI extends JFrame implements Runnable{
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SaveGame.saveGame(Game.moveQueue);
+                SaveGame.saveGame(Game.moveQueue); 
             }
         });
 
@@ -153,15 +165,24 @@ public class GUI extends JFrame implements Runnable{
         });
     }
 
+    /**
+     * Setzt die GUI zurück.
+     */
     public void repaintBoard(){
         boardGUI.repaint();
     }
 
+    /**
+    *  Implementation der Uhr.
+    * @param timeWhite Die Zeit für Weiß.
+    * @param timeBlack Die Zeit für Schwarz.
+    * @boolean startedClock = false Die Uhr fängt nicht an zu zählen, =true, Die Uhr fängt an zu zählen.
+     */
     @Override
 	public void run() {	
 		while(startedClock) {
 			try  {
-				Thread.sleep(1000);
+				Thread.sleep(1000); //Uhr läuft auf einem anderen Thread um Synchronität und Funktionalität zu garantieren.
 			}
 			catch (InterruptedException e) {
                 break;
@@ -199,13 +220,20 @@ public class GUI extends JFrame implements Runnable{
 			clockBlack.getTime().setText(timeBlack/60 + ":" + String.format("%02d", timeBlack%60));
 		}
 	}
-
+/**
+ * Setzt die Uhr für beide Spieler zurück.
+ * @param timeLimit Die gegebene Spielzeit für beide Spieler (10 Minuten default).
+ * @param timeWhite Die Zeit für Weiß (hier = timelimit, da die Uhr zurückgesetzt wird).
+ * @param timeBlack Die Zeit für Schwarz.
+ * @param infoLabel JTextField welches gewisse Infos anzeigt wie "Black won!" oder hier: "Welcome to Chess".
+ * @param startedClock = false Die Uhr fängt nicht an zu zählen wenn auf Reset gedrückt wird. 
+ */
     public void resetTimer(){
         int timeLimit = 10;
         timeLimit*=60;
         timeWhite = timeLimit; 
         timeBlack = timeLimit;
-        infoLabel.setText("");
+        infoLabel.setText("Welcome to Chess");
         clockWhite.getTime().setText(timeWhite/60 + ":" + String.format("%02d", timeWhite%60));
         clockBlack.getTime().setText(timeBlack/60 + ":" + String.format("%02d", timeBlack%60));
         counter = new Thread(this);

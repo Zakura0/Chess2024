@@ -404,6 +404,7 @@ public class Game {
         moveQueue.clear();
         algebraic = "";
         GUI.movesArea.setText("");
+        GUI.infoLabel.setText("Welcome to Chess");
         isWhite = true;
         Board.initializeBoard();
         whiteKing = (King) Board.board[7][4];

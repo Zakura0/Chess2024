@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.awt.*;
 
-/*
+/**
  * Die Klasse BoardGUI erzeugt die Benutzerschnittstelle des Schachbretts, worauf der Nutzer interagieren kann. 
+ * @author Gruppe 02
  */
 
 public class BoardGUI extends JPanel {
@@ -44,6 +45,7 @@ public class BoardGUI extends JPanel {
         setVisible(true);
     }
 
+
     private void initializeListener() {
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -54,6 +56,15 @@ public class BoardGUI extends JPanel {
             }
         });
     }
+
+    /**
+     * Bewertet ob ein jeweiliger Klick gültig ist (gibt zum Beispiel "It's not your turn" zurück wenn Schwarz gerade dran ist, aber Weiß spielen will).
+     * Sollte ein Zug gültig sein werden alle möglichen Züge angezeigt.
+     * Wenn ein Spieler einen möglichen Zug anklickt, wird dieser auch ausgeführt und das Schachbrett aktualisiert sich visuell.
+     * 
+     * @param row Reihe des angeklickten Schachfeldes
+     * @param col Zeile des angeklickten Schachfeldes 
+     */
 
     private void evaluateClick(int row, int col) {
         if (!pieceSelected) {
@@ -98,6 +109,13 @@ public class BoardGUI extends JPanel {
 
     }
 
+    /**
+     * Zeigt die möglichen Züge einer Figur auf dem Schachbrett an.
+     * 
+     * @param moves Liste der möglichen Züge
+     * @param row Reihe der Figur
+     * @param col Spalte der Figur
+     */
     public void showMoves(List<Move> moves, int row, int col) {
         Piece piece = Board.board[row][col];        
         for (Move move : moves) {
@@ -124,10 +142,16 @@ public class BoardGUI extends JPanel {
         }
     }    
 
+    /**
+     * Stellt das Schachbrett auf seine Startposition.
+     */
     public void repaintBoard() {
         paintComponent(getGraphics());
     }
 
+    /**
+     * Erzeugt das Schachbrett.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -165,17 +189,20 @@ public class BoardGUI extends JPanel {
         }
     }
 
+    /**
+     * Setzt die Größe des Schachbretts fest anhand der Feldgröße.
+     * @return Die Größe des Schachbretts
+     */
+
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(board * tileSize, board * tileSize);
     }
 
 
-
-
-
-
-
+    /**
+     * Lädt die Bilder der Schachfiguren.
+     */
     private void loadPieceImages() {
         try {
             pieceImages.put("pawn_w", ImageIO.read(new File("src/figures_img/white-pawn.png")));

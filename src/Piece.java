@@ -1,6 +1,9 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.*;
+import javax.swing.ImageIcon;
+
 
 
 public abstract class Piece {
@@ -91,6 +94,52 @@ public abstract class Piece {
         } else {
             return false;
         }
+    }
+
+    
+    public Image getImage(){
+        String imagePath = "";
+        if (getName() != null) {
+            switch (getName()) {
+                case "king_w":
+                    imagePath = "images/white-king.png";
+                    break;
+                case "queen_w":
+                    imagePath = "images/white-queen.png";
+                    break;
+                case "rook_w":
+                    imagePath = "images/white-rook.png";
+                    break;
+                case "bishop_w":
+                    imagePath = "images/white-bishop.png";
+                    break;
+                case "knight_w":
+                    imagePath = "images/white_knight.png";
+                    break;
+                case "pawn_w":
+                    imagePath = "images/white-pawn.png";
+                    break;
+                case "king_b":
+                    imagePath = "images/black-king.png";
+                    break;
+                case "queen_b":
+                    imagePath = "images/wblack-queen.png";
+                    break;
+                case "rook_b":
+                    imagePath = "images/wblack-rook.png";
+                    break;
+                case "bishop_b":
+                    imagePath = "images/wblack-bishop.png";
+                    break;
+                case "knight_b":
+                    imagePath = "images/black-knight.png";
+                    break;
+                case "pawn_b":
+                    imagePath = "images/black-pawn.png";
+                    break;
+            }
+        }
+        return new ImageIcon(imagePath).getImage();
     }
 
     public abstract String getAlgebraicNotation();
