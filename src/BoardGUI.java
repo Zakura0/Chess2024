@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.awt.*;
 
+/*
+ * Die Klasse BoardGUI erzeugt die Benutzerschnittstelle des Schachbretts, worauf der Nutzer interagieren kann. 
+ */
+
 public class BoardGUI extends JPanel {
 
     private final int tileSize = 80;

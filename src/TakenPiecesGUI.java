@@ -1,33 +1,43 @@
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
+public class TakenPiecesGUI extends JPanel {
 
-public class TakenPiecesGUI {
+    private JLayeredPane layeredGlassPane;
+    private JPanel whiteCapturedPanel;
+    private JPanel blackCapturedPanel;
 
-    Piece piece;
-    layeredGlassPane = new JLayeredPane();
-    
-        layeredGlassPane.setVisible(true);
-        int row = piece.getRow();
-        int col = piece.getCol();
-        boolean color = piece.getColor();
-        transformPanel = new JPanel();
-        List<JButton> buttons = setButtons(color);
-        transformPanel.setLayout(new GridLayout(2, 2, 20, 20));
-        transformPanel.setOpaque(false);
-        for (JButton button : buttons) {
-            button.setSize(new Dimension(40, 40));
-            transformPanel.add(button);
+    public TakenPiecesGUI() {
+
+        setLayout(new BorderLayout());
+        whiteCapturedPanel = new JPanel(new GridLayout(1, 16, 2, 2));
+        blackCapturedPanel = new JPanel(new GridLayout(1, 16, 2, 2));
+
+        whiteCapturedPanel.setOpaque(false);
+        blackCapturedPanel.setOpaque(false);
+
+        add(whiteCapturedPanel, BorderLayout.NORTH);
+        add(blackCapturedPanel, BorderLayout.SOUTH);
+    }
+
+    public void updateCapturedPieces(List<Piece> whiteCaptured, List<Piece> blackCaptured) {
+        whiteCapturedPanel.removeAll();
+        blackCapturedPanel.removeAll();
+
+        for (Piece piece : whiteCaptured) {
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH)));
+            whiteCapturedPanel.add(pieceLabel);
         }
-        int x = (row*80)-40+xBoardOffset;
-        int y = (col*80)-40+yBoardOffset;
-        transformPanel.setBounds(y, x, 160, 160);
-        layers.add(transformPanel, JLayeredPane.POPUP_LAYER);
-        layers.revalidate();
-        layers.repaint();
+
+        for (Piece piece : blackCaptured) {
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH)));
+            blackCapturedPanel.add(pieceLabel);
+        }
+
+        whiteCapturedPanel.revalidate();
+        whiteCapturedPanel.repaint();
+        blackCapturedPanel.revalidate();
+        blackCapturedPanel.repaint();
     }
 }
-

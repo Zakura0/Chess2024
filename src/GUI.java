@@ -97,12 +97,11 @@ public class GUI extends JFrame implements Runnable{
         add(scrollPane, BorderLayout.WEST);
         add(boardGUI, BorderLayout.CENTER);
 
-       // Create an empty border for padding
-        Border matteBorder = BorderFactory.createMatteBorder(0, 0, 0, 20,new Color(238,238,238));
-        // Combine them using a CompoundBorder
-        scrollPane.setBorder(matteBorder);
 
+        Border matteBorder = BorderFactory.createMatteBorder(0, 0, 0, 20,new Color(238,238,238));
+        scrollPane.setBorder(matteBorder);
         Border emptyBorder = BorderFactory.createEmptyBorder(20, 20, 50, 20);
+        
         this.getRootPane().setBorder(emptyBorder); 
         pack();
         setResizable(false);
