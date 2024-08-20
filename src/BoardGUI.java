@@ -1,6 +1,8 @@
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -59,7 +61,7 @@ public class BoardGUI extends JPanel {
                 return;
             }
             if (piece.getColor() != _game.isWhiteTurn()) {
-                System.out.println("It's not your turn!");
+                GUI.infoLabel.setText("It's not your turn");
                 repaintBoard();
                 return;
             }
@@ -163,6 +165,11 @@ public class BoardGUI extends JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(board * tileSize, board * tileSize);
     }
+
+
+
+
+
 
 
     private void loadPieceImages() {

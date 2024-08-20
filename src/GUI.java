@@ -4,19 +4,16 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import java.awt.Color;
 
 public class GUI extends JFrame implements Runnable{
     private Dimension frameDim = new Dimension(1500, 900);
@@ -41,12 +38,6 @@ public class GUI extends JFrame implements Runnable{
         setSize(frameDim);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // GridBagLayout layout = new GridBagLayout();
-        // GridBagConstraints gbc = new GridBagConstraints();
-        // setLayout(layout);
-
-        setLayout(new BorderLayout());
-
         infoLabel = new JLabel("Welcome to Chess");
         boardGUI = new BoardGUI(game);
         clockWhite = new Clock(timeWhite);
@@ -54,55 +45,48 @@ public class GUI extends JFrame implements Runnable{
         counter = new Thread(this);
         initButtons();
 
-        //add clocks to upper right corner
-        JPanel clockPanel = new JPanel();
-        clockPanel.setLayout(new GridLayout(2, 1));
-        clockPanel.add(clockBlack);
-        clockPanel.add(clockWhite);
-        add(clockPanel, BorderLayout.EAST);
-        // gbc.gridx = 1;
-        // gbc.gridy = 0;
-        // gbc.gridwidth = 1;
-        // gbc.gridheight = 1;
-        // add(clockPanel, gbc);
+        JPanel blackClockPanel = new JPanel();
+        blackClockPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcB = new GridBagConstraints();
+        gbcB.insets = new Insets(0, 50, 0, 50); 
+        blackClockPanel.add(clockBlack, gbcB);
 
-        // //add board to center
-        // gbc.gridx = 0;
-        // gbc.gridy = 0;
-        // gbc.gridwidth = 1;
-        // gbc.gridheight = 1;
-        // add(boardGUI, gbc);
-        add(boardGUI, BorderLayout.CENTER);
+        JPanel whiteClockPanel = new JPanel();
+        whiteClockPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcW = new GridBagConstraints();
+        gbcW = new GridBagConstraints();
+        gbcW.insets = new Insets(5, 50, 0, 50);
+        whiteClockPanel.add(clockWhite, gbcW);
 
-        //add buttons to lower left corner
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 1));
-        buttonPanel.add(draw);
-        buttonPanel.add(save);
-        buttonPanel.add(load);
-        buttonPanel.add(reset);
-        buttonPanel.setPreferredSize(new Dimension(1, 120));
-        add(buttonPanel, BorderLayout.SOUTH);
-        // gbc.gridx = 0;
-        // gbc.gridy = 1;
-        // gbc.gridwidth = 1;
-        // gbc.gridheight = 1;
-        // add(buttonPanel, gbc);
 
-        // //add info label to lower right corner
-        // gbc.gridx = 1;
-        // gbc.gridy = 1;
-        // gbc.gridwidth = 1;
-        // gbc.gridheight = 1;
-        // add(infoLabel, gbc);
+        Dimension buttonSize = new Dimension(150, 30);
+        draw.setPreferredSize(buttonSize);
+        save.setPreferredSize(buttonSize);
+        load.setPreferredSize(buttonSize);
+        reset.setPreferredSize(buttonSize);
+
+
+        JPanel eastPanel = new JPanel();
+        eastPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5); 
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        eastPanel.add(blackClockPanel, gbc);
+        gbc.gridy = 1;
+        eastPanel.add(draw, gbc);
+        gbc.gridy = 2;
+        eastPanel.add(save, gbc);
+        gbc.gridy = 3;
+        eastPanel.add(load, gbc);
+        gbc.gridy = 4;
+        eastPanel.add(reset, gbc);
+        gbc.gridy = 5;
+        eastPanel.add(whiteClockPanel, gbc);
+        add(eastPanel, BorderLayout.EAST);
         add(infoLabel, BorderLayout.NORTH);
 
-        // //add moves area to upper left corner 
-        // gbc.gridx = 0;
-        // gbc.gridy = 0;
-        // gbc.gridwidth = 1;
-        // gbc.gridheight = 1;
-        // add(scrollPane, gbc);
         movesArea = new JTextArea();
         movesArea.setEditable(false);
         Font font = new Font("Arial", Font.PLAIN, 25); // Erstelle ein Schriftobjekt mit Schriftart, Stil und Größe
@@ -110,9 +94,16 @@ public class GUI extends JFrame implements Runnable{
         JScrollPane scrollPane = new JScrollPane(movesArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setPreferredSize(new Dimension(200, 250));
-        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         add(scrollPane, BorderLayout.WEST);
-        
+        add(boardGUI, BorderLayout.CENTER);
+
+       // Create an empty border for padding
+        Border matteBorder = BorderFactory.createMatteBorder(0, 0, 0, 20,new Color(238,238,238));
+        // Combine them using a CompoundBorder
+        scrollPane.setBorder(matteBorder);
+
+        Border emptyBorder = BorderFactory.createEmptyBorder(20, 20, 50, 20);
+        this.getRootPane().setBorder(emptyBorder); 
         pack();
         setResizable(false);
         setVisible(true);
