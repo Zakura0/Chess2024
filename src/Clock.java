@@ -2,6 +2,10 @@ import java.awt.*;
 
 import javax.swing.*;
 
+/**
+ * Clock erzeugt die GUI einer Uhr. 
+ * @author Gruppe 02
+ */
 public class Clock extends JPanel {
 	
 	private JLabel time;

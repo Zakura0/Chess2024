@@ -150,7 +150,8 @@ public class BoardGUI extends JPanel {
     }
 
     /**
-     * Erzeugt das Schachbrett.
+     * Erzeugt das Schachbrett, mit der jeweiligen Feldbezeichnung und nen Schachfiguren
+     * @param alphabet Gibt die Feldbeschriftungen des Schachbretts an.
      */
     @Override
     protected void paintComponent(Graphics g) {
