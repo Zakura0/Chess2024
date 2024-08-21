@@ -2,12 +2,19 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Die Klasse Pawn repräsentiert den Bauern im Schachspiel. * 
+ * @see Piece
+ */
 public class Pawn extends Piece {
 
     public Pawn(int row, int col, boolean color) {
         super(row, col, color);
     }
 
+    /*
+     * @see Piece#calculatePossibleMoves()
+     */
     public void calculatePossibleMoves() {
         List<Move> moves = new ArrayList<>();
         int row = this.getRow();

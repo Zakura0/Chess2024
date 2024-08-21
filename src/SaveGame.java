@@ -5,8 +5,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+ * Die Klasse SaveGame speichert und lädt ein Spiel.
+ */
 public class SaveGame {
 
+    /*
+     * Speichert das Spiel in einer Datei.
+     * 
+     * @param moveQueue Die Liste der Züge, die gespeichert werden sollen.
+     * 
+     */
     public static void saveGame(List<Move> moveQueue) {
         int saveNumber = 1;
         String fileName = "chess_save_" + saveNumber + ".txt";
@@ -29,6 +38,13 @@ public class SaveGame {
         }
     }
 
+    /*
+     * Lädt die Züge aus einer Datei.
+     * 
+     * @param fileName Der Name der Datei, aus der die Züge geladen werden sollen.
+     * 
+     * @return Die Liste der geladenen Züge.
+     */
     public static ArrayList<Move> loadGameMoves(String fileName) {
         ArrayList<Move> moveQueue = new ArrayList<>();
         try {
@@ -57,6 +73,13 @@ public class SaveGame {
         return moveQueue;
     }
 
+    /*
+     * Stellt ein Spiel aus den geladenen Zügen wieder her.
+     * 
+     * @param game Das Spiel, in das die Züge geladen werden sollen.
+     * 
+     * @param moveQueue Die Liste der Züge, die geladen wurden
+     */
     public static void loadGame(Game game, List<Move> moveQueue) {
         for (Move move : moveQueue) {
             Piece movingPiece = Board.board[move.getCurrRow()][move.getCurrCol()];

@@ -1,12 +1,19 @@
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Die Klasse Knight repräsentiert den Springer im Schachspiel.
+ * 
+ * @see Piece
+ */
 public class Knight extends Piece {
     public Knight(int row, int col, boolean color) {
         super(row, col, color);
     }
 
+    /*
+     * @see Piece#calculatePossibleMoves()
+     */
     public void calculatePossibleMoves() {
         List<Move> moves = new ArrayList<>();
         int row = this.getRow();

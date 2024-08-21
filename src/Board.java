@@ -1,7 +1,13 @@
+/*
+ * Klasse für das Schachbrett
+ */
 public class Board {
     
     public static Piece[][] board;
 
+    /**
+     * Initialisiert das Schachbrett.
+     */
     public static void initializeBoard() {
         board = new Piece[8][8];
         for (int i = 0; i < 8; i++) {
@@ -19,7 +25,7 @@ public class Board {
         board[0][3] = new Queen(0, 3, false);
         Game.blackAlive.add(board[0][3]);
         board[0][4] = new King(0, 4, false);
-        Game.blackAlive.addFirst(board[0][4]); // Hardcode für den König damit dieser immer an erster Stelle ist
+        Game.blackAlive.addFirst(board[0][4]);
         board[0][5] = new Bishop(0, 5, false);
         Game.blackAlive.add(board[0][5]);
         board[0][6] = new Knight(0, 6, false);
@@ -35,7 +41,7 @@ public class Board {
         board[7][3] = new Queen(7, 3, true);
         Game.whiteAlive.add(board[7][3]);
         board[7][4] = new King(7, 4, true);
-        Game.whiteAlive.addFirst(board[7][4]); // Hardcode für den König damit dieser immer an erster Stelle ist
+        Game.whiteAlive.addFirst(board[7][4]);
         board[7][5] = new Bishop(7, 5, true);
         Game.whiteAlive.add(board[7][5]);                
         board[7][6] = new Knight(7, 6, true);

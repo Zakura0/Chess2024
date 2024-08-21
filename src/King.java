@@ -2,6 +2,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Die Klasse King repräsentiert den König im Schachspiel.
+ * 
+ * @see Piece
+ */
 public class King extends Piece{
     private boolean _smallCastle;
     private boolean _bigCastle;
@@ -28,6 +33,9 @@ public class King extends Piece{
         _bigCastle = isPossible;
     }
 
+    /*
+     * @see Piece#calculatePossibleMoves()
+     */
     public void calculatePossibleMoves() {
         List<Move> moves = new ArrayList<>();
         int row = this.getRow();
