@@ -32,6 +32,7 @@ public class GUI extends JFrame implements Runnable{
     private JButton save;
     private JButton load;
     private JButton reset;
+    public static int timeLimit;
     public static int timeWhite;
     public static int timeBlack;
     public static boolean startedClock;
@@ -53,6 +54,7 @@ public class GUI extends JFrame implements Runnable{
             else {
                 whitePlayer = "White";
                 blackPlayer = "Black";
+                timeLimit = 10;
                 timeWhite = 10;
                 timeBlack = 10;
             }
@@ -154,6 +156,7 @@ public class GUI extends JFrame implements Runnable{
             whitePlayer = whitePlayerField.getText();
             blackPlayer = blackPlayerField.getText();
             int time = Integer.parseInt(timeField.getText());
+            timeLimit = time;
             timeWhite = time;
             timeBlack = time;
         }
@@ -275,7 +278,7 @@ public class GUI extends JFrame implements Runnable{
  * @param startedClock = false Die Uhr fängt nicht an zu zählen wenn auf Reset gedrückt wird. 
  */
     public void resetTimer(){
-        int timeLimit = 10;
+        int timeLimit = GUI.timeLimit;
         timeLimit*=60;
         timeWhite = timeLimit; 
         timeBlack = timeLimit;
