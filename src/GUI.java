@@ -24,25 +24,41 @@ public class GUI extends JFrame implements Runnable{
     private Dimension frameDim = new Dimension(1500, 900);
     private BoardGUI boardGUI;
     private capturedGUI capturedGUI;
+    private String whitePlayer;
+    private String blackPlayer;
     private Clock clockWhite;
     private Clock clockBlack;
     private JButton draw;
     private JButton save;
     private JButton load;
     private JButton reset;
-    public static int timeWhite = 10*60;
-    public static int timeBlack = 10*60;
+    public static int timeWhite;
+    public static int timeBlack;
     public static boolean startedClock;
     public static Thread counter;
     private Game game;
     public static JLabel infoLabel;
     public static JTextArea movesArea;
+    public static boolean unitTest = false;
 
     public GUI(Game game) {
         this.game = game;
         setTitle("Chess");
         setSize(frameDim);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        {
+            if (!unitTest) {
+                openNewGameDialog();
+            }
+            else {
+                whitePlayer = "White";
+                blackPlayer = "Black";
+                timeWhite = 10;
+                timeBlack = 10;
+            }
+        }        
+        timeWhite *= 60;
+        timeBlack *= 60;
 
         infoLabel = new JLabel("Welcome to Chess");
         boardGUI = new BoardGUI(game);
@@ -119,6 +135,28 @@ public class GUI extends JFrame implements Runnable{
         pack();
         setResizable(false);
         setVisible(true);
+    }
+
+    private void openNewGameDialog() {
+        JTextField whitePlayerField = new JTextField();
+        JTextField blackPlayerField = new JTextField();
+        JTextField timeField = new JTextField();
+
+        Object[] message = {
+            "White Player:", whitePlayerField,
+            "Black Player:", blackPlayerField,
+            "Time (minutes):", timeField
+        };
+
+        int option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) {
+            whitePlayer = whitePlayerField.getText();
+            blackPlayer = blackPlayerField.getText();
+            int time = Integer.parseInt(timeField.getText());
+            timeWhite = time;
+            timeBlack = time;
+        }
     }
 
     /**
