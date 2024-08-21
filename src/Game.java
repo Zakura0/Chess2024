@@ -6,16 +6,19 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+/**
+ * Die Game Klasse ist die Hauptklasse des Spiels und verwaltet die Spiellogik.
+ * Sie erstellt außerdem die Benutzeroberfläche und initialisiert das Spiel.
+ */
 public class Game {
-    public BoardGUI window;
     public static boolean isWhite;
     public static List<Piece> whiteAlive;
     public static List<Piece> blackAlive;
     public static List<Piece> whiteDead;
     public static List<Piece> blackDead;
-    public static King whiteKing;
-    public static King blackKing;
-    public static String algebraic;
+    private static King whiteKing;
+    private static King blackKing;
+    private String algebraic;
     private GUI gui;
     public static List<Move> moveQueue;
     private Map<String, Integer> boardStates;
@@ -42,7 +45,7 @@ public class Game {
         calculateAllMoves();
     }
 
-    public void calculateAllMoves() {
+    private void calculateAllMoves() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Piece piece = Board.board[i][j];
@@ -69,21 +72,35 @@ public class Game {
         return tileUnderAttack(KingRow, KingCol, color);
     }
 
+    /*
+     * Diese Methode überprüft, ob das Feld unter Angriff steht,
+     * indem alle möglichen Felder die dieses Feld angreifen könnten, überprüft
+     * werden.
+     * 
+     * @param row Zeile des Feldes
+     * 
+     * @param col Spalte des Feldes
+     * 
+     * @param color Farbe des Königs
+     * 
+     * @return true, wenn das Feld unter Angriff steht, sonst false
+     * 
+     */
     public static boolean tileUnderAttack(int row, int col, boolean color) {
         String opponentKnight = color ? "knight_b" : "knight_w";
         String opponentPawn = color ? "pawn_b" : "pawn_w";
         String opponentRook = color ? "rook_b" : "rook_w";
         String opponentBishop = color ? "bishop_b" : "bishop_w";
         String opponentQueen = color ? "queen_b" : "queen_w";
-    
+
         // Knight moves
         int[][] movesVectorsKnight = {
-            { -2, -1 }, { -2, 1 },
-            { 2, -1 }, { 2, 1 }, 
-            { -1, -2 }, { 1, -2 }, 
-            { -1, 2 }, { 1, 2 } 
+                { -2, -1 }, { -2, 1 },
+                { 2, -1 }, { 2, 1 },
+                { -1, -2 }, { 1, -2 },
+                { -1, 2 }, { 1, 2 }
         };
-    
+
         for (int[] moveVector : movesVectorsKnight) {
             int targetRow = row + moveVector[0];
             int targetCol = col + moveVector[1];
@@ -94,12 +111,12 @@ public class Game {
                 }
             }
         }
-    
+
         // Pawn moves
         int pawnDirection = color ? -1 : 1;
         int straightRow = row + pawnDirection;
         int[] attackCols = { col - 1, col + 1 };
-    
+
         for (int attackCol : attackCols) {
             if (straightRow >= 0 && straightRow < 8 && attackCol >= 0 && attackCol < 8) {
                 Piece piece = Board.board[straightRow][attackCol];
@@ -108,7 +125,7 @@ public class Game {
                 }
             }
         }
-    
+
         // Rook and Queen moves
         int[][] directionsRook = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
         for (int[] direction : directionsRook) {
@@ -116,7 +133,7 @@ public class Game {
                 return true;
             }
         }
-    
+
         // Bishop and Queen moves
         int[][] directionsBishop = { { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 } };
         for (int[] direction : directionsBishop) {
@@ -124,11 +141,21 @@ public class Game {
                 return true;
             }
         }
-    
+
         return false;
     }
-    
-    private static boolean checkDirectionForOpponent(int row, int col, int[] direction, boolean color, String opponentPiece1, String opponentPiece2) {
+
+    /*
+     * Diese Methode überprüft, ob ein Gegner in einer bestimmten Richtung ist.
+     * 
+     * @param row Zeile des Feldes
+     * 
+     * @param col Spalte des Feldes
+     * 
+     * @param direction Richtung in der überprüft wird
+     */
+    private static boolean checkDirectionForOpponent(int row, int col, int[] direction, boolean color,
+            String opponentPiece1, String opponentPiece2) {
         int dRow = direction[0];
         int dCol = direction[1];
         int targetRow = row + dRow;
@@ -136,7 +163,8 @@ public class Game {
         while (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
             Piece piece = Board.board[targetRow][targetCol];
             if (piece != null) {
-                if (!piece.getColor() == color && (piece.getName().equals(opponentPiece1) || piece.getName().equals(opponentPiece2))) {
+                if (!piece.getColor() == color
+                        && (piece.getName().equals(opponentPiece1) || piece.getName().equals(opponentPiece2))) {
                     return true;
                 }
                 break;
@@ -147,139 +175,141 @@ public class Game {
         return false;
     }
 
-    public int getPromotionChoice(Move move) {
-        String[] options = {"Queen", "Rook", "Bishop", "Knight"};
-        int choice = JOptionPane.showOptionDialog(
-            null,
-            "Choose a piece for promotion:",
-            "Pawn Promotion",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.INFORMATION_MESSAGE,
-            null,
-            options,
-            options[0]
-        );
-
-        switch (choice) {
-            case 0:
-                Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(), move.getDestCol(), isWhite);
-                return 1;
-            case 1:
-                Board.board[move.getDestRow()][move.getDestCol()] = new Rook(move.getDestRow(), move.getDestCol(), isWhite);
-                return 2;
-            case 2:
-                Board.board[move.getDestRow()][move.getDestCol()] = new Bishop(move.getDestRow(), move.getDestCol(), isWhite);
-                return 3;
-            case 3:
-                Board.board[move.getDestRow()][move.getDestCol()] = new Knight(move.getDestRow(), move.getDestCol(), isWhite);
-                return 4;
-            default:
-                Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(), move.getDestCol(), isWhite);
-                return 1;
-        }
-    }
-
+    /*
+     * Diese Methode führt einen Zug aus und aktualisiert das Spiel.
+     * Hier wird auch überprüft, ob der König im Schach steht oder ob ein Schachmatt oder Patt vorliegt.
+     * Außerdem werden auch Rochade, En-Passant und Bauernumwandlung berücksichtigt.
+     * 
+     * @param piece Die ausgewählte Figur
+     * 
+     * @param move Der ausgewählte Zug
+     * 
+     * 
+     */
     public void performMove(Piece piece, Move move) {
         String anStart = move.toAlgebraicNotationStart();
         String anEnd = move.toAlgebraicNotationEnd();
         String anPiece = piece.getAlgebraicNotation();
-        String anWholeMove = anPiece + anEnd;
+        String anWholeMove = anPiece + anEnd; //Algebraic Notation
         if (GUI.startedClock == false) {
             GUI.startedClock = true;
-            GUI.counter.start(); 
+            GUI.counter.start();
         }
-        Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()];
-        if (destPiece != piece && destPiece != null)
-        {
+        Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()]; //Falls der Move ein Schlag ist
+        if (destPiece != piece && destPiece != null) {
             killPiece(destPiece);
             anWholeMove = anPiece + "x" + anEnd;
         }
-        piece.move(move.getDestRow(), move.getDestCol());
-        if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) {
+        piece.move(move.getDestRow(), move.getDestCol()); //Führe den Zug aus
+        if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) { //Bauernumwandlung
             if (move.getTransformation() != 0) {
                 switch (move.getTransformation()) {
                     case 1:
-                        Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(), move.getDestCol(), isWhite);
+                        Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(),
+                                move.getDestCol(), isWhite);
                         break;
                     case 2:
-                        Board.board[move.getDestRow()][move.getDestCol()] = new Rook(move.getDestRow(), move.getDestCol(), isWhite);
+                        Board.board[move.getDestRow()][move.getDestCol()] = new Rook(move.getDestRow(),
+                                move.getDestCol(), isWhite);
                         break;
                     case 3:
-                        Board.board[move.getDestRow()][move.getDestCol()] = new Bishop(move.getDestRow(), move.getDestCol(), isWhite);    
+                        Board.board[move.getDestRow()][move.getDestCol()] = new Bishop(move.getDestRow(),
+                                move.getDestCol(), isWhite);
                         break;
                     case 4:
-                        Board.board[move.getDestRow()][move.getDestCol()] = new Knight(move.getDestRow(), move.getDestCol(), isWhite);       
+                        Board.board[move.getDestRow()][move.getDestCol()] = new Knight(move.getDestRow(),
+                                move.getDestCol(), isWhite);
                         break;
                     default:
                         break;
                 }
-            }
-            else{
-                int choice = getPromotionChoice(move);
+            } else {
+                int choice = gui.getPromotionChoice(move);
                 move.setTransformation(choice);
+                String transformChoice = "";
+                switch (choice) {
+                    case 1:
+                        transformChoice = "Q";
+                        break;
+                    case 2:
+                        transformChoice = "R";
+                        break;
+                    case 3:
+                        transformChoice = "B";
+                        break;
+                    case 4:
+                        transformChoice = "K";
+                        break;
+                }
+                anWholeMove += "=" + transformChoice;
             }
         }
-        addMoveToQueue(move);    
-        boolean ep = checkEnPassant(piece, move, destPiece);
+        addMoveToQueue(move); //Füge den Zug zur Queue hinzu
+        boolean ep = checkEnPassant(piece, move, destPiece); //En-Passant
         if (ep) {
             anWholeMove += " e.p.";
         }
-        boolean castle = isCastleMove(piece, move);
+        boolean castle = isCastleMove(piece, move); //Rochade
         if (castle && anEnd.contains("c")) {
             anWholeMove = "0-0-0";
         } else if (castle && anEnd.contains("g")) {
             anWholeMove = "0-0";
         }
-        calculateAllMoves();
-        if(checkForCheck(!piece.getColor())) {
+        calculateAllMoves(); //Berechne alle möglichen Züge
+        if (checkForCheck(!piece.getColor())) { //Überprüfe ob der König im Schach steht
             String color = piece.getColor() ? "black" : "white";
-            GUI.infoLabel.setText("The " + color + " king is in check!"); //Später für UI
+            GUI.infoLabel.setText("The " + color + " king is in check!"); // Später für UI
             anWholeMove += "+";
-            if (checkForMateOrStalemate(!piece.getColor()))
-            {
+            if (checkForMateOrStalemate(!piece.getColor())) { //Überprüfe ob Schachmatt oder Patt vorliegt
                 anWholeMove = anWholeMove.substring(0, anWholeMove.length() - 1);
                 anWholeMove += "#";
-                if (isWhite = true){
+                if (isWhite = true) {
                     GUI.infoLabel.setText("White won!");
                     GUI.counter.interrupt();
-                }
-                else {
+                } else {
                     GUI.infoLabel.setText("Black won!");
                     GUI.counter.interrupt();
                 }
             }
-        }
-        else if (checkForMateOrStalemate(!piece.getColor()))
-        {
+        } else if (checkForMateOrStalemate(!piece.getColor())) {
             GUI.infoLabel.setText("Stalemate!");
             GUI.counter.interrupt();
-        }
-        else {
+        } else {
             GUI.infoLabel.setText(" ");
         }
-        addBoardAsString();
+        addBoardAsString(); //Füge den aktuellen Boardstate zur Map hinzu
         for (String key : boardStates.keySet()) {
-            if (boardStates.get(key) == 3) {
+            if (boardStates.get(key) == 3) { //Überprüfe auf Draw durch Wiederholung
                 GUI.infoLabel.setText("Draw by repetition!");
                 GUI.counter.interrupt();
             }
         }
-        algebraic += anWholeMove + ";";
-        GUI.movesArea.append(anWholeMove + "\n");
-        changeTurn();
-        
+        algebraic += anWholeMove + ";"; //Füge den Zug zur Algebraic Notation hinzu
+        GUI.movesArea.append(anWholeMove + "\n"); //Füge den Zug zur GUI hinzu
+        changeTurn(); //Wechsel den Zug
     }
 
+    /*
+     * Diese Methode überprüft ob ein Schachmatt oder Patt vorliegt.
+     * 
+     * @param color Farbe des Königs
+     */
     private boolean checkForMateOrStalemate(boolean color) {
         List<Piece> kingPieces = color ? whiteAlive : blackAlive;
         for (Piece piece : kingPieces) {
             if (piece.getPossibleMoves().size() > 0) {
                 return false;
-            }            
+            }
         }
-        return true;   
+        return true;
     }
 
+    /*
+     * Diese Methode entfernt eine Figur vom Brett und fügt sie in die Liste der toten Figuren hinzu.
+     * 
+     * @param piece Die zu entfernende Figur
+     * 
+     */
     private void killPiece(Piece piece) {
         if (piece != null) {
             if (piece.getColor()) {
@@ -289,12 +319,18 @@ public class Game {
                 blackAlive.remove(piece);
                 blackDead.add(piece);
             }
-        }        
+        }
     }
 
+    /*
+     * Diese Methode überprüft ob ein Rochadezug ausgeführt wird.
+     * 
+     * @param piece Die ausgewählte Figur
+     * 
+     * @param move Der ausgewählte Zug
+     */
     private boolean isCastleMove(Piece piece, Move move) {
-        if(performCastleMove(piece, move))
-        {
+        if (performCastleMove(piece, move)) {
             return true;
         }
         if (piece instanceof King) {
@@ -323,13 +359,20 @@ public class Game {
         return false;
     }
 
+    /*
+     * Diese Methode führt den Rochadezug aus.
+     * 
+     * @param piece Die ausgewählte Figur
+     * 
+     * @param move Der ausgewählte Zug
+     */
     private boolean performCastleMove(Piece piece, Move move) {
         int blackRow = 0;
         int whiteRow = 7;
         Piece whiteLeftRook = Board.board[whiteRow][0];
-        Piece whiteRightRook = Board.board[whiteRow][7]; 
-        Piece blackLeftRook = Board.board[blackRow][0]; 
-        Piece blackRightRook = Board.board[blackRow][7]; 
+        Piece whiteRightRook = Board.board[whiteRow][7];
+        Piece blackLeftRook = Board.board[blackRow][0];
+        Piece blackRightRook = Board.board[blackRow][7];
 
         if (piece instanceof King && piece.getColor()) {
             if (move.getDestCol() == 2 && whiteLeftRook != null) {
@@ -351,9 +394,18 @@ public class Game {
         return false;
     }
 
+    /*
+     * Diese Methode überprüft ob ein En-Passant Zug ausgeführt wird.
+     * 
+     * @param piece Die ausgewählte Figur
+     * 
+     * @param move Der ausgewählte Zug
+     * 
+     * @param destPiece Die Figur die geschlagen wird
+     */
     private boolean checkEnPassant(Piece piece, Move move, Piece destPiece) {
         if (piece instanceof Pawn) {
-            if (move.getCurrCol() != move.getDestCol() && destPiece == null){
+            if (move.getCurrCol() != move.getDestCol() && destPiece == null) {
                 int direction = move.getCurrRow() < move.getDestRow() ? -1 : 1;
                 killPiece(Board.board[move.getDestRow() + direction][move.getDestCol()]);
                 Board.board[move.getDestRow() + direction][move.getDestCol()] = null;
@@ -363,14 +415,26 @@ public class Game {
         return false;
     }
 
+    /*
+     * Diese Methode fügt einen Zug zur Queue hinzu.
+     * 
+     * @param move Der ausgewählte Zug
+     */
     public static void addMoveToQueue(Move move) {
         moveQueue.add(move);
     }
 
+    /*
+     * Diese Methode entfernt alle Züge aus der Queue.
+     */
     public static void clearQueue() {
         moveQueue.clear();
     }
 
+    /*
+     * Diese Methode gibt den letzten Zug aus der Queue zurück.
+     * Dies ist für En-Passant notwendig.
+     */
     public static Move getLastMove() {
         if (moveQueue.isEmpty()) {
             return null;
@@ -378,6 +442,9 @@ public class Game {
         return moveQueue.get(moveQueue.size() - 1);
     }
 
+    /*
+     * Diese Methode fügt den aktuellen Boardstate zur Map hinzu.
+     */
     private void addBoardAsString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 8; i++) {
@@ -394,8 +461,10 @@ public class Game {
         boardStates.put(boardState, boardStates.getOrDefault(boardState, 0) + 1);
     }
 
-    public void resetGame()
-    {
+    /*
+     * Diese Methode setzt das Spiel zurück.
+     */
+    public void resetGame() {
         whiteAlive.clear();
         blackAlive.clear();
         whiteDead.clear();
@@ -413,8 +482,10 @@ public class Game {
         gui.repaintBoard();
     }
 
-    public void saveGame()
-    {
+    /*
+     * Diese Methode lädt ein Spiel.
+     */
+    public void saveGame() {
         SaveGame.saveGame(moveQueue);
     }
 }

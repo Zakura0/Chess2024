@@ -239,4 +239,41 @@ public class GUI extends JFrame implements Runnable{
         counter = new Thread(this);
         startedClock = false;
     }
+
+    
+
+    /*
+     * Diese Methode behandelt die Bauernumwandlung.
+     */
+    public int getPromotionChoice(Move move) {
+        String[] options = {"Queen", "Rook", "Bishop", "Knight"};
+        int choice = JOptionPane.showOptionDialog(
+            null,
+            "Choose a piece for promotion:",
+            "Pawn Promotion",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+
+        switch (choice) {
+            case 0:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(), move.getDestCol(), game.isWhiteTurn());
+                return 1;
+            case 1:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Rook(move.getDestRow(), move.getDestCol(), game.isWhiteTurn());
+                return 2;
+            case 2:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Bishop(move.getDestRow(), move.getDestCol(), game.isWhiteTurn());
+                return 3;
+            case 3:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Knight(move.getDestRow(), move.getDestCol(), game.isWhiteTurn());
+                return 4;
+            default:
+                Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(), move.getDestCol(), game.isWhiteTurn());
+                return 1;
+        }
+    }
 }

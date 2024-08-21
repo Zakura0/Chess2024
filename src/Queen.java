@@ -2,11 +2,19 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Die Klasse Queen repräsentiert die Dame im Schachspiel.
+ * 
+ * @see Piece
+ */
 public class Queen extends Piece {
     public Queen(int row, int col, boolean color) {
         super(row, col, color);
     }
 
+    /*
+     * @see Piece#calculatePossibleMoves()
+     */
     public void calculatePossibleMoves() {
         List<Move> moves = new ArrayList<>();
         int row = this.getRow();

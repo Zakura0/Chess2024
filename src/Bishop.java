@@ -2,6 +2,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasse für den Läufer
+ */
 public class Bishop extends Piece {
 
     public Bishop(int row, int col, boolean color) {

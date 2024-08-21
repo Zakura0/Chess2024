@@ -27,14 +27,14 @@ public class BoardGUI extends JPanel {
     private boolean pieceSelected;
     private int selectedRow;
     private int selectedCol;
-    private Game _game;
+    private Game game;
     private Map<String, BufferedImage> pieceImages = new HashMap<>();
     private Map<String, ImageIcon> transformIcons = new HashMap<>();
     private Map<String, ImageIcon> takenPiecesIcons = new HashMap<>();
     private int xBoardOffset;
     private int yBoardOffset;
     public BoardGUI(Game game) {
-        _game = game;
+        this.game = game;
         setSize(new Dimension(800, 800));
         setBounds(xBoardOffset, yBoardOffset, board * tileSize, board * tileSize);
         yBoardOffset = 80;
@@ -59,8 +59,8 @@ public class BoardGUI extends JPanel {
 
     /**
      * Bewertet ob ein jeweiliger Klick gültig ist (gibt zum Beispiel "It's not your turn" zurück wenn Schwarz gerade dran ist, aber Weiß spielen will).
-     * Sollte ein Zug gültig sein werden alle möglichen Züge angezeigt.
-     * Wenn ein Spieler einen möglichen Zug anklickt, wird dieser auch ausgeführt und das Schachbrett aktualisiert sich visuell.
+     * Sollte die Auswahl gültig sein werden alle möglichen Züge für diese Figur angezeigt.
+     * Wenn ein Spieler einen möglichen Zug anklickt, wird dieser ausgeführt und das Schachbrett aktualisiert sich visuell.
      * 
      * @param row Reihe des angeklickten Schachfeldes
      * @param col Zeile des angeklickten Schachfeldes 
@@ -75,15 +75,17 @@ public class BoardGUI extends JPanel {
             if (piece == null) {
                 return;
             }
-            if (piece.getColor() != _game.isWhiteTurn()) {
+            if (piece.getColor() != game.isWhiteTurn()) {
                 GUI.infoLabel.setText("It's not your turn");
                 repaintBoard();
                 return;
             }
+            // Prüfe ob die Figur überhaupt Züge hat
             List<Move> moves = piece.getPossibleMoves();
             if (moves.isEmpty()) {
                 return;
             }
+            // Zeige mögliche Züge an
             showMoves(moves, row, col);
             pieceSelected = true;
         } else {
@@ -91,7 +93,7 @@ public class BoardGUI extends JPanel {
             Piece piece = Board.board[selectedRow][selectedCol];
             Move move = new Move(selectedRow, selectedCol, row, col);
             if (piece.getPossibleMoves().contains(move)) {
-                _game.performMove(piece, move);
+                game.performMove(piece, move);
                 pieceSelected = false;
                 paintComponent(getGraphics());
             }            
@@ -143,7 +145,7 @@ public class BoardGUI extends JPanel {
     }    
 
     /**
-     * Stellt das Schachbrett auf seine Startposition.
+     * Aktualisiert das Schachbrett visuell.
      */
     public void repaintBoard() {
         paintComponent(getGraphics());
@@ -190,7 +192,8 @@ public class BoardGUI extends JPanel {
     }
 
     /**
-     * Setzt die Größe des Schachbretts fest anhand der Feldgröße.
+     * getPreferredSize wird überschrieben um sicherzustellen,
+     * dass das Schachbrett die richtige Größe hat, wenn es in der Benutzeroberfläche angezeigt wird.
      * @return Die Größe des Schachbretts
      */
 
@@ -221,71 +224,4 @@ public class BoardGUI extends JPanel {
             e.printStackTrace();
         }
     }
-
-    // public void showTransform(Piece piece) {
-    //     layeredGlassPane.setVisible(true);
-    //     int row = piece.getRow();
-    //     int col = piece.getCol();
-    //     boolean color = piece.getColor();
-    //     transformPanel = new JPanel();
-    //     List<JButton> buttons = setButtons(color);
-    //     transformPanel.setLayout(new GridLayout(2, 2, 20, 20));
-    //     transformPanel.setOpaque(false);
-    //     for (JButton button : buttons) {
-    //         button.setSize(new Dimension(40, 40));
-    //         transformPanel.add(button);
-    //     }
-    //     int x = (row*80)-40+xBoardOffset;
-    //     int y = (col*80)-40+yBoardOffset;
-    //     transformPanel.setBounds(y, x, 160, 160);
-    //     layers.add(transformPanel, JLayeredPane.POPUP_LAYER);
-    //     layers.revalidate();
-    //     layers.repaint();
-    // }
-
-    // public void hideTransform() {
-    //     layeredGlassPane.setVisible(false);
-    //     transformPanel.removeAll();
-    //     if (transformPanel != null) {
-    //         layers.remove(transformPanel);
-    //         layers.revalidate();
-    //         layers.repaint();
-    //     }
-    // }
-
-    // private void loadPieceIcons(int width, int height, Map<String, ImageIcon> icons) {
-    //     for (Map.Entry<String, BufferedImage> entry : pieceImages.entrySet()) {
-    //         Image img = entry.getValue().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
-    //         icons.put(entry.getKey(), new ImageIcon(img));
-    //     }
-    // }
-
-    // private List<JButton> setButtons(boolean color) {
-    //     JButton rook;
-    //     JButton bishop;
-    //     JButton knight;
-    //     JButton queen;
-    //     if (color) {
-    //         rook = new JButton(transformIcons.get("rook_w"));
-    //         rook.addActionListener(new TransformActionListener("rook", _game));
-    //         bishop = new JButton(transformIcons.get("bishop_w"));
-    //         bishop.addActionListener(new TransformActionListener("bishop", _game));
-    //         knight = new JButton(transformIcons.get("knight_w"));
-    //         knight.addActionListener(new TransformActionListener("knight", _game));
-    //         queen = new JButton(transformIcons.get("queen_w"));
-    //         queen.addActionListener(new TransformActionListener("queen", _game));
-    //     } else {
-    //         rook = new JButton(transformIcons.get("rook_b"));
-    //         rook.addActionListener(new TransformActionListener("rook", _game));
-    //         bishop = new JButton(transformIcons.get("bishop_b"));
-    //         bishop.addActionListener(new TransformActionListener("bishop", _game));
-    //         knight = new JButton(transformIcons.get("knight_b"));
-    //         knight.addActionListener(new TransformActionListener("knight", _game));
-    //         queen = new JButton(transformIcons.get("queen_b"));
-    //         queen.addActionListener(new TransformActionListener("queen", _game));
-    //     }
-    //     List<JButton> buttons = Arrays.asList(rook, bishop, knight, queen);
-    //     return buttons;
-    // }
-
 }

@@ -1,7 +1,9 @@
 import java.awt.*;
 
 import javax.swing.*;
-
+/**
+ * Die Klasse Clock repräsentiert die grafische Uhr, die die verbleibende Zeit anzeigt.
+ */
 public class Clock extends JPanel {
 	
 	private JLabel time;

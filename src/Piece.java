@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 import javax.swing.ImageIcon;
-
-
-
+/**
+ * Die Klasse Piece repräsentiert eine Schachfigur.
+ */
 public abstract class Piece {
 
     private int _row;
@@ -20,13 +20,15 @@ public abstract class Piece {
         this._possibleMoves = new ArrayList<>();
     }
 
+    /*
+     * Bewegt die Figur auf das angegebene Feld.
+     */
     public void move(int row, int col){
         Board.board[this._row][this._col] = null;
         Board.board[row][col] = this;
         this._row = row;
         this._col = col;
     }
-
     public static Piece getPiece(int row, int col) {
         return Board.board[row][col];
     }
@@ -51,6 +53,10 @@ public abstract class Piece {
         this._possibleMoves = moves;
     }
 
+    /*
+     * Prüft, ob der Zug gültig ist.
+     * @param move Der Zug, der überprüft werden soll.
+     */
     protected boolean checkMoveValid(Move move){
         int startRow = move.getCurrRow();
         int startCol = move.getCurrCol();
@@ -68,6 +74,9 @@ public abstract class Piece {
         }
     }
 
+    /*
+     * Berechnet die möglichen Züge der Figur.
+     */
     public abstract void calculatePossibleMoves();
 
     public abstract String getName();
