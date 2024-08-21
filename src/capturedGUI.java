@@ -2,13 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class TakenPiecesGUI extends JPanel {
+public class capturedGUI extends JPanel {
 
     private JLayeredPane layeredGlassPane;
     private JPanel whiteCapturedPanel;
     private JPanel blackCapturedPanel;
 
-    public TakenPiecesGUI() {
+    public capturedGUI() {
 
         setLayout(new BorderLayout());
         whiteCapturedPanel = new JPanel(new GridLayout(1, 16, 2, 2));

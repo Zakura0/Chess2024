@@ -72,7 +72,7 @@ public class Game {
         return tileUnderAttack(KingRow, KingCol, color);
     }
 
-    /*
+    /**
      * Diese Methode überprüft, ob das Feld unter Angriff steht,
      * indem alle möglichen Felder die dieses Feld angreifen könnten, überprüft
      * werden.
@@ -145,7 +145,7 @@ public class Game {
         return false;
     }
 
-    /*
+    /**
      * Diese Methode überprüft, ob ein Gegner in einer bestimmten Richtung ist.
      * 
      * @param row Zeile des Feldes
@@ -175,7 +175,7 @@ public class Game {
         return false;
     }
 
-    /*
+    /**
      * Diese Methode führt einen Zug aus und aktualisiert das Spiel.
      * Hier wird auch überprüft, ob der König im Schach steht oder ob ein Schachmatt oder Patt vorliegt.
      * Außerdem werden auch Rochade, En-Passant und Bauernumwandlung berücksichtigt.
@@ -289,7 +289,7 @@ public class Game {
         changeTurn(); //Wechsel den Zug
     }
 
-    /*
+    /**
      * Diese Methode überprüft ob ein Schachmatt oder Patt vorliegt.
      * 
      * @param color Farbe des Königs
@@ -304,7 +304,7 @@ public class Game {
         return true;
     }
 
-    /*
+    /**
      * Diese Methode entfernt eine Figur vom Brett und fügt sie in die Liste der toten Figuren hinzu.
      * 
      * @param piece Die zu entfernende Figur
@@ -322,7 +322,7 @@ public class Game {
         }
     }
 
-    /*
+    /**
      * Diese Methode überprüft ob ein Rochadezug ausgeführt wird.
      * 
      * @param piece Die ausgewählte Figur
@@ -359,7 +359,7 @@ public class Game {
         return false;
     }
 
-    /*
+    /**
      * Diese Methode führt den Rochadezug aus.
      * 
      * @param piece Die ausgewählte Figur
@@ -394,7 +394,7 @@ public class Game {
         return false;
     }
 
-    /*
+    /**
      * Diese Methode überprüft ob ein En-Passant Zug ausgeführt wird.
      * 
      * @param piece Die ausgewählte Figur
@@ -415,7 +415,7 @@ public class Game {
         return false;
     }
 
-    /*
+    /**
      * Diese Methode fügt einen Zug zur Queue hinzu.
      * 
      * @param move Der ausgewählte Zug
@@ -424,14 +424,14 @@ public class Game {
         moveQueue.add(move);
     }
 
-    /*
+    /**
      * Diese Methode entfernt alle Züge aus der Queue.
      */
     public static void clearQueue() {
         moveQueue.clear();
     }
 
-    /*
+    /**
      * Diese Methode gibt den letzten Zug aus der Queue zurück.
      * Dies ist für En-Passant notwendig.
      */
@@ -442,7 +442,7 @@ public class Game {
         return moveQueue.get(moveQueue.size() - 1);
     }
 
-    /*
+    /**
      * Diese Methode fügt den aktuellen Boardstate zur Map hinzu.
      */
     private void addBoardAsString() {
@@ -461,7 +461,7 @@ public class Game {
         boardStates.put(boardState, boardStates.getOrDefault(boardState, 0) + 1);
     }
 
-    /*
+    /**
      * Diese Methode setzt das Spiel zurück.
      */
     public void resetGame() {
@@ -482,7 +482,7 @@ public class Game {
         gui.repaintBoard();
     }
 
-    /*
+    /**
      * Diese Methode lädt ein Spiel.
      */
     public void saveGame() {

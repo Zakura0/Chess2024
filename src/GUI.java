@@ -23,6 +23,7 @@ import java.awt.Color;
 public class GUI extends JFrame implements Runnable{
     private Dimension frameDim = new Dimension(1500, 900);
     private BoardGUI boardGUI;
+    private capturedGUI capturedGUI;
     private Clock clockWhite;
     private Clock clockBlack;
     private JButton draw;
@@ -45,6 +46,7 @@ public class GUI extends JFrame implements Runnable{
 
         infoLabel = new JLabel("Welcome to Chess");
         boardGUI = new BoardGUI(game);
+        capturedGUI = new capturedGUI();
         clockWhite = new Clock(timeWhite);
         clockBlack = new Clock(timeBlack);
         counter = new Thread(this);
@@ -100,7 +102,13 @@ public class GUI extends JFrame implements Runnable{
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setPreferredSize(new Dimension(200, 250));
         add(scrollPane, BorderLayout.WEST);
-        add(boardGUI, BorderLayout.CENTER);
+
+       /*  JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(1, 3));
+        centerPanel.add(boardGUI);
+        centerPanel.add(capturedGUI); 
+        */
+        add(boardGUI ,BorderLayout.CENTER);
 
 
         Border matteBorder = BorderFactory.createMatteBorder(0, 0, 0, 20,new Color(238,238,238));
