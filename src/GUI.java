@@ -103,8 +103,8 @@ public class GUI extends JFrame implements Runnable{
         scrollPane.setPreferredSize(new Dimension(200, 250));
         add(scrollPane, BorderLayout.WEST);
 
-       /*  JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(1, 3));
+        /*JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(1, 2));
         centerPanel.add(boardGUI);
         centerPanel.add(capturedGUI); 
         */

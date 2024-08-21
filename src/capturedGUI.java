@@ -26,12 +26,12 @@ public class capturedGUI extends JPanel {
         blackCapturedPanel.removeAll();
 
         for (Piece piece : whiteCaptured) {
-            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH)));
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(7, 7, Image.SCALE_SMOOTH)));
             whiteCapturedPanel.add(pieceLabel);
         }
 
         for (Piece piece : blackCaptured) {
-            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH)));
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(7, 7, Image.SCALE_SMOOTH)));
             blackCapturedPanel.add(pieceLabel);
         }
 
