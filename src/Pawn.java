@@ -1,13 +1,10 @@
-package Game.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Game.Game;
-import Game.Move;
-
 /**
- * Die Klasse Pawn repräsentiert den Bauern im Schachspiel. * 
+ * Die Klasse Pawn repräsentiert den Bauern im Schachspiel. *
+ * 
  * @see Piece
  */
 public class Pawn extends Piece {
@@ -59,36 +56,27 @@ public class Pawn extends Piece {
             }
         }
 
-        // en Passant        
+        // en Passant
         if ((this.getColor() && row == 3) || (!this.getColor() && row == 4)) {
             List<Piece> adjacentPieces = new ArrayList<>();
-            if (col == 0)
-            {
+            if (col == 0) {
                 adjacentPieces.add(getPiece(row, col + 1));
-            }
-            else if (col == 7)
-            {
+            } else if (col == 7) {
                 adjacentPieces.add(getPiece(row, col - 1));
-            }
-            else
-            {
+            } else {
                 adjacentPieces.add(getPiece(row, col - 1));
                 adjacentPieces.add(getPiece(row, col + 1));
-            }            
+            }
             for (Piece piece : adjacentPieces) {
                 if (piece != null && piece.getColor() != this.getColor() && piece instanceof Pawn) {
                     if (Game.moveQueue.size() > 0) {
                         Move m = Game.getLastMove();
                         if (m.getMovingPiece() == piece && Math.abs(m.getCurrRow() - m.getDestRow()) == 2) {
                             int attackdir = 0;
-                            if (row == 4 || row == 3)
-                            {
-                                if (m.getMovingPiece().getCol() < col)
-                                {
+                            if (row == 4 || row == 3) {
+                                if (m.getMovingPiece().getCol() < col) {
                                     attackdir = -1;
-                                }
-                                else
-                                {
+                                } else {
                                     attackdir = 1;
                                 }
                                 move = new Move(row, col, row + direction, col + attackdir);
@@ -112,8 +100,8 @@ public class Pawn extends Piece {
         }
     }
 
-	@Override
-	public String getAlgebraicNotation() {
-		return "";
-	}
+    @Override
+    public String getAlgebraicNotation() {
+        return "";
+    }
 }

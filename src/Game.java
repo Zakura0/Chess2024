@@ -1,13 +1,10 @@
-package Game;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
-
-import GUI.GUI;
-import Game.Pieces.*;
 
 /**
  * Die Game Klasse ist die Hauptklasse des Spiels und verwaltet die Spiellogik.
@@ -80,9 +77,9 @@ public class Game {
      * indem alle möglichen Felder die dieses Feld angreifen könnten, überprüft
      * werden.
      * 
-     * @param row Zeile des Feldes
+     * @param row   Zeile des Feldes
      * 
-     * @param col Spalte des Feldes
+     * @param col   Spalte des Feldes
      * 
      * @param color Farbe des Königs
      * 
@@ -151,9 +148,9 @@ public class Game {
     /**
      * Diese Methode überprüft, ob ein Gegner in einer bestimmten Richtung ist.
      * 
-     * @param row Zeile des Feldes
+     * @param row       Zeile des Feldes
      * 
-     * @param col Spalte des Feldes
+     * @param col       Spalte des Feldes
      * 
      * @param direction Richtung in der überprüft wird
      */
@@ -180,30 +177,31 @@ public class Game {
 
     /**
      * Diese Methode führt einen Zug aus und aktualisiert das Spiel.
-     * Hier wird auch überprüft, ob der König im Schach steht oder ob ein Schachmatt oder Patt vorliegt.
+     * Hier wird auch überprüft, ob der König im Schach steht oder ob ein Schachmatt
+     * oder Patt vorliegt.
      * Außerdem werden auch Rochade, En-Passant und Bauernumwandlung berücksichtigt.
      * 
      * @param piece Die ausgewählte Figur
      * 
-     * @param move Der ausgewählte Zug
+     * @param move  Der ausgewählte Zug
      * 
      * 
      */
     public void performMove(Piece piece, Move move) {
         String anEnd = move.toAlgebraicNotationEnd();
         String anPiece = piece.getAlgebraicNotation();
-        String anWholeMove = anPiece + anEnd; //Algebraic Notation
+        String anWholeMove = anPiece + anEnd; // Algebraic Notation
         if (GUI.startedClock == false) {
             GUI.startedClock = true;
             GUI.counter.start();
         }
-        Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()]; //Falls der Move ein Schlag ist
+        Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()]; // Falls der Move ein Schlag ist
         if (destPiece != piece && destPiece != null) {
             killPiece(destPiece);
             anWholeMove = anPiece + "x" + anEnd;
         }
-        piece.move(move.getDestRow(), move.getDestCol()); //Führe den Zug aus
-        if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) { //Bauernumwandlung
+        piece.move(move.getDestRow(), move.getDestCol()); // Führe den Zug aus
+        if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) { // Bauernumwandlung
             if (move.getTransformation() != 0) {
                 switch (move.getTransformation()) {
                     case 1:
@@ -246,23 +244,23 @@ public class Game {
                 anWholeMove += "=" + transformChoice;
             }
         }
-        addMoveToQueue(move); //Füge den Zug zur Queue hinzu
-        boolean ep = checkEnPassant(piece, move, destPiece); //En-Passant
+        addMoveToQueue(move); // Füge den Zug zur Queue hinzu
+        boolean ep = checkEnPassant(piece, move, destPiece); // En-Passant
         if (ep) {
             anWholeMove += " e.p.";
         }
-        boolean castle = isCastleMove(piece, move); //Rochade
+        boolean castle = isCastleMove(piece, move); // Rochade
         if (castle && anEnd.contains("c")) {
             anWholeMove = "0-0-0";
         } else if (castle && anEnd.contains("g")) {
             anWholeMove = "0-0";
         }
-        calculateAllMoves(); //Berechne alle möglichen Züge
-        if (checkForCheck(!piece.getColor())) { //Überprüfe ob der König im Schach steht
+        calculateAllMoves(); // Berechne alle möglichen Züge
+        if (checkForCheck(!piece.getColor())) { // Überprüfe ob der König im Schach steht
             String color = piece.getColor() ? "black" : "white";
             GUI.infoLabel.setText("The " + color + " king is in check!"); // Später für UI
             anWholeMove += "+";
-            if (checkForMateOrStalemate(!piece.getColor())) { //Überprüfe ob Schachmatt oder Patt vorliegt
+            if (checkForMateOrStalemate(!piece.getColor())) { // Überprüfe ob Schachmatt oder Patt vorliegt
                 anWholeMove = anWholeMove.substring(0, anWholeMove.length() - 1);
                 anWholeMove += "#";
                 if (isWhite = true) {
@@ -279,16 +277,16 @@ public class Game {
         } else {
             GUI.infoLabel.setText(" ");
         }
-        addBoardAsString(); //Füge den aktuellen Boardstate zur Map hinzu
+        addBoardAsString(); // Füge den aktuellen Boardstate zur Map hinzu
         for (String key : boardStates.keySet()) {
-            if (boardStates.get(key) == 3) { //Überprüfe auf Draw durch Wiederholung
+            if (boardStates.get(key) == 3) { // Überprüfe auf Draw durch Wiederholung
                 GUI.infoLabel.setText("Draw by repetition!");
                 GUI.counter.interrupt();
             }
         }
-        algebraic += anWholeMove + ";"; //Füge den Zug zur Algebraic Notation hinzu
-        GUI.movesArea.append(anWholeMove + "\n"); //Füge den Zug zur GUI hinzu
-        changeTurn(); //Wechsel den Zug
+        algebraic += anWholeMove + ";"; // Füge den Zug zur Algebraic Notation hinzu
+        GUI.movesArea.append(anWholeMove + "\n"); // Füge den Zug zur GUI hinzu
+        changeTurn(); // Wechsel den Zug
     }
 
     /**
@@ -307,7 +305,8 @@ public class Game {
     }
 
     /**
-     * Diese Methode entfernt eine Figur vom Brett und fügt sie in die Liste der toten Figuren hinzu.
+     * Diese Methode entfernt eine Figur vom Brett und fügt sie in die Liste der
+     * toten Figuren hinzu.
      * 
      * @param piece Die zu entfernende Figur
      * 
@@ -329,7 +328,7 @@ public class Game {
      * 
      * @param piece Die ausgewählte Figur
      * 
-     * @param move Der ausgewählte Zug
+     * @param move  Der ausgewählte Zug
      */
     private boolean isCastleMove(Piece piece, Move move) {
         if (performCastleMove(piece, move)) {
@@ -366,7 +365,7 @@ public class Game {
      * 
      * @param piece Die ausgewählte Figur
      * 
-     * @param move Der ausgewählte Zug
+     * @param move  Der ausgewählte Zug
      */
     private boolean performCastleMove(Piece piece, Move move) {
         int blackRow = 0;
@@ -377,18 +376,18 @@ public class Game {
         Piece blackRightRook = Board.board[blackRow][7];
 
         if (piece instanceof King && piece.getColor()) {
-            if (move.getDestCol() == 2 && whiteLeftRook != null) {
+            if (move.getDestCol() == 2 && whiteLeftRook != null && whiteKing.getCastleBig()) {
                 whiteLeftRook.move(whiteRow, 3);
                 return true;
-            } else if (move.getDestCol() == 6 && whiteRightRook != null) {
+            } else if (move.getDestCol() == 6 && whiteRightRook != null && whiteKing.getCastleSmall()) {
                 whiteRightRook.move(whiteRow, 5);
                 return true;
             }
         } else if (piece instanceof King && !piece.getColor()) {
-            if (move.getDestCol() == 2 && blackLeftRook != null) {
+            if (move.getDestCol() == 2 && blackLeftRook != null && blackKing.getCastleBig()) {
                 blackLeftRook.move(blackRow, 3);
                 return true;
-            } else if (move.getDestCol() == 6 && blackRightRook != null) {
+            } else if (move.getDestCol() == 6 && blackRightRook != null && blackKing.getCastleSmall()) {
                 blackRightRook.move(blackRow, 5);
                 return true;
             }
@@ -399,9 +398,9 @@ public class Game {
     /**
      * Diese Methode überprüft ob ein En-Passant Zug ausgeführt wird.
      * 
-     * @param piece Die ausgewählte Figur
+     * @param piece     Die ausgewählte Figur
      * 
-     * @param move Der ausgewählte Zug
+     * @param move      Der ausgewählte Zug
      * 
      * @param destPiece Die Figur die geschlagen wird
      */

@@ -1,7 +1,5 @@
-package GUI;
-import javax.swing.*;
 
-import Game.Pieces.Piece;
+import javax.swing.*;
 
 import java.awt.*;
 import java.util.List;

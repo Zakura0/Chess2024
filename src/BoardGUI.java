@@ -1,9 +1,6 @@
-package GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import Game.*;
-import Game.Pieces.*;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,7 +13,9 @@ import java.util.Map;
 import java.awt.*;
 
 /**
- * Die Klasse BoardGUI erzeugt die Benutzerschnittstelle des Schachbretts, worauf der Nutzer interagieren kann. 
+ * Die Klasse BoardGUI erzeugt die Benutzerschnittstelle des Schachbretts,
+ * worauf der Nutzer interagieren kann.
+ * 
  * @author Gruppe 02
  */
 
@@ -35,6 +34,7 @@ public class BoardGUI extends JPanel {
     private Map<String, ImageIcon> takenPiecesIcons = new HashMap<>();
     private int xBoardOffset;
     private int yBoardOffset;
+
     public BoardGUI(Game game) {
         this.game = game;
         setSize(new Dimension(800, 800));
@@ -46,7 +46,6 @@ public class BoardGUI extends JPanel {
         initializeListener();
         setVisible(true);
     }
-
 
     private void initializeListener() {
         this.addMouseListener(new MouseAdapter() {
@@ -60,12 +59,15 @@ public class BoardGUI extends JPanel {
     }
 
     /**
-     * Bewertet ob ein jeweiliger Klick gültig ist (gibt zum Beispiel "It's not your turn" zurück wenn Schwarz gerade dran ist, aber Weiß spielen will).
-     * Sollte die Auswahl gültig sein werden alle möglichen Züge für diese Figur angezeigt.
-     * Wenn ein Spieler einen möglichen Zug anklickt, wird dieser ausgeführt und das Schachbrett aktualisiert sich visuell.
+     * Bewertet ob ein jeweiliger Klick gültig ist (gibt zum Beispiel "It's not your
+     * turn" zurück wenn Schwarz gerade dran ist, aber Weiß spielen will).
+     * Sollte die Auswahl gültig sein werden alle möglichen Züge für diese Figur
+     * angezeigt.
+     * Wenn ein Spieler einen möglichen Zug anklickt, wird dieser ausgeführt und das
+     * Schachbrett aktualisiert sich visuell.
      * 
      * @param row Reihe des angeklickten Schachfeldes
-     * @param col Zeile des angeklickten Schachfeldes 
+     * @param col Zeile des angeklickten Schachfeldes
      */
 
     private void evaluateClick(int row, int col) {
@@ -98,14 +100,12 @@ public class BoardGUI extends JPanel {
                 game.performMove(piece, move);
                 pieceSelected = false;
                 paintComponent(getGraphics());
-            }            
-            else if (Board.board[row][col] != null && Board.board[row][col] != piece &&
-                        Board.board[row][col].getColor() == piece.getColor()) {
+            } else if (Board.board[row][col] != null && Board.board[row][col] != piece &&
+                    Board.board[row][col].getColor() == piece.getColor()) {
                 pieceSelected = false;
                 repaintBoard();
                 evaluateClick(row, col);
-            }
-            else {
+            } else {
                 pieceSelected = false;
                 repaintBoard();
             }
@@ -117,18 +117,18 @@ public class BoardGUI extends JPanel {
      * Zeigt die möglichen Züge einer Figur auf dem Schachbrett an.
      * 
      * @param moves Liste der möglichen Züge
-     * @param row Reihe der Figur
-     * @param col Spalte der Figur
+     * @param row   Reihe der Figur
+     * @param col   Spalte der Figur
      */
     public void showMoves(List<Move> moves, int row, int col) {
-        Piece piece = Board.board[row][col];        
+        Piece piece = Board.board[row][col];
         for (Move move : moves) {
             Graphics2D g2 = (Graphics2D) getGraphics();
             int targetRow = move.getDestRow();
             int targetCol = move.getDestCol();
             Piece opponent = Board.board[targetRow][targetCol];
             if (opponent != null && opponent.getColor() != piece.getColor()) {
-                g2.setColor(new Color(0, 0,0, 100)); 
+                g2.setColor(new Color(0, 0, 0, 100));
                 g2.setStroke(new BasicStroke(5));
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
                 int centerX = targetCol * tileSize + tileSize / 2;
@@ -136,15 +136,15 @@ public class BoardGUI extends JPanel {
                 g2.setStroke(new BasicStroke(5));
                 g2.drawOval(centerX - 37, centerY - 37, 75, 75);
             } else {
-                g2.setColor(new Color(0, 0, 0, 100)); 
+                g2.setColor(new Color(0, 0, 0, 100));
                 g2.setStroke(new BasicStroke(5));
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f)); 
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
                 int centerX = targetCol * tileSize + tileSize / 2;
                 int centerY = targetRow * tileSize + tileSize / 2;
                 g2.fillOval(centerX - 12, centerY - 12, 25, 25);
             }
         }
-    }    
+    }
 
     /**
      * Aktualisiert das Schachbrett visuell.
@@ -154,7 +154,9 @@ public class BoardGUI extends JPanel {
     }
 
     /**
-     * Erzeugt das Schachbrett, mit der jeweiligen Feldbezeichnung und nen Schachfiguren
+     * Erzeugt das Schachbrett, mit der jeweiligen Feldbezeichnung und nen
+     * Schachfiguren
+     * 
      * @param alphabet Gibt die Feldbeschriftungen des Schachbretts an.
      */
     @Override
@@ -167,20 +169,18 @@ public class BoardGUI extends JPanel {
                 boolean isWhite = (i + j) % 2 == 0;
                 g.setColor(isWhite ? beige : brown);
                 g.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
-                g.setColor(isWhite ? brown : beige); 
-                if ( i == 7 && j == 0){
-                    g.drawString("a", j * tileSize + 70 , i * tileSize + 70);
-                    g.drawString("1", j * tileSize + 4, i  * tileSize + 20);
-                } 
-                else if ( i == 7){
+                g.setColor(isWhite ? brown : beige);
+                if (i == 7 && j == 0) {
+                    g.drawString("a", j * tileSize + 70, i * tileSize + 70);
+                    g.drawString("1", j * tileSize + 4, i * tileSize + 20);
+                } else if (i == 7) {
                     String character = alphabet.substring(0, 1);
                     alphabet = alphabet.substring(1, alphabet.length());
                     g.drawString(character, j * tileSize + 70, i * tileSize + 70);
-                }
-                else if ( j == 0){
-                    String character = alphabet.substring(0,1);
+                } else if (j == 0) {
+                    String character = alphabet.substring(0, 1);
                     alphabet = alphabet.substring(1, alphabet.length());
-                    g.drawString(character, j * tileSize + 4 , i * tileSize + 20);
+                    g.drawString(character, j * tileSize + 4, i * tileSize + 20);
                 }
 
                 Piece piece = Board.board[i][j];
@@ -196,7 +196,9 @@ public class BoardGUI extends JPanel {
 
     /**
      * getPreferredSize wird überschrieben um sicherzustellen,
-     * dass das Schachbrett die richtige Größe hat, wenn es in der Benutzeroberfläche angezeigt wird.
+     * dass das Schachbrett die richtige Größe hat, wenn es in der
+     * Benutzeroberfläche angezeigt wird.
+     * 
      * @return Die Größe des Schachbretts
      */
 
@@ -204,7 +206,6 @@ public class BoardGUI extends JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(board * tileSize, board * tileSize);
     }
-
 
     /**
      * Lädt die Bilder der Schachfiguren.

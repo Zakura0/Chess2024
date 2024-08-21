@@ -1,5 +1,3 @@
-package Game;
-import Game.Pieces.Piece;
 
 public class Move {
 
@@ -82,12 +80,12 @@ public class Move {
     }
 
     public String toAlgebraicNotationStart() {
-        char[] col = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+        char[] col = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
         return col[_curr_col] + "" + (8 - _curr_row);
     }
 
     public String toAlgebraicNotationEnd() {
-        char[] col = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+        char[] col = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
         return col[_dest_col] + "" + (8 - _dest_row);
     }
 

@@ -1,11 +1,6 @@
-package Game;
-import Game.Pieces.*;
-/*
- * Klasse für das Schachbrett
- */
 
 public class Board {
-    
+
     public static Piece[][] board;
 
     /**
@@ -46,16 +41,11 @@ public class Board {
         board[7][4] = new King(7, 4, true);
         Game.whiteAlive.addFirst(board[7][4]);
         board[7][5] = new Bishop(7, 5, true);
-        Game.whiteAlive.add(board[7][5]);                
+        Game.whiteAlive.add(board[7][5]);
         board[7][6] = new Knight(7, 6, true);
         Game.whiteAlive.add(board[7][6]);
         board[7][7] = new Rook(7, 7, true);
         Game.whiteAlive.add(board[7][7]);
     }
-
-    
-
-    
-
 
 }

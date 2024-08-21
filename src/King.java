@@ -1,17 +1,13 @@
-package Game.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import Game.Game;
-import Game.Move;
 
 /**
  * Die Klasse King repräsentiert den König im Schachspiel.
  * 
  * @see Piece
  */
-public class King extends Piece{
+public class King extends Piece {
     private boolean _smallCastle;
     private boolean _bigCastle;
 
@@ -46,16 +42,16 @@ public class King extends Piece{
         int col = this.getCol();
         // Richtungsvektoren für oben, unten, links, rechts, und die vier Diagonalen
         int[][] directions = {
-            {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Gerade
-            {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
+                { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, // Gerade
+                { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 } // Diagonal
         };
-    
+
         for (int[] direction : directions) {
             int dRow = direction[0];
             int dCol = direction[1];
             int targetRow = row + dRow;
             int targetCol = col + dCol;
-            Move move = new Move(row, col, targetRow, targetCol);    
+            Move move = new Move(row, col, targetRow, targetCol);
             // Prüfe, ob die neue Position außerhalb des Bretts liegt
             if (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8) {
                 // Prüfe, ob die neue Position blockiert ist
@@ -65,9 +61,7 @@ public class King extends Piece{
                             moves.add(move);
                         }
                     }
-                }
-                else
-                {
+                } else {
                     if (checkMoveValid(move)) {
                         moves.add(move);
                     }
@@ -88,7 +82,7 @@ public class King extends Piece{
                     moves.add(new Move(row, col, targetRowKing, targetColKing));
                 }
             }
-            
+
         }
         if (_bigCastle) {
             int targetRowKing = row;
@@ -105,10 +99,10 @@ public class King extends Piece{
                 }
             }
         }
-    
+
         this.setPossibleMoves(moves);
     }
-    
+
     public String getName() {
         if (this.getColor()) {
             return "king_w";
@@ -117,8 +111,8 @@ public class King extends Piece{
         }
     }
 
-	@Override
-	public String getAlgebraicNotation() {
-		return "K";
-	}
+    @Override
+    public String getAlgebraicNotation() {
+        return "K";
+    }
 }

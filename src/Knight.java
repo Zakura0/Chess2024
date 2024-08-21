@@ -1,9 +1,7 @@
-package Game.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Game.Move;
 /**
  * Die Klasse Knight repräsentiert den Springer im Schachspiel.
  * 
@@ -41,9 +39,7 @@ public class Knight extends Piece {
                             moves.add(move);
                         }
                     }
-                }
-                else
-                {
+                } else {
                     if (checkMoveValid(move)) {
                         moves.add(move);
                     }
@@ -62,8 +58,8 @@ public class Knight extends Piece {
         }
     }
 
-	@Override
-	public String getAlgebraicNotation() {
-		return "N";
-	}
+    @Override
+    public String getAlgebraicNotation() {
+        return "N";
+    }
 }

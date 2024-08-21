@@ -1,13 +1,10 @@
-package Game;
+
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-
-import GUI.GUI;
-import Game.Pieces.Piece;
 
 /*
  * Die Klasse SaveGame speichert und lädt ein Spiel.
