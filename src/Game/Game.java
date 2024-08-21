@@ -1,10 +1,13 @@
+package Game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
+import GUI.GUI;
+import Game.Pieces.*;
 
 /**
  * Die Game Klasse ist die Hauptklasse des Spiels und verwaltet die Spiellogik.
@@ -187,7 +190,6 @@ public class Game {
      * 
      */
     public void performMove(Piece piece, Move move) {
-        String anStart = move.toAlgebraicNotationStart();
         String anEnd = move.toAlgebraicNotationEnd();
         String anPiece = piece.getAlgebraicNotation();
         String anWholeMove = anPiece + anEnd; //Algebraic Notation

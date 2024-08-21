@@ -1,6 +1,9 @@
+package Game.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Game.Move;
 /**
  * Die Klasse Knight repräsentiert den Springer im Schachspiel.
  * 

@@ -1,6 +1,9 @@
+package Game;
+import Game.Pieces.*;
 /*
  * Klasse für das Schachbrett
  */
+
 public class Board {
     
     public static Piece[][] board;

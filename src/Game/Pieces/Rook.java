@@ -1,14 +1,16 @@
-
+package Game.Pieces;
 import java.util.ArrayList;
 import java.util.List;
 
+import Game.Move;
+
 /**
- * Die Klasse Queen repräsentiert die Dame im Schachspiel.
+ * Die Klasse Rook repräsentiert den Turm im Schachspiel.
  * 
  * @see Piece
  */
-public class Queen extends Piece {
-    public Queen(int row, int col, boolean color) {
+public class Rook extends Piece {
+    public Rook(int row, int col, boolean color) {
         super(row, col, color);
     }
 
@@ -19,11 +21,7 @@ public class Queen extends Piece {
         List<Move> moves = new ArrayList<>();
         int row = this.getRow();
         int col = this.getCol();
-        // Richtungsvektoren für oben, unten, links, rechts, und die vier Diagonalen
-        int[][] directions = {
-            {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Gerade
-            {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
-        };
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Oben, Unten, Links, Rechts
     
         for (int[] direction : directions) {
             int dRow = direction[0];
@@ -36,7 +34,7 @@ public class Queen extends Piece {
                 targetCol += dCol;
     
                 // Prüfe, ob die neue Position außerhalb des Bretts liegt
-                if (targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+                if (targetRow < 0 || targetRow > 7 || targetCol < 0 || targetCol > 7) {
                     break;
                 }
                 Move move = new Move(row, col, targetRow, targetCol);    
@@ -58,19 +56,19 @@ public class Queen extends Piece {
             }
         }
     
-        this.setPossibleMoves(moves);
+        setPossibleMoves(moves);
     }
 
     public String getName() {
         if (this.getColor()) {
-            return "queen_w";
+            return "rook_w";
         } else {
-            return "queen_b";
+            return "rook_b";
         }
     }
 
 	@Override
 	public String getAlgebraicNotation() {
-		return "Q";
+		return "R";
 	}
 }

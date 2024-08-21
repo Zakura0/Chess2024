@@ -1,6 +1,10 @@
+package Game.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Game.Game;
+import Game.Move;
 
 /**
  * Die Klasse King repräsentiert den König im Schachspiel.

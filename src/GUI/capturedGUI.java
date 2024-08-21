@@ -1,10 +1,13 @@
+package GUI;
 import javax.swing.*;
+
+import Game.Pieces.Piece;
+
 import java.awt.*;
 import java.util.List;
 
 public class capturedGUI extends JPanel {
 
-    private JLayeredPane layeredGlassPane;
     private JPanel whiteCapturedPanel;
     private JPanel blackCapturedPanel;
 

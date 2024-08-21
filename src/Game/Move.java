@@ -1,3 +1,6 @@
+package Game;
+import Game.Pieces.Piece;
+
 public class Move {
 
     private int _curr_row;

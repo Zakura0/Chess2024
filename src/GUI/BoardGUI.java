@@ -1,7 +1,9 @@
+package GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
+import Game.*;
+import Game.Pieces.*;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

@@ -1,22 +1,30 @@
+package Game.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Klasse für den Läufer
- */
-public class Bishop extends Piece {
+import Game.Move;
 
-    public Bishop(int row, int col, boolean color) {
+/**
+ * Die Klasse Queen repräsentiert die Dame im Schachspiel.
+ * 
+ * @see Piece
+ */
+public class Queen extends Piece {
+    public Queen(int row, int col, boolean color) {
         super(row, col, color);
     }
 
+    /*
+     * @see Piece#calculatePossibleMoves()
+     */
     public void calculatePossibleMoves() {
         List<Move> moves = new ArrayList<>();
         int row = this.getRow();
         int col = this.getCol();
-        // Richtungsvektoren nur für die vier Diagonalen
+        // Richtungsvektoren für oben, unten, links, rechts, und die vier Diagonalen
         int[][] directions = {
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Gerade
             {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
         };
     
@@ -58,14 +66,14 @@ public class Bishop extends Piece {
 
     public String getName() {
         if (this.getColor()) {
-            return "bishop_w";
+            return "queen_w";
         } else {
-            return "bishop_b";
+            return "queen_b";
         }
     }
 
 	@Override
 	public String getAlgebraicNotation() {
-		return "B";
+		return "Q";
 	}
 }
