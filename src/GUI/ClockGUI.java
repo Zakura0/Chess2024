@@ -12,7 +12,6 @@ import javax.swing.*;
 public class ClockGUI extends JPanel {
 
     private JLabel time;
-    public GUI gui;
 
     public ClockGUI(int timeLimit) {
         time = new JLabel(timeLimit / 60 + ":" + String.format("%02d", timeLimit % 60));

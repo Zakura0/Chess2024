@@ -34,7 +34,8 @@ import java.awt.Color;
 public class GUI extends JFrame implements Runnable {
     private Dimension frameDim = new Dimension(1500, 900);
     private BoardGUI boardGUI;
-    private capturedGUI capturedGUI;
+    private capturedGUI capturedWhite;
+    private capturedGUI capturedBlack;
     private String whitePlayer;
     private String blackPlayer;
     private ClockGUI clockWhite;
@@ -73,25 +74,56 @@ public class GUI extends JFrame implements Runnable {
         timeBlack *= 60;
 
         infoLabel = new JLabel("Welcome to Chess");
+        JLabel blackPlayLabel = new JLabel(blackPlayer);
+        JLabel whitePlayLabel = new JLabel(whitePlayer);
         boardGUI = new BoardGUI(game);
-        capturedGUI = new capturedGUI();
         clockWhite = new ClockGUI(timeWhite);
         clockBlack = new ClockGUI(timeBlack);
+        capturedBlack = new capturedGUI();
+        capturedWhite = new capturedGUI();
         counter = new Thread(this);
         initButtons();
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcMain = new GridBagConstraints();
+
+        gbcMain.insets = new Insets(5, 5, 5, 5);
+        gbcMain.anchor = GridBagConstraints.LINE_START;
+
+        gbcMain.gridx = 0;
+        gbcMain.gridy = 0;
+        gbcMain.gridwidth = 1;
+        mainPanel.add(infoLabel, gbcMain);
+
+        gbcMain.gridx = 1;
+        gbcMain.gridy = 1;
+        gbcMain.gridwidth = 1;
+        mainPanel.add(boardGUI, gbcMain);
 
         JPanel blackClockPanel = new JPanel();
         blackClockPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcB = new GridBagConstraints();
-        gbcB.insets = new Insets(0, 50, 0, 50);
+        gbcB.insets = new Insets(0, 10, 0, 0);
         blackClockPanel.add(clockBlack, gbcB);
 
         JPanel whiteClockPanel = new JPanel();
         whiteClockPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcW = new GridBagConstraints();
-        gbcW = new GridBagConstraints();
-        gbcW.insets = new Insets(5, 50, 0, 50);
+        gbcW.insets = new Insets(0, 10, 0, 0);
         whiteClockPanel.add(clockWhite, gbcW);
+
+        JPanel caputedBlackPanel = new JPanel();
+        caputedBlackPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcCB = new GridBagConstraints();
+        gbcCB.insets = new Insets(0, 0, 0, 0);
+        caputedBlackPanel.add(capturedBlack, gbcCB);
+
+        JPanel caputedWhitePanel = new JPanel();
+        caputedWhitePanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcCW = new GridBagConstraints();
+        gbcCW.insets = new Insets(0, 0, 0, 0);
+        caputedWhitePanel.add(capturedWhite, gbcCW);
 
         Dimension buttonSize = new Dimension(150, 30);
         draw.setPreferredSize(buttonSize);
@@ -104,21 +136,39 @@ public class GUI extends JFrame implements Runnable {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
+        Font PlayerFont = new Font("Arial", Font.PLAIN, 18);
+        whitePlayLabel.setFont(PlayerFont);
+        blackPlayLabel.setFont(PlayerFont);
+
         gbc.gridx = 0;
         gbc.gridy = 0;
-        eastPanel.add(blackClockPanel, gbc);
+        eastPanel.add(blackPlayLabel, gbc);
         gbc.gridy = 1;
-        eastPanel.add(draw, gbc);
+        eastPanel.add(blackClockPanel, gbc);
         gbc.gridy = 2;
-        eastPanel.add(save, gbc);
+        eastPanel.add(draw, gbc);
         gbc.gridy = 3;
-        eastPanel.add(load, gbc);
+        eastPanel.add(save, gbc);
         gbc.gridy = 4;
-        eastPanel.add(reset, gbc);
+        eastPanel.add(load, gbc);
         gbc.gridy = 5;
+        eastPanel.add(reset, gbc);
+        gbc.gridy = 6;
         eastPanel.add(whiteClockPanel, gbc);
-        add(eastPanel, BorderLayout.EAST);
-        add(infoLabel, BorderLayout.NORTH);
+        gbc.gridy = 7;
+        eastPanel.add(whitePlayLabel, gbc);
+
+        gbcMain.gridx = 2;
+        gbcMain.gridy = 1;
+        mainPanel.add(eastPanel, gbcMain);
+
+        gbcMain.gridx = 1;
+        gbcMain.gridy = 0;
+        mainPanel.add(caputedWhitePanel, gbcMain);
+
+        gbcMain.gridx = 1;
+        gbcMain.gridy = 2;
+        mainPanel.add(caputedBlackPanel, gbcMain);
 
         movesArea = new JTextArea();
         movesArea.setEditable(false);
@@ -126,20 +176,18 @@ public class GUI extends JFrame implements Runnable {
         movesArea.setFont(font); // Wende das Schriftobjekt auf das JTextArea an
         JScrollPane scrollPane = new JScrollPane(movesArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(200, 250));
-        add(scrollPane, BorderLayout.WEST);
+        scrollPane.setPreferredSize(new Dimension(200, 600));
 
-        /*
-         * JPanel centerPanel = new JPanel();
-         * centerPanel.setLayout(new GridLayout(1, 2));
-         * centerPanel.add(boardGUI);
-         * centerPanel.add(capturedGUI);
-         */
-        add(boardGUI, BorderLayout.CENTER);
+        gbcMain.gridx = 0;  
+        gbcMain.gridy = 1;
+        mainPanel.add(scrollPane, gbcMain);
+
+        add(mainPanel);
 
         Border matteBorder = BorderFactory.createMatteBorder(0, 0, 0, 20, new Color(238, 238, 238));
         scrollPane.setBorder(matteBorder);
         Border emptyBorder = BorderFactory.createEmptyBorder(20, 20, 50, 20);
+
 
         this.getRootPane().setBorder(emptyBorder);
         pack();
@@ -264,6 +312,8 @@ public class GUI extends JFrame implements Runnable {
                 timeWhite--;
                 clockWhite.getTime().setText(timeWhite / 60 + ":" + String.format("%02d", timeWhite % 60));
                 clockBlack.getTime().setText(timeBlack / 60 + ":" + String.format("%02d", timeBlack % 60));
+                capturedBlack.updateBlackCapturedPieces(Game.blackDead);
+
                 // Wenn Weiß keine Zeit mehr hat
                 if (timeWhite == 0) {
                     infoLabel.setText("Black won!");
@@ -277,6 +327,7 @@ public class GUI extends JFrame implements Runnable {
                 timeBlack--;
                 clockWhite.getTime().setText(timeWhite / 60 + ":" + String.format("%02d", timeWhite % 60));
                 clockBlack.getTime().setText(timeBlack / 60 + ":" + String.format("%02d", timeBlack % 60));
+                capturedWhite.updateWhiteCapturedPieces(Game.whiteDead);
                 // Wenn Schwarz keine Zeit mehr hat
                 if (timeBlack == 0) {
                     infoLabel.setText("White won!");
