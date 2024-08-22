@@ -5,11 +5,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,6 +22,7 @@ import Core.Move;
 import Core.SaveGame;
 import Core.Pieces.Bishop;
 import Core.Pieces.Knight;
+import Core.Pieces.Piece;
 import Core.Pieces.Queen;
 import Core.Pieces.Rook;
 
@@ -312,7 +315,6 @@ public class GUI extends JFrame implements Runnable {
                 timeWhite--;
                 clockWhite.getTime().setText(timeWhite / 60 + ":" + String.format("%02d", timeWhite % 60));
                 clockBlack.getTime().setText(timeBlack / 60 + ":" + String.format("%02d", timeBlack % 60));
-                capturedBlack.updateBlackCapturedPieces(Game.blackDead);
 
                 // Wenn Weiß keine Zeit mehr hat
                 if (timeWhite == 0) {
@@ -327,7 +329,6 @@ public class GUI extends JFrame implements Runnable {
                 timeBlack--;
                 clockWhite.getTime().setText(timeWhite / 60 + ":" + String.format("%02d", timeWhite % 60));
                 clockBlack.getTime().setText(timeBlack / 60 + ":" + String.format("%02d", timeBlack % 60));
-                capturedWhite.updateWhiteCapturedPieces(Game.whiteDead);
                 // Wenn Schwarz keine Zeit mehr hat
                 if (timeBlack == 0) {
                     infoLabel.setText("White won!");
@@ -342,6 +343,21 @@ public class GUI extends JFrame implements Runnable {
             clockWhite.getTime().setText(timeWhite / 60 + ":" + String.format("%02d", timeWhite % 60));
             clockBlack.getTime().setText(timeBlack / 60 + ":" + String.format("%02d", timeBlack % 60));
         }
+    }
+
+        public void updateCapturedPieces(boolean white) {
+
+        JPanel panel = white? capturedWhite: capturedBlack;
+        List <Piece> capturedPieces = white? Game.whiteDead: Game.blackDead;
+        panel.removeAll();
+        for (Piece piece : capturedPieces) {
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(7, 7, Image.SCALE_SMOOTH)));
+            panel.add(pieceLabel);
+        }
+
+        panel.revalidate();
+        panel.repaint();
+
     }
 
     /**

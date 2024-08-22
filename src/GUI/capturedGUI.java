@@ -19,28 +19,4 @@ public class capturedGUI extends JPanel {
         setVisible(true);
     }
 
-    public void updateWhiteCapturedPieces(List<Piece> whiteCaptured) {
-        capturedPanel.removeAll();
-
-        for (Piece piece : whiteCaptured) {
-            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(7, 7, Image.SCALE_SMOOTH)));
-            capturedPanel.add(pieceLabel);
-        }
-
-        capturedPanel.revalidate();
-        capturedPanel.repaint();
-
-    }
-
-    public void updateBlackCapturedPieces(List<Piece> blackCaptured){
-        capturedPanel.removeAll();
-
-        for (Piece piece : blackCaptured) {
-            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(7, 7, Image.SCALE_SMOOTH)));
-            capturedPanel.add(pieceLabel);
-        }
-
-        capturedPanel.revalidate();
-        capturedPanel.repaint();
-    }
 }

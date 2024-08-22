@@ -31,7 +31,6 @@ public class Game {
     private static King blackKing;
     private String algebraic;
     private GUI gui;
-    private capturedGUI capturedGUI;
     public static List<Move> moveQueue;
     private Map<String, Integer> boardStates;
 
@@ -211,8 +210,7 @@ public class Game {
         if (destPiece != piece && destPiece != null) {
             killPiece(destPiece);
             anWholeMove = anPiece + "x" + anEnd;
-            //capturedGUI.updateWhiteCapturedPieces(whiteDead);
-            //capturedGUI.updateBlackCapturedPieces(blackDead);
+            gui.updateCapturedPieces(destPiece.getColor());
         }
         piece.move(move.getDestRow(), move.getDestCol()); // Führe den Zug aus
         if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) { // Bauernumwandlung
