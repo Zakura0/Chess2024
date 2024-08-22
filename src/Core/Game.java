@@ -19,6 +19,7 @@ import GUI.GUI;
 /**
  * Die Game Klasse ist die Hauptklasse des Spiels und verwaltet die Spiellogik.
  * Sie erstellt außerdem die Benutzeroberfläche und initialisiert das Spiel.
+ * @author Gruppe 02
  */
 public class Game {
     public static boolean isWhite;

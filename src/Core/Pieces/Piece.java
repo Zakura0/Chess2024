@@ -11,6 +11,7 @@ import Core.Move;
 
 /**
  * Die Klasse Piece repräsentiert eine Schachfigur.
+ * @author Gruppe 02
  */
 public abstract class Piece {
 
@@ -26,7 +27,7 @@ public abstract class Piece {
         this._possibleMoves = new ArrayList<>();
     }
 
-    /*
+    /**
      * Bewegt die Figur auf das angegebene Feld.
      */
     public void move(int row, int col) {
@@ -60,7 +61,7 @@ public abstract class Piece {
         this._possibleMoves = moves;
     }
 
-    /*
+    /**
      * Prüft, ob der Zug gültig ist.
      * 
      * @param move Der Zug, der überprüft werden soll.
@@ -81,7 +82,7 @@ public abstract class Piece {
         }
     }
 
-    /*
+    /**
      * Berechnet die möglichen Züge der Figur.
      */
     public abstract void calculatePossibleMoves();

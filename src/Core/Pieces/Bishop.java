@@ -7,6 +7,7 @@ import Core.Move;
 
 /**
  * Klasse für den Läufer
+ * @author Gruppe 02
  */
 public class Bishop extends Piece {
 

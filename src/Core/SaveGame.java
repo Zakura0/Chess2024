@@ -10,12 +10,13 @@ import java.util.Scanner;
 import Core.Pieces.Piece;
 import GUI.GUI;
 
-/*
+/**
  * Die Klasse SaveGame speichert und lädt ein Spiel.
+ * @author Gruppe 02
  */
 public class SaveGame {
 
-    /*
+    /**
      * Speichert das Spiel in einer Datei.
      * 
      * @param moveQueue Die Liste der Züge, die gespeichert werden sollen.
@@ -43,7 +44,7 @@ public class SaveGame {
         }
     }
 
-    /*
+    /**
      * Lädt die Züge aus einer Datei.
      * 
      * @param fileName Der Name der Datei, aus der die Züge geladen werden sollen.
@@ -78,7 +79,7 @@ public class SaveGame {
         return moveQueue;
     }
 
-    /*
+    /**
      * Stellt ein Spiel aus den geladenen Zügen wieder her.
      * 
      * @param game Das Spiel, in das die Züge geladen werden sollen.

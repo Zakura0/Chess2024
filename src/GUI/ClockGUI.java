@@ -13,6 +13,10 @@ public class ClockGUI extends JPanel {
 
     private JLabel time;
 
+    /**
+     * Konstruktor zur Erzeugung der Uhr
+     * @param timeLimit Das gesetzte Zeitlimit
+     */
     public ClockGUI(int timeLimit) {
         time = new JLabel(timeLimit / 60 + ":" + String.format("%02d", timeLimit % 60));
         time.setFont(new Font("Arial", Font.BOLD, 75));
@@ -22,11 +26,18 @@ public class ClockGUI extends JPanel {
         this.add(time);
         setVisible(true);
     }
-
+    /**
+     * Get-Method für Time
+     * @return time
+     */
     public JLabel getTime() {
         return time;
     }
 
+    /**
+     * Setzt die Farbe der Uhr
+     * @param color
+     */
     public void setClockColor(Color color){
         time.setForeground(color);
     }

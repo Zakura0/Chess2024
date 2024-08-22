@@ -57,9 +57,12 @@ public class GUI extends JFrame implements Runnable {
     public static JTextArea movesArea;
     public static boolean unitTest = false;
 
+    /**
+     * Konstruktor zur Erzeugung der GUI.
+     * @param game
+     */
     public GUI(Game game) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        System.out.println(screenSize.width +"x"+ screenSize.height );
         this.game = game;
         setTitle("Chess");
         setPreferredSize(new Dimension((int) (screenSize.width * 0.9), (int) (screenSize.height * 0.92)));
@@ -213,8 +216,8 @@ public class GUI extends JFrame implements Runnable {
 
         movesArea = new JTextArea();
         movesArea.setEditable(false);
-        Font font = new Font("Arial", Font.PLAIN, 25); // Erstelle ein Schriftobjekt mit Schriftart, Stil und Größe
-        movesArea.setFont(font); // Wende das Schriftobjekt auf das JTextArea an
+        Font font = new Font("Arial", Font.PLAIN, 25); 
+        movesArea.setFont(font); 
         JScrollPane scrollPane = new JScrollPane(movesArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setPreferredSize(new Dimension((int) (screenSize.width * 0.15), (int) (screenSize.height * 0.711)));
@@ -234,6 +237,10 @@ public class GUI extends JFrame implements Runnable {
         setResizable(false);
         setVisible(true);
     }
+    /**
+     * Erzeugung des Eingabefensters, wo Spielernamen und Zeit eingegeben werden kann.
+     * 
+     */
 
     private void openNewGameDialog() {
         JTextField whitePlayerField = new JTextField();
@@ -270,6 +277,9 @@ public class GUI extends JFrame implements Runnable {
     }
 
 
+    /**
+     * Initializierung der MenuBar mit Save und Load Funktion von Schachpositionen.
+     */
     private void initMenu() {
 
         JMenuBar menuBar = new JMenuBar();
@@ -347,10 +357,7 @@ public class GUI extends JFrame implements Runnable {
     /**
      * Implementation der Uhr.
      * 
-     * @param timeWhite Die Zeit für Weiß.
-     * @param timeBlack Die Zeit für Schwarz.
-     * @boolean startedClock = false Die Uhr fängt nicht an zu zählen, =true, Die
-     *          Uhr fängt an zu zählen.
+     * @boolean startedClock = false Die Uhr fängt nicht an zu zählen, =true, Die Uhr fängt an zu zählen.
      */
     @Override
     public void run() {
@@ -400,6 +407,10 @@ public class GUI extends JFrame implements Runnable {
         }
     }
 
+    /**
+     * Aktualisiert die Anzeige der geschlagenen Figuren.
+     * @param white boolean zur Unterscheidung der Farbe einer geschlagenen Figur
+     */
     public void updateCapturedPieces(boolean white) {
 
         JPanel panel = white ? capturedWhite : capturedBlack;
@@ -417,15 +428,6 @@ public class GUI extends JFrame implements Runnable {
     /**
      * Setzt die Uhr für beide Spieler zurück.
      * 
-     * @param timeLimit    Die gegebene Spielzeit für beide Spieler (10 Minuten
-     *                     default).
-     * @param timeWhite    Die Zeit für Weiß (hier = timelimit, da die Uhr
-     *                     zurückgesetzt wird).
-     * @param timeBlack    Die Zeit für Schwarz.
-     * @param infoLabel    JTextField welches gewisse Infos anzeigt wie "Black won!"
-     *                     oder hier: "Welcome to Chess".
-     * @param startedClock = false Die Uhr fängt nicht an zu zählen wenn auf Reset
-     *                     gedrückt wird.
      */
     public void resetTimer() {
         int timeLimit = GUI.timeLimit;
@@ -439,8 +441,10 @@ public class GUI extends JFrame implements Runnable {
         startedClock = false;
     }
 
-    /*
+    /**
      * Diese Methode behandelt die Bauernumwandlung.
+     * 
+     * @param move Der Zug, der die Bauernumwandlung auslöst.
      */
     public int getPromotionChoice(Move move) {
         String[] options = { "Queen", "Rook", "Bishop", "Knight" };

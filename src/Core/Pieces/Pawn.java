@@ -8,7 +8,7 @@ import Core.Move;
 
 /**
  * Die Klasse Pawn repräsentiert den Bauern im Schachspiel. *
- * 
+ * @author Gruppe 02
  * @see Piece
  */
 public class Pawn extends Piece {
@@ -17,7 +17,7 @@ public class Pawn extends Piece {
         super(row, col, color);
     }
 
-    /*
+    /**
      * @see Piece#calculatePossibleMoves()
      */
     public void calculatePossibleMoves() {

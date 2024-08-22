@@ -2,6 +2,10 @@ package Core;
 
 import Core.Pieces.Piece;
 
+/**
+ * Klasse für die interne Darstellung von Zügen und Hilfsmethoden.
+ * @author Gruppe 02
+ */
 public class Move {
 
     private int _curr_row;

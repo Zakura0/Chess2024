@@ -8,6 +8,10 @@ import Core.Pieces.Piece;
 import Core.Pieces.Queen;
 import Core.Pieces.Rook;
 
+/**
+ * Das Schachbrett mit Figuren
+ * @author Gruppe 02
+ */
 public class Board {
 
     public static Piece[][] board;

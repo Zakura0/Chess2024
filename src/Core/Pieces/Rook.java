@@ -7,7 +7,7 @@ import Core.Move;
 
 /**
  * Die Klasse Rook repräsentiert den Turm im Schachspiel.
- * 
+ * @author Gruppe 02
  * @see Piece
  */
 public class Rook extends Piece {
@@ -15,7 +15,7 @@ public class Rook extends Piece {
         super(row, col, color);
     }
 
-    /*
+    /**
      * @see Piece#calculatePossibleMoves()
      */
     public void calculatePossibleMoves() {
