@@ -4,7 +4,8 @@
   ],
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": [
-    "s:\\Uni\\PTP\\ptp-chess-mi-gruppe-02\\lib\\junit-platform-console-standalone-1.9.3.jar"
+    "s:\\Uni\\PTP\\ptp-chess-mi-gruppe-02\\lib\\junit-platform-console-standalone-1.9.3.jar",
+    "test-lib/**/*.jar"
   ],
   "C_Cpp_Runner.cCompilerPath": "clang",
   "C_Cpp_Runner.cppCompilerPath": "clang++",
