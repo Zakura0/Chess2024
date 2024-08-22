@@ -15,7 +15,6 @@ import Core.Pieces.Piece;
 import Core.Pieces.Queen;
 import Core.Pieces.Rook;
 import GUI.GUI;
-import GUI.capturedGUI;
 
 /**
  * Die Game Klasse ist die Hauptklasse des Spiels und verwaltet die Spiellogik.

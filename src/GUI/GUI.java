@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -35,10 +36,10 @@ import java.awt.Color;
  * 
  */
 public class GUI extends JFrame implements Runnable {
-    private Dimension frameDim = new Dimension(1500, 900);
+    private Dimension frameDim = new Dimension(1300, 1000);
     private BoardGUI boardGUI;
-    private capturedGUI capturedWhite;
-    private capturedGUI capturedBlack;
+    private JPanel capturedWhite;
+    private JPanel capturedBlack;
     private String whitePlayer;
     private String blackPlayer;
     private ClockGUI clockWhite;
@@ -60,7 +61,7 @@ public class GUI extends JFrame implements Runnable {
     public GUI(Game game) {
         this.game = game;
         setTitle("Chess");
-        setSize(frameDim);
+        setPreferredSize(frameDim);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         {
             if (!unitTest) {
@@ -82,8 +83,6 @@ public class GUI extends JFrame implements Runnable {
         boardGUI = new BoardGUI(game);
         clockWhite = new ClockGUI(timeWhite);
         clockBlack = new ClockGUI(timeBlack);
-        capturedBlack = new capturedGUI();
-        capturedWhite = new capturedGUI();
         counter = new Thread(this);
         initButtons();
 
@@ -116,17 +115,19 @@ public class GUI extends JFrame implements Runnable {
         gbcW.insets = new Insets(0, 10, 0, 0);
         whiteClockPanel.add(clockWhite, gbcW);
 
-        JPanel caputedBlackPanel = new JPanel();
-        caputedBlackPanel.setLayout(new GridBagLayout());
+        JPanel capturedBlackPanel = new JPanel();
+        capturedBlack = new JPanel(new GridLayout(1, 16, 2, 2));
+        capturedBlackPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcCB = new GridBagConstraints();
         gbcCB.insets = new Insets(0, 0, 0, 0);
-        caputedBlackPanel.add(capturedBlack, gbcCB);
+        capturedBlackPanel.add(capturedBlack, gbcCB);
 
-        JPanel caputedWhitePanel = new JPanel();
-        caputedWhitePanel.setLayout(new GridBagLayout());
+        JPanel capturedWhitePanel = new JPanel();
+        capturedWhite = new JPanel(new GridLayout(1, 16, 2, 2));
+        capturedWhitePanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcCW = new GridBagConstraints();
         gbcCW.insets = new Insets(0, 0, 0, 0);
-        caputedWhitePanel.add(capturedWhite, gbcCW);
+        capturedWhitePanel.add(capturedWhite, gbcCW);
 
         Dimension buttonSize = new Dimension(150, 30);
         draw.setPreferredSize(buttonSize);
@@ -167,11 +168,11 @@ public class GUI extends JFrame implements Runnable {
 
         gbcMain.gridx = 1;
         gbcMain.gridy = 0;
-        mainPanel.add(caputedWhitePanel, gbcMain);
+        mainPanel.add(capturedWhitePanel, gbcMain);
 
         gbcMain.gridx = 1;
         gbcMain.gridy = 2;
-        mainPanel.add(caputedBlackPanel, gbcMain);
+        mainPanel.add(capturedBlackPanel, gbcMain);
 
         movesArea = new JTextArea();
         movesArea.setEditable(false);
@@ -181,7 +182,7 @@ public class GUI extends JFrame implements Runnable {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setPreferredSize(new Dimension(200, 600));
 
-        gbcMain.gridx = 0;  
+        gbcMain.gridx = 0;
         gbcMain.gridy = 1;
         mainPanel.add(scrollPane, gbcMain);
 
@@ -190,7 +191,6 @@ public class GUI extends JFrame implements Runnable {
         Border matteBorder = BorderFactory.createMatteBorder(0, 0, 0, 20, new Color(238, 238, 238));
         scrollPane.setBorder(matteBorder);
         Border emptyBorder = BorderFactory.createEmptyBorder(20, 20, 50, 20);
-
 
         this.getRootPane().setBorder(emptyBorder);
         pack();
@@ -345,19 +345,17 @@ public class GUI extends JFrame implements Runnable {
         }
     }
 
-        public void updateCapturedPieces(boolean white) {
+    public void updateCapturedPieces(boolean white) {
 
-        JPanel panel = white? capturedWhite: capturedBlack;
-        List <Piece> capturedPieces = white? Game.whiteDead: Game.blackDead;
+        JPanel panel = white ? capturedWhite : capturedBlack;
+        List<Piece> capturedPieces = white ? Game.whiteDead : Game.blackDead;
         panel.removeAll();
         for (Piece piece : capturedPieces) {
-            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(7, 7, Image.SCALE_SMOOTH)));
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
             panel.add(pieceLabel);
         }
 
         panel.revalidate();
-        panel.repaint();
-
     }
 
     /**
