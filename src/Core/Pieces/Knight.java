@@ -7,7 +7,7 @@ import Core.Move;
 
 /**
  * Die Klasse Knight repräsentiert den Springer im Schachspiel.
- * 
+ * @author Gruppe 02
  * @see Piece
  */
 public class Knight extends Piece {
@@ -15,7 +15,7 @@ public class Knight extends Piece {
         super(row, col, color);
     }
 
-    /*
+    /**
      * @see Piece#calculatePossibleMoves()
      */
     public void calculatePossibleMoves() {

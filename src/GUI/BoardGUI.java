@@ -36,11 +36,14 @@ public class BoardGUI extends JPanel {
     private int selectedCol;
     private Game game;
     public static Map<String, BufferedImage> pieceImages = new HashMap<>();
-    private Map<String, ImageIcon> transformIcons = new HashMap<>();
-    private Map<String, ImageIcon> takenPiecesIcons = new HashMap<>();
     private int xBoardOffset;
     private int yBoardOffset;
-
+    
+    /**
+     * Konstruktor zur Ezeugung des Schachbretts
+     * 
+     * @param game Das aktuelle Spiel.
+     */
     public BoardGUI(Game game) {
         this.game = game;
         setSize(new Dimension(800, 800));
@@ -200,16 +203,17 @@ public class BoardGUI extends JPanel {
         }
     }
 
-    /**
-     * getPreferredSize wird überschrieben um sicherzustellen,
-     * dass das Schachbrett die richtige Größe hat, wenn es in der
-     * Benutzeroberfläche angezeigt wird.
-     * 
-     * @return Die Größe des Schachbretts
-     */
+
 
     @Override
     public Dimension getPreferredSize() {
+        /**
+         * getPreferredSize wird überschrieben um sicherzustellen,
+         * dass das Schachbrett die richtige Größe hat, wenn es in der
+         * Benutzeroberfläche angezeigt wird.
+         * 
+         * @return Die Größe des Schachbretts
+         */
         return new Dimension(board * tileSize, board * tileSize);
     }
 

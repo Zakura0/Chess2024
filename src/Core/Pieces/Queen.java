@@ -7,7 +7,7 @@ import Core.Move;
 
 /**
  * Die Klasse Queen repräsentiert die Dame im Schachspiel.
- * 
+ * @author Gruppe 02
  * @see Piece
  */
 public class Queen extends Piece {
@@ -15,7 +15,7 @@ public class Queen extends Piece {
         super(row, col, color);
     }
 
-    /*
+    /**
      * @see Piece#calculatePossibleMoves()
      */
     public void calculatePossibleMoves() {

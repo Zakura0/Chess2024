@@ -9,6 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+/**
+ * Die Klasse ScrollBarGUI stellt das Aussehen der Scrollbar dar.
+ * @author Gruppe 02
+ */
 public class ScrollBarGUI extends BasicScrollBarUI{
     @Override
     protected void configureScrollBarColors() {

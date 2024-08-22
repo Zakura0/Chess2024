@@ -8,7 +8,7 @@ import Core.Move;
 
 /**
  * Die Klasse King repräsentiert den König im Schachspiel.
- * 
+ * @author Gruppe 02
  * @see Piece
  */
 public class King extends Piece {
