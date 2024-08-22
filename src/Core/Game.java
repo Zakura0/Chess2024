@@ -213,31 +213,36 @@ public class Game {
         }
         piece.move(move.getDestRow(), move.getDestCol()); // Führe den Zug aus
         if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) { // Bauernumwandlung
+            String transformChoice = "";
             if (move.getTransformation() != 0) {
                 switch (move.getTransformation()) {
                     case 1:
                         Board.board[move.getDestRow()][move.getDestCol()] = new Queen(move.getDestRow(),
                                 move.getDestCol(), isWhite);
+                        transformChoice = "Q";
                         break;
                     case 2:
                         Board.board[move.getDestRow()][move.getDestCol()] = new Rook(move.getDestRow(),
                                 move.getDestCol(), isWhite);
+                        transformChoice = "R";
                         break;
                     case 3:
                         Board.board[move.getDestRow()][move.getDestCol()] = new Bishop(move.getDestRow(),
                                 move.getDestCol(), isWhite);
+                        transformChoice = "B";
                         break;
                     case 4:
                         Board.board[move.getDestRow()][move.getDestCol()] = new Knight(move.getDestRow(),
                                 move.getDestCol(), isWhite);
+                        transformChoice = "K";
                         break;
                     default:
                         break;
                 }
+                anWholeMove += "=" + transformChoice;
             } else {
                 int choice = gui.getPromotionChoice(move);
                 move.setTransformation(choice);
-                String transformChoice = "";
                 switch (choice) {
                     case 1:
                         transformChoice = "Q";
@@ -500,5 +505,19 @@ public class Game {
      */
     public void saveGame() {
         SaveGame.saveGame(moveQueue);
+    }
+
+    public String getAlgebraicNotation() {
+        String[] parts = algebraic.split(";");
+        for (int i = parts.length - 1; i >= 0; i--) {
+            if (!parts[i].isEmpty()) {
+                return parts[i];
+            }
+        }
+        return "";
+    }
+
+    public void setAlgebraicNotation(String in) {
+        algebraic += in;
     }
 }
