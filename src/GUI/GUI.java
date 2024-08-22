@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -85,6 +86,7 @@ public class GUI extends JFrame implements Runnable {
         clockBlack = new ClockGUI(timeBlack);
         counter = new Thread(this);
         initButtons();
+        initMenu();
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
@@ -131,8 +133,6 @@ public class GUI extends JFrame implements Runnable {
 
         Dimension buttonSize = new Dimension(150, 30);
         draw.setPreferredSize(buttonSize);
-        save.setPreferredSize(buttonSize);
-        load.setPreferredSize(buttonSize);
         reset.setPreferredSize(buttonSize);
 
         JPanel eastPanel = new JPanel();
@@ -141,6 +141,10 @@ public class GUI extends JFrame implements Runnable {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         Font PlayerFont = new Font("Arial", Font.PLAIN, 18);
+        whitePlayLabel.setPreferredSize(new Dimension(150, 30));
+        blackPlayLabel.setPreferredSize(new Dimension(150, 30));
+        whitePlayLabel.setHorizontalAlignment(JLabel.CENTER);
+        blackPlayLabel.setHorizontalAlignment(JLabel.CENTER);
         whitePlayLabel.setFont(PlayerFont);
         blackPlayLabel.setFont(PlayerFont);
 
@@ -152,14 +156,10 @@ public class GUI extends JFrame implements Runnable {
         gbc.gridy = 2;
         eastPanel.add(draw, gbc);
         gbc.gridy = 3;
-        eastPanel.add(save, gbc);
-        gbc.gridy = 4;
-        eastPanel.add(load, gbc);
-        gbc.gridy = 5;
         eastPanel.add(reset, gbc);
-        gbc.gridy = 6;
+        gbc.gridy = 4;
         eastPanel.add(whiteClockPanel, gbc);
-        gbc.gridy = 7;
+        gbc.gridy = 5;
         eastPanel.add(whitePlayLabel, gbc);
 
         gbcMain.gridx = 2;
@@ -190,9 +190,7 @@ public class GUI extends JFrame implements Runnable {
 
         Border matteBorder = BorderFactory.createMatteBorder(0, 0, 0, 20, new Color(238, 238, 238));
         scrollPane.setBorder(matteBorder);
-        Border emptyBorder = BorderFactory.createEmptyBorder(20, 20, 50, 20);
 
-        this.getRootPane().setBorder(emptyBorder);
         pack();
         setResizable(false);
         setVisible(true);
@@ -232,6 +230,39 @@ public class GUI extends JFrame implements Runnable {
         }
     }
 
+
+    private void initMenu() {
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("Menu");
+        JMenuItem save = new JMenuItem("Save");
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SaveGame.saveGame(Game.moveQueue);
+            }
+        });
+
+        JMenuItem load = new JMenuItem("Load");
+        load.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    ArrayList<Move> loadedmoveQueue = SaveGame.loadGameMoves(selectedFile.getAbsolutePath());
+                    game.resetGame();
+                    SaveGame.loadGame(game, loadedmoveQueue);
+                }
+            }
+        });
+
+        fileMenu.add(save);
+        fileMenu.add(load);
+        menuBar.add(fileMenu);
+        this.setJMenuBar(menuBar);
+    }
     /**
      * Die Methode initialisiert alle Buttons (Draw, Save, Load, Reset).
      * Hier bei stoppt das Schachspiel und die Uhr wenn auf "Draw" gedrückt wird.
@@ -249,29 +280,6 @@ public class GUI extends JFrame implements Runnable {
                 startedClock = false;
                 counter.interrupt();
                 infoLabel.setText("Draw");
-            }
-        });
-
-        save = new JButton("Save");
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SaveGame.saveGame(Game.moveQueue);
-            }
-        });
-
-        load = new JButton("Load");
-        load.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int returnValue = fileChooser.showOpenDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    ArrayList<Move> loadedmoveQueue = SaveGame.loadGameMoves(selectedFile.getAbsolutePath());
-                    game.resetGame();
-                    SaveGame.loadGame(game, loadedmoveQueue);
-                }
             }
         });
 
