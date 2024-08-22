@@ -17,7 +17,7 @@ public class ClockGUI extends JPanel {
         time = new JLabel(timeLimit / 60 + ":" + String.format("%02d", timeLimit % 60));
         time.setFont(new Font("Arial", Font.BOLD, 75));
         time.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        time.setPreferredSize(new Dimension(250, 120));
+        time.setPreferredSize(new Dimension((int)(GUI.screenSize.width * 0.17), (int) (GUI.screenSize.height * 0.133)));
         time.setHorizontalAlignment(JLabel.CENTER);
         this.add(time);
         setVisible(true);
@@ -25,6 +25,10 @@ public class ClockGUI extends JPanel {
 
     public JLabel getTime() {
         return time;
+    }
+
+    public void setClockColor(Color color){
+        time.setForeground(color);
     }
 
 }

@@ -269,7 +269,7 @@ public class Game {
         calculateAllMoves(); // Berechne alle möglichen Züge
         if (checkForCheck(!piece.getColor())) { // Überprüfe ob der König im Schach steht
             String color = piece.getColor() ? "black" : "white";
-            GUI.infoLabel.setText("The " + color + " king is in check!"); // Später für UI
+            GUI.infoLabel.setText("The " + color + " king is in check!"); 
             anWholeMove += "+";
             if (checkForMateOrStalemate(!piece.getColor())) { // Überprüfe ob Schachmatt oder Patt vorliegt
                 anWholeMove = anWholeMove.substring(0, anWholeMove.length() - 1);
@@ -420,10 +420,11 @@ public class Game {
             if (move.getCurrCol() != move.getDestCol() && destPiece == null) {
                 int direction = move.getCurrRow() < move.getDestRow() ? -1 : 1;
                 killPiece(Board.board[move.getDestRow() + direction][move.getDestCol()]);
+                gui.updateCapturedPieces(Board.board[move.getDestRow() + direction][move.getDestCol()].getColor());
                 Board.board[move.getDestRow() + direction][move.getDestCol()] = null;
                 return true;
             }
-        }
+        }   
         return false;
     }
 

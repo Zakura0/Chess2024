@@ -1,6 +1,6 @@
 package GUI;
 
-import java.awt.BorderLayout;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -8,7 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Menu;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -37,7 +37,7 @@ import java.awt.Color;
  * 
  */
 public class GUI extends JFrame implements Runnable {
-    private Dimension frameDim = new Dimension(1300, 1000);
+    public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private BoardGUI boardGUI;
     private JPanel capturedWhite;
     private JPanel capturedBlack;
@@ -46,8 +46,6 @@ public class GUI extends JFrame implements Runnable {
     private ClockGUI clockWhite;
     private ClockGUI clockBlack;
     private JButton draw;
-    private JButton save;
-    private JButton load;
     private JButton reset;
     public static int timeLimit;
     public static int timeWhite;
@@ -60,9 +58,11 @@ public class GUI extends JFrame implements Runnable {
     public static boolean unitTest = false;
 
     public GUI(Game game) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        System.out.println(screenSize.width +"x"+ screenSize.height );
         this.game = game;
         setTitle("Chess");
-        setPreferredSize(frameDim);
+        setPreferredSize(new Dimension((int) (screenSize.width * 0.9), (int) (screenSize.height * 0.92)));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         {
             if (!unitTest) {
@@ -79,8 +79,8 @@ public class GUI extends JFrame implements Runnable {
         timeBlack *= 60;
 
         infoLabel = new JLabel("Welcome to Chess");
-        JLabel blackPlayLabel = new JLabel(blackPlayer);
-        JLabel whitePlayLabel = new JLabel(whitePlayer);
+        JLabel blackPlayerLabel = new JLabel(blackPlayer);
+        JLabel whitePlayerLabel = new JLabel(whitePlayer);
         boardGUI = new BoardGUI(game);
         clockWhite = new ClockGUI(timeWhite);
         clockBlack = new ClockGUI(timeBlack);
@@ -92,7 +92,7 @@ public class GUI extends JFrame implements Runnable {
         mainPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcMain = new GridBagConstraints();
 
-        gbcMain.insets = new Insets(5, 5, 5, 5);
+        gbcMain.insets = new Insets(0,0,0,0);
         gbcMain.anchor = GridBagConstraints.LINE_START;
 
         gbcMain.gridx = 0;
@@ -108,63 +108,100 @@ public class GUI extends JFrame implements Runnable {
         JPanel blackClockPanel = new JPanel();
         blackClockPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcB = new GridBagConstraints();
-        gbcB.insets = new Insets(0, 10, 0, 0);
+        gbcB.insets = new Insets(0, (int) (screenSize.width * 0.0245), (int) (screenSize.width * 0.07), 0);
         blackClockPanel.add(clockBlack, gbcB);
 
         JPanel whiteClockPanel = new JPanel();
         whiteClockPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcW = new GridBagConstraints();
-        gbcW.insets = new Insets(0, 10, 0, 0);
+        gbcW.insets = new Insets((int) (screenSize.width * 0.07), (int) (screenSize.width * 0.0245), 0, 0);
         whiteClockPanel.add(clockWhite, gbcW);
 
         JPanel capturedBlackPanel = new JPanel();
-        capturedBlack = new JPanel(new GridLayout(1, 16, 2, 2));
+        capturedBlack = new JPanel(new GridLayout(1, 16, 1, 1));
         capturedBlackPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcCB = new GridBagConstraints();
         gbcCB.insets = new Insets(0, 0, 0, 0);
         capturedBlackPanel.add(capturedBlack, gbcCB);
 
         JPanel capturedWhitePanel = new JPanel();
-        capturedWhite = new JPanel(new GridLayout(1, 16, 2, 2));
+        capturedWhite = new JPanel(new GridLayout(1, 16, 1, 1));
         capturedWhitePanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcCW = new GridBagConstraints();
         gbcCW.insets = new Insets(0, 0, 0, 0);
         capturedWhitePanel.add(capturedWhite, gbcCW);
 
-        Dimension buttonSize = new Dimension(150, 30);
+        //JPanel spacePanel = new JPanel();
+        //spacePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.15), (int) (screenSize.height * 0.05)));
+
+        Dimension buttonSize = new Dimension((int)(screenSize.width* 0.12),(int)(screenSize.height * 0.1) );
         draw.setPreferredSize(buttonSize);
         reset.setPreferredSize(buttonSize);
+
+        JPanel drawPanel = new JPanel();
+        drawPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcDraw = new GridBagConstraints();
+        gbcDraw.insets = new Insets(0, (int) (screenSize.width * 0.031),(int) (screenSize.height * 0.02) , 0);
+        drawPanel.add(draw, gbcDraw);
+
+        JPanel resetPanel = new JPanel();
+        resetPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcReset = new GridBagConstraints();
+        gbcReset.insets = new Insets(0, (int) (screenSize.width * 0.031), 0, 0);
+        resetPanel.add(reset, gbcReset);
 
         JPanel eastPanel = new JPanel();
         eastPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-
+        
         Font PlayerFont = new Font("Arial", Font.PLAIN, 18);
-        whitePlayLabel.setPreferredSize(new Dimension(150, 30));
-        blackPlayLabel.setPreferredSize(new Dimension(150, 30));
-        whitePlayLabel.setHorizontalAlignment(JLabel.CENTER);
-        blackPlayLabel.setHorizontalAlignment(JLabel.CENTER);
-        whitePlayLabel.setFont(PlayerFont);
-        blackPlayLabel.setFont(PlayerFont);
+        JLabel label = new JLabel();
+        label.setFont(PlayerFont);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        whitePlayerLabel.setPreferredSize(new Dimension((int) (screenSize.width * 0.105), (int) (screenSize.height * 0.033)));
+        blackPlayerLabel.setPreferredSize(new Dimension((int) (screenSize.width * 0.035), (int) (screenSize.height * 0.033)));
+        whitePlayerLabel.setFont(PlayerFont);
+        blackPlayerLabel.setFont(PlayerFont);
+
+
+        JPanel whitePlayerPanel = new JPanel();
+        whitePlayerPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcWP = new GridBagConstraints();
+        gbcWP.insets = new Insets(0, (int) (screenSize.width * 0.12), 0, 0);
+        whitePlayerPanel.add(whitePlayerLabel, gbcWP);
+
+        JPanel blackPlayerPanel = new JPanel();
+        blackPlayerPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcBP = new GridBagConstraints();
+        gbcBP.insets = new Insets(0, (int) (screenSize.width * 0.05), 0, 0);
+        blackPlayerPanel.add(blackPlayerLabel, gbcBP);
+
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        eastPanel.add(blackPlayLabel, gbc);
+        eastPanel.add(blackPlayerPanel, gbc);
         gbc.gridy = 1;
         eastPanel.add(blackClockPanel, gbc);
         gbc.gridy = 2;
-        eastPanel.add(draw, gbc);
+        eastPanel.add(drawPanel, gbc);
         gbc.gridy = 3;
-        eastPanel.add(reset, gbc);
+        eastPanel.add(resetPanel, gbc);
         gbc.gridy = 4;
         eastPanel.add(whiteClockPanel, gbc);
         gbc.gridy = 5;
-        eastPanel.add(whitePlayLabel, gbc);
+        eastPanel.add(whitePlayerPanel, gbc);
 
         gbcMain.gridx = 2;
         gbcMain.gridy = 1;
-        mainPanel.add(eastPanel, gbcMain);
+        mainPanel.add(eastPanel, gbcMain); 
+
+        gbcMain.gridx = 1;
+        gbcMain.gridy = 0;
+        //mainPanel.add(spacePanel, gbcMain);
+
+        gbcMain.gridx = 1;
+        gbcMain.gridy = 2;
+        //mainPanel.add(spacePanel, gbcMain);        
 
         gbcMain.gridx = 1;
         gbcMain.gridy = 0;
@@ -180,7 +217,9 @@ public class GUI extends JFrame implements Runnable {
         movesArea.setFont(font); // Wende das Schriftobjekt auf das JTextArea an
         JScrollPane scrollPane = new JScrollPane(movesArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(200, 600));
+        scrollPane.setPreferredSize(new Dimension((int) (screenSize.width * 0.15), (int) (screenSize.height * 0.711)));
+        scrollPane.getVerticalScrollBar().setUI(new ScrollBarGUI());
+
 
         gbcMain.gridx = 0;
         gbcMain.gridy = 1;
@@ -239,6 +278,7 @@ public class GUI extends JFrame implements Runnable {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 SaveGame.saveGame(Game.moveQueue);
             }
         });
@@ -290,6 +330,9 @@ public class GUI extends JFrame implements Runnable {
                 counter.interrupt();
                 game.resetGame();
                 resetTimer();
+                capturedWhite.removeAll();
+                capturedBlack.removeAll();
+
             }
         });
     }
@@ -323,6 +366,8 @@ public class GUI extends JFrame implements Runnable {
                 timeWhite--;
                 clockWhite.getTime().setText(timeWhite / 60 + ":" + String.format("%02d", timeWhite % 60));
                 clockBlack.getTime().setText(timeBlack / 60 + ":" + String.format("%02d", timeBlack % 60));
+                clockWhite.setClockColor(Color.RED);
+                clockBlack.setClockColor(Color.BLACK);
 
                 // Wenn Weiß keine Zeit mehr hat
                 if (timeWhite == 0) {
@@ -337,6 +382,8 @@ public class GUI extends JFrame implements Runnable {
                 timeBlack--;
                 clockWhite.getTime().setText(timeWhite / 60 + ":" + String.format("%02d", timeWhite % 60));
                 clockBlack.getTime().setText(timeBlack / 60 + ":" + String.format("%02d", timeBlack % 60));
+                clockBlack.setClockColor(Color.RED);
+                clockWhite.setClockColor(Color.BLACK);
                 // Wenn Schwarz keine Zeit mehr hat
                 if (timeBlack == 0) {
                     infoLabel.setText("White won!");
@@ -359,11 +406,12 @@ public class GUI extends JFrame implements Runnable {
         List<Piece> capturedPieces = white ? Game.whiteDead : Game.blackDead;
         panel.removeAll();
         for (Piece piece : capturedPieces) {
-            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
             panel.add(pieceLabel);
         }
 
         panel.revalidate();
+        panel.repaint();
     }
 
     /**
