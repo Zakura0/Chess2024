@@ -1,3 +1,4 @@
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -12,6 +13,15 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import Core.Board;
+import Core.Game;
+import Core.Move;
+import Core.SaveGame;
+import Core.Pieces.Bishop;
+import Core.Pieces.Knight;
+import Core.Pieces.Queen;
+import Core.Pieces.Rook;
 
 import java.awt.Color;
 

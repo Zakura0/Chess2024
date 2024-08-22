@@ -1,6 +1,10 @@
+package Core.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Core.Game;
+import Core.Move;
 
 /**
  * Die Klasse Pawn repräsentiert den Bauern im Schachspiel. *

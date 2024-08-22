@@ -1,3 +1,6 @@
+package Core;
+
+import Core.Pieces.Piece;
 
 public class Move {
 

@@ -1,6 +1,12 @@
+package GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import Core.Board;
+import Core.Game;
+import Core.Move;
+import Core.Pieces.Piece;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -212,18 +218,18 @@ public class BoardGUI extends JPanel {
      */
     private void loadPieceImages() {
         try {
-            pieceImages.put("pawn_w", ImageIO.read(new File("src/figures_img/white-pawn.png")));
-            pieceImages.put("rook_w", ImageIO.read(new File("src/figures_img/white-rook.png")));
-            pieceImages.put("knight_w", ImageIO.read(new File("src/figures_img/white-knight.png")));
-            pieceImages.put("bishop_w", ImageIO.read(new File("src/figures_img/white-bishop.png")));
-            pieceImages.put("queen_w", ImageIO.read(new File("src/figures_img/white-queen.png")));
-            pieceImages.put("king_w", ImageIO.read(new File("src/figures_img/white-king.png")));
-            pieceImages.put("pawn_b", ImageIO.read(new File("src/figures_img/black-pawn.png")));
-            pieceImages.put("rook_b", ImageIO.read(new File("src/figures_img/black-rook.png")));
-            pieceImages.put("knight_b", ImageIO.read(new File("src/figures_img/black-knight.png")));
-            pieceImages.put("bishop_b", ImageIO.read(new File("src/figures_img/black-bishop.png")));
-            pieceImages.put("queen_b", ImageIO.read(new File("src/figures_img/black-queen.png")));
-            pieceImages.put("king_b", ImageIO.read(new File("src/figures_img/black-king.png")));
+            pieceImages.put("pawn_w", ImageIO.read(new File("src/IMG/white-pawn.png")));
+            pieceImages.put("rook_w", ImageIO.read(new File("src/IMG/white-rook.png")));
+            pieceImages.put("knight_w", ImageIO.read(new File("src/IMG/white-knight.png")));
+            pieceImages.put("bishop_w", ImageIO.read(new File("src/IMG/white-bishop.png")));
+            pieceImages.put("queen_w", ImageIO.read(new File("src/IMG/white-queen.png")));
+            pieceImages.put("king_w", ImageIO.read(new File("src/IMG/white-king.png")));
+            pieceImages.put("pawn_b", ImageIO.read(new File("src/IMG/black-pawn.png")));
+            pieceImages.put("rook_b", ImageIO.read(new File("src/IMG/black-rook.png")));
+            pieceImages.put("knight_b", ImageIO.read(new File("src/IMG/black-knight.png")));
+            pieceImages.put("bishop_b", ImageIO.read(new File("src/IMG/black-bishop.png")));
+            pieceImages.put("queen_b", ImageIO.read(new File("src/IMG/black-queen.png")));
+            pieceImages.put("king_b", ImageIO.read(new File("src/IMG/black-king.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

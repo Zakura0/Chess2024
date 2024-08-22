@@ -1,5 +1,8 @@
+package GUI;
 
 import javax.swing.*;
+
+import Core.Pieces.Piece;
 
 import java.awt.*;
 import java.util.List;

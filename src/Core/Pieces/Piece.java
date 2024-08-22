@@ -1,8 +1,13 @@
+package Core.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 import javax.swing.ImageIcon;
+
+import Core.Board;
+import Core.Game;
+import Core.Move;
 
 /**
  * Die Klasse Piece repräsentiert eine Schachfigur.

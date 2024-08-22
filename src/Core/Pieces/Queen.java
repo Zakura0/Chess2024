@@ -1,14 +1,17 @@
+package Core.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Core.Move;
+
 /**
- * Die Klasse Rook repräsentiert den Turm im Schachspiel.
+ * Die Klasse Queen repräsentiert die Dame im Schachspiel.
  * 
  * @see Piece
  */
-public class Rook extends Piece {
-    public Rook(int row, int col, boolean color) {
+public class Queen extends Piece {
+    public Queen(int row, int col, boolean color) {
         super(row, col, color);
     }
 
@@ -19,7 +22,11 @@ public class Rook extends Piece {
         List<Move> moves = new ArrayList<>();
         int row = this.getRow();
         int col = this.getCol();
-        int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } }; // Oben, Unten, Links, Rechts
+        // Richtungsvektoren für oben, unten, links, rechts, und die vier Diagonalen
+        int[][] directions = {
+                { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, // Gerade
+                { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 } // Diagonal
+        };
 
         for (int[] direction : directions) {
             int dRow = direction[0];
@@ -32,7 +39,7 @@ public class Rook extends Piece {
                 targetCol += dCol;
 
                 // Prüfe, ob die neue Position außerhalb des Bretts liegt
-                if (targetRow < 0 || targetRow > 7 || targetCol < 0 || targetCol > 7) {
+                if (targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
                     break;
                 }
                 Move move = new Move(row, col, targetRow, targetCol);
@@ -54,19 +61,19 @@ public class Rook extends Piece {
             }
         }
 
-        setPossibleMoves(moves);
+        this.setPossibleMoves(moves);
     }
 
     public String getName() {
         if (this.getColor()) {
-            return "rook_w";
+            return "queen_w";
         } else {
-            return "rook_b";
+            return "queen_b";
         }
     }
 
     @Override
     public String getAlgebraicNotation() {
-        return "R";
+        return "Q";
     }
 }

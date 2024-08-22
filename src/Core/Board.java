@@ -1,3 +1,12 @@
+package Core;
+
+import Core.Pieces.Bishop;
+import Core.Pieces.King;
+import Core.Pieces.Knight;
+import Core.Pieces.Pawn;
+import Core.Pieces.Piece;
+import Core.Pieces.Queen;
+import Core.Pieces.Rook;
 
 public class Board {
 

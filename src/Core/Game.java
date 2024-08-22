@@ -1,3 +1,4 @@
+package Core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -5,6 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
+
+import Core.Pieces.Bishop;
+import Core.Pieces.King;
+import Core.Pieces.Knight;
+import Core.Pieces.Pawn;
+import Core.Pieces.Piece;
+import Core.Pieces.Queen;
+import Core.Pieces.Rook;
+import GUI.GUI;
 
 /**
  * Die Game Klasse ist die Hauptklasse des Spiels und verwaltet die Spiellogik.
