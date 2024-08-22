@@ -35,7 +35,7 @@ public class BoardGUI extends JPanel {
     private int selectedRow;
     private int selectedCol;
     private Game game;
-    private Map<String, BufferedImage> pieceImages = new HashMap<>();
+    public static Map<String, BufferedImage> pieceImages = new HashMap<>();
     private Map<String, ImageIcon> transformIcons = new HashMap<>();
     private Map<String, ImageIcon> takenPiecesIcons = new HashMap<>();
     private int xBoardOffset;

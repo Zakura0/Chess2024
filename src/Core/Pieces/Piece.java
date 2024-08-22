@@ -117,40 +117,40 @@ public abstract class Piece {
         if (getName() != null) {
             switch (getName()) {
                 case "king_w":
-                    imagePath = "images/white-king.png";
+                    imagePath = "src/IMG/white-king.png";
                     break;
                 case "queen_w":
-                    imagePath = "images/white-queen.png";
+                    imagePath = "src/IMG/white-queen.png";
                     break;
                 case "rook_w":
-                    imagePath = "images/white-rook.png";
+                    imagePath = "src/IMG/white-rook.png";
                     break;
                 case "bishop_w":
-                    imagePath = "images/white-bishop.png";
+                    imagePath = "src/IMG/white-bishop.png";
                     break;
                 case "knight_w":
-                    imagePath = "images/white_knight.png";
+                    imagePath = "src/IMG/white_knight.png";
                     break;
                 case "pawn_w":
-                    imagePath = "images/white-pawn.png";
+                    imagePath = "src/IMG/white-pawn.png";
                     break;
                 case "king_b":
-                    imagePath = "images/black-king.png";
+                    imagePath = "src/IMG/black-king.png";
                     break;
                 case "queen_b":
-                    imagePath = "images/wblack-queen.png";
+                    imagePath = "src/IMG/wblack-queen.png";
                     break;
                 case "rook_b":
-                    imagePath = "images/wblack-rook.png";
+                    imagePath = "src/IMG/wblack-rook.png";
                     break;
                 case "bishop_b":
-                    imagePath = "images/wblack-bishop.png";
+                    imagePath = "src/IMG/wblack-bishop.png";
                     break;
                 case "knight_b":
-                    imagePath = "images/black-knight.png";
+                    imagePath = "src/IMG/black-knight.png";
                     break;
                 case "pawn_b":
-                    imagePath = "images/black-pawn.png";
+                    imagePath = "src/IMG/black-pawn.png";
                     break;
             }
         }

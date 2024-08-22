@@ -209,6 +209,7 @@ public class Game {
         if (destPiece != piece && destPiece != null) {
             killPiece(destPiece);
             anWholeMove = anPiece + "x" + anEnd;
+            gui.updateCapturedPieces(destPiece.getColor());
         }
         piece.move(move.getDestRow(), move.getDestCol()); // Führe den Zug aus
         if (piece instanceof Pawn && (move.getDestRow() == 0 || move.getDestRow() == 7)) { // Bauernumwandlung
