@@ -11,9 +11,11 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -103,10 +105,11 @@ public class MainGUI extends JFrame implements Runnable {
         gbcMain.gridwidth = 1;
         mainPanel.add(infoLabel, gbcMain);
 
-        gbcMain.gridx = 1;
+       /*  gbcMain.gridx = 1;
         gbcMain.gridy = 1;
         gbcMain.gridwidth = 1;
-        mainPanel.add(boardGUI, gbcMain);
+        mainPanel.add(boardGUI, gbcMain); */
+        
 
         JPanel blackClockPanel = new JPanel();
         blackClockPanel.setLayout(new GridBagLayout());
@@ -123,17 +126,17 @@ public class MainGUI extends JFrame implements Runnable {
         JPanel capturedBlackPanel = new JPanel();
         capturedBlack = new JPanel(new GridLayout(1, 16, 1, 1));
         capturedBlackPanel.setLayout(new GridBagLayout());
-        capturedBlackPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.02)));
+        capturedBlackPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.07)));
         GridBagConstraints gbcCB = new GridBagConstraints();
-        gbcCB.insets = new Insets(0, 0, 0, 0);
+        gbcCB.insets = new Insets(15, 0, 0, 350);
         capturedBlackPanel.add(capturedBlack, gbcCB);
 
         JPanel capturedWhitePanel = new JPanel();
         capturedWhite = new JPanel(new GridLayout(1, 16, 1, 1));
         capturedWhitePanel.setLayout(new GridBagLayout());
-        capturedWhitePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.02)));
+        capturedWhitePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.07)));
         GridBagConstraints gbcCW = new GridBagConstraints();
-        gbcCW.insets = new Insets(0, 0, 0, 0);
+        gbcCW.insets = new Insets(0, 0, 15, 350);
         capturedWhitePanel.add(capturedWhite, gbcCW);
 
         //JPanel spacePanel = new JPanel();
@@ -200,21 +203,25 @@ public class MainGUI extends JFrame implements Runnable {
         gbcMain.gridy = 1;
         mainPanel.add(eastPanel, gbcMain); 
 
+        JPanel middlePanel = new JPanel();
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
+        middlePanel.add(capturedWhitePanel);
+        middlePanel.add(boardGUI);
+        middlePanel.add(capturedBlackPanel);
+        
         gbcMain.gridx = 1;
-        gbcMain.gridy = 0;
-        //mainPanel.add(spacePanel, gbcMain);
+        gbcMain.gridy = 1;
+        mainPanel.add(middlePanel, gbcMain);
 
-        gbcMain.gridx = 1;
-        gbcMain.gridy = 2;
-        //mainPanel.add(spacePanel, gbcMain);        
-
-        gbcMain.gridx = 1;
+        /*gbcMain.gridx = 1;
         gbcMain.gridy = 0;
         mainPanel.add(capturedWhitePanel, gbcMain);
 
         gbcMain.gridx = 1;
         gbcMain.gridy = 2;
-        mainPanel.add(capturedBlackPanel, gbcMain);
+        mainPanel.add(capturedBlackPanel, gbcMain); */
+
+
 
         movesArea = new JTextArea();
         movesArea.setEditable(false);
@@ -419,7 +426,7 @@ public class MainGUI extends JFrame implements Runnable {
         List<Piece> capturedPieces = white ? Game.whiteDead : Game.blackDead;
         panel.removeAll();
         for (Piece piece : capturedPieces) {
-            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH)));
             panel.add(pieceLabel);
         }
 
