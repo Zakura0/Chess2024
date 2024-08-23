@@ -18,9 +18,7 @@ public class SaveGame {
 
     /**
      * Speichert das Spiel in einer Datei.
-     * 
      * @param moveQueue Die Liste der Züge, die gespeichert werden sollen.
-     * 
      */
     public static void saveGame(List<Move> moveQueue) {
         int saveNumber = 1;

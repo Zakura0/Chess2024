@@ -34,6 +34,10 @@ public class Game {
     public static List<Move> moveQueue;
     private Map<String, Integer> boardStates;
 
+    /**
+     * Main-Methode
+     * 
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Game();
@@ -71,11 +75,18 @@ public class Game {
     private void changeTurn() {
         isWhite = !isWhite;
     }
-
+    /**
+     * Diese Methode gibt zurück, ob der weiße Spieler am Zug ist.
+     * @return boolean true = Weiß ist am Zug
+     */
     public boolean isWhiteTurn() {
         return isWhite;
     }
-
+/**
+ * Diese Methode überprüft ob der König im Schach steht.
+ * @param color Farbe des Königs, true = white, false = schwarz
+ * @return true wenn der König im Check steht
+ */
     public static boolean checkForCheck(boolean color) {
         King king = color ? whiteKing : blackKing;
         int KingRow = king.getRow();

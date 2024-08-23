@@ -27,7 +27,7 @@ import java.awt.*;
 
 public class BoardGUI extends JPanel {
 
-    private final int tileSize = 80;
+    private final int tileSize = (int) (GUI.screenSize.width * 0.055);
     private final int board = 8;
     private final Color beige = new Color(248, 231, 187);
     private final Color brown = new Color(150, 77, 34);
@@ -204,9 +204,6 @@ public class BoardGUI extends JPanel {
     }
 
 
-
-    @Override
-    public Dimension getPreferredSize() {
         /**
          * getPreferredSize wird überschrieben um sicherzustellen,
          * dass das Schachbrett die richtige Größe hat, wenn es in der
@@ -214,6 +211,8 @@ public class BoardGUI extends JPanel {
          * 
          * @return Die Größe des Schachbretts
          */
+    @Override
+    public Dimension getPreferredSize() {
         return new Dimension(board * tileSize, board * tileSize);
     }
 
