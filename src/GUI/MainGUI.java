@@ -251,10 +251,16 @@ public class MainGUI extends JFrame implements Runnable {
                     blackPlayerField.getText().equals("") || timeField.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Please fill in all fields.");
                 openNewGameDialog();
-            } else if (timeField.getText().matches("[0-9]+") == false) {
+            }
+            else if (whitePlayerField.getText().length() > 12 || blackPlayerField.getText().length() > 12) {
+                JOptionPane.showMessageDialog(null, "Player name cannot be longer than 12 characters.");
+                openNewGameDialog();
+            } 
+            else if (timeField.getText().matches("[0-9]+") == false) {
                 JOptionPane.showMessageDialog(null, "Please enter a valid number.");
                 openNewGameDialog();
-            } else {
+            }
+            else {
                 whitePlayer = whitePlayerField.getText();
                 blackPlayer = blackPlayerField.getText();
                 int time = Integer.parseInt(timeField.getText());
