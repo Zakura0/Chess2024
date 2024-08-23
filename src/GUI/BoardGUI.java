@@ -27,7 +27,7 @@ import java.awt.*;
 
 public class BoardGUI extends JPanel {
 
-    private final int tileSize = (int) (MainGUI.screenSize.width * 0.055);
+    private final int tileSize = (int) (MainGUI.screenSize.width * 0.05);
     private final int board = 8;
     private final Color beige = new Color(248, 231, 187);
     private final Color brown = new Color(150, 77, 34);

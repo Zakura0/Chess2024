@@ -123,6 +123,7 @@ public class MainGUI extends JFrame implements Runnable {
         JPanel capturedBlackPanel = new JPanel();
         capturedBlack = new JPanel(new GridLayout(1, 16, 1, 1));
         capturedBlackPanel.setLayout(new GridBagLayout());
+        capturedBlackPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.02)));
         GridBagConstraints gbcCB = new GridBagConstraints();
         gbcCB.insets = new Insets(0, 0, 0, 0);
         capturedBlackPanel.add(capturedBlack, gbcCB);
@@ -130,6 +131,7 @@ public class MainGUI extends JFrame implements Runnable {
         JPanel capturedWhitePanel = new JPanel();
         capturedWhite = new JPanel(new GridLayout(1, 16, 1, 1));
         capturedWhitePanel.setLayout(new GridBagLayout());
+        capturedWhitePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.02)));
         GridBagConstraints gbcCW = new GridBagConstraints();
         gbcCW.insets = new Insets(0, 0, 0, 0);
         capturedWhitePanel.add(capturedWhite, gbcCW);
