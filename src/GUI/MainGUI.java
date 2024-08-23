@@ -11,7 +11,6 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.FlowLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
