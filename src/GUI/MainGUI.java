@@ -434,6 +434,8 @@ public class MainGUI extends JFrame implements Runnable {
         timeWhite = timeLimit;
         timeBlack = timeLimit;
         infoLabel.setText("Welcome to Chess");
+        clockBlack.setClockColor(Color.BLACK);
+        clockWhite.setClockColor(Color.BLACK);
         clockWhite.getTime().setText(timeWhite / 60 + ":" + String.format("%02d", timeWhite % 60));
         clockBlack.getTime().setText(timeBlack / 60 + ":" + String.format("%02d", timeBlack % 60));
         counter = new Thread(this);

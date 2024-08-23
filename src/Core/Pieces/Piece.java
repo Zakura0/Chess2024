@@ -3,6 +3,10 @@ package Core.Pieces;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import Core.Board;
@@ -118,44 +122,52 @@ public abstract class Piece {
         if (getName() != null) {
             switch (getName()) {
                 case "king_w":
-                    imagePath = "src/IMG/white-king.png";
+                    imagePath = "/IMG/white-king.png";
                     break;
                 case "queen_w":
-                    imagePath = "src/IMG/white-queen.png";
+                    imagePath = "/IMG/white-queen.png";
                     break;
                 case "rook_w":
-                    imagePath = "src/IMG/white-rook.png";
+                    imagePath = "/IMG/white-rook.png";
                     break;
                 case "bishop_w":
-                    imagePath = "src/IMG/white-bishop.png";
+                    imagePath = "/IMG/white-bishop.png";
                     break;
                 case "knight_w":
-                    imagePath = "src/IMG/white-knight.png";
+                    imagePath = "/IMG/white-knight.png";
                     break;
                 case "pawn_w":
-                    imagePath = "src/IMG/white-pawn.png";
+                    imagePath = "/IMG/white-pawn.png";
                     break;
                 case "king_b":
-                    imagePath = "src/IMG/black-king.png";
+                    imagePath = "/IMG/black-king.png";
                     break;
                 case "queen_b":
-                    imagePath = "src/IMG/black-queen.png";
+                    imagePath = "/IMG/black-queen.png";
                     break;
                 case "rook_b":
-                    imagePath = "src/IMG/black-rook.png";
+                    imagePath = "/IMG/black-rook.png";
                     break;
                 case "bishop_b":
-                    imagePath = "src/IMG/black-bishop.png";
+                    imagePath = "/IMG/black-bishop.png";
                     break;
                 case "knight_b":
-                    imagePath = "src/IMG/black-knight.png";
+                    imagePath = "/IMG/black-knight.png";
                     break;
                 case "pawn_b":
-                    imagePath = "src/IMG/black-pawn.png";
+                    imagePath = "/IMG/black-pawn.png";
                     break;
             }
         }
-        return new ImageIcon(imagePath).getImage();
+        InputStream imageStream = getClass().getResourceAsStream(imagePath);
+        if (imageStream != null) {
+            try {
+                return new ImageIcon(ImageIO.read(imageStream)).getImage();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public abstract String getAlgebraicNotation();
