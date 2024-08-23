@@ -30,6 +30,8 @@ import Core.Pieces.Piece;
 import Core.Pieces.Queen;
 import Core.Pieces.Rook;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.awt.Color;
 
 /**
@@ -49,6 +51,8 @@ public class MainGUI extends JFrame implements Runnable {
     private ClockGUI clockBlack;
     private JButton draw;
     private JButton reset;
+    protected static int frameWidth;
+    protected static int frameHeigth;
     public static int timeLimit;
     public static int timeWhite;
     public static int timeBlack;
@@ -64,10 +68,11 @@ public class MainGUI extends JFrame implements Runnable {
      * @param game
      */
     public MainGUI(Game game) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.game = game;
         setTitle("Chess");
-        setPreferredSize(new Dimension((int) (screenSize.width * 0.9), (int) (screenSize.height * 0.92)));
+        frameWidth = (int) (screenSize.width * 0.8);
+        frameHeigth = (int) (screenSize.height * 0.8);
+        setPreferredSize(new Dimension(frameWidth, frameHeigth));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         {
             if (!unitTest) {
