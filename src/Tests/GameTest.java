@@ -16,7 +16,7 @@ public class GameTest {
 
     @BeforeEach
     public void setUp() {
-        GUI.GUI.unitTest = true;
+        GUI.MainGUI.unitTest = true;
         game = new Game();
     }
 

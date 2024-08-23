@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import Core.Pieces.Piece;
-import GUI.GUI;
+import GUI.MainGUI;
 
 /**
  * Die Klasse SaveGame speichert und lädt ein Spiel.
@@ -35,7 +35,7 @@ public class SaveGame {
                 writer.write(move.toString());
 
             }
-            writer.write("*" + GUI.timeWhite + "," + GUI.timeBlack);
+            writer.write("*" + MainGUI.timeWhite + "," + MainGUI.timeBlack);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,8 +69,8 @@ public class SaveGame {
             scanner.close();
             int whiteTime = Integer.parseInt(moves_and_times[1].split(",")[0]);
             int blackTime = Integer.parseInt(moves_and_times[1].split(",")[1]);
-            GUI.timeWhite = whiteTime;
-            GUI.timeBlack = blackTime;
+            MainGUI.timeWhite = whiteTime;
+            MainGUI.timeBlack = blackTime;
         } catch (IOException e) {
             e.printStackTrace();
         }

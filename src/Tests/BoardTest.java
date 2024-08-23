@@ -14,7 +14,7 @@ public class BoardTest {
     
     @Test
     public void testInitializeBoard() {
-        GUI.GUI.unitTest = true;
+        GUI.MainGUI.unitTest = true;
         game = new Game();
         assertFalse(Game.whiteAlive.isEmpty());
         assertFalse(Game.blackAlive.isEmpty());

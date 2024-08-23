@@ -36,7 +36,7 @@ import java.awt.Color;
  * @author Gruppe 02
  * 
  */
-public class GUI extends JFrame implements Runnable {
+public class MainGUI extends JFrame implements Runnable {
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private BoardGUI boardGUI;
     private JPanel capturedWhite;
@@ -61,7 +61,7 @@ public class GUI extends JFrame implements Runnable {
      * Konstruktor zur Erzeugung der GUI.
      * @param game
      */
-    public GUI(Game game) {
+    public MainGUI(Game game) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.game = game;
         setTitle("Chess");
@@ -430,7 +430,7 @@ public class GUI extends JFrame implements Runnable {
      * 
      */
     public void resetTimer() {
-        int timeLimit = GUI.timeLimit;
+        int timeLimit = MainGUI.timeLimit;
         timeLimit *= 60;
         timeWhite = timeLimit;
         timeBlack = timeLimit;

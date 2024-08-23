@@ -19,7 +19,7 @@ import Core.Move;
 import Core.SaveGame;
 import Core.Pieces.Pawn;
 import Core.Pieces.Piece;
-import GUI.GUI;
+import GUI.MainGUI;
 
 public class SaveGameTest {
 
@@ -27,9 +27,9 @@ public class SaveGameTest {
 
     @BeforeEach
     public void setUp() {
-        GUI.unitTest = true;
-        GUI.timeWhite = 0;
-        GUI.timeBlack = 0;
+        MainGUI.unitTest = true;
+        MainGUI.timeWhite = 0;
+        MainGUI.timeBlack = 0;
 
         testFileName = "chess_save_1.txt";
 
@@ -49,8 +49,8 @@ public class SaveGameTest {
     public void testSaveGame() throws IOException {
         List<Move> moveQueue = new ArrayList<>();
         moveQueue.add(new Move(1, 0, 3, 0, 1));
-        GUI.timeWhite = 300;
-        GUI.timeBlack = 300;
+        MainGUI.timeWhite = 300;
+        MainGUI.timeBlack = 300;
 
         SaveGame.saveGame(moveQueue);
 
@@ -79,8 +79,8 @@ public class SaveGameTest {
         assertEquals(3, loadedMove.getDestRow());
         assertEquals(0, loadedMove.getDestCol());
         assertEquals(1, loadedMove.getTransformation());
-        assertEquals(300, GUI.timeWhite);
-        assertEquals(300, GUI.timeBlack);
+        assertEquals(300, MainGUI.timeWhite);
+        assertEquals(300, MainGUI.timeBlack);
     }
 
     @Test

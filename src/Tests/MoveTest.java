@@ -17,7 +17,7 @@ public class MoveTest {
     @BeforeEach
     public void setUp() {
         move = new Move(3, 3, 0, 3, 0);
-        GUI.GUI.unitTest = true;
+        GUI.MainGUI.unitTest = true;
         game = new Game();
     }
 

@@ -41,7 +41,7 @@ public class PieceTest {
     @BeforeEach
     public void setUp() {
         concretePiece = new Queen(3, 4, true);        // Konkrete Instanz zum testen einer abstrakten Klasse
-        GUI.GUI.unitTest = true;                                    // Ermoeglicht das Umgehen des Startdialogs
+        GUI.MainGUI.unitTest = true;                                    // Ermoeglicht das Umgehen des Startdialogs
         game = new Game();                                          // Hier wird die Startaufstellung generiert
         Board.board[3][4] = concretePiece;
 

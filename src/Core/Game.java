@@ -14,7 +14,7 @@ import Core.Pieces.Pawn;
 import Core.Pieces.Piece;
 import Core.Pieces.Queen;
 import Core.Pieces.Rook;
-import GUI.GUI;
+import GUI.MainGUI;
 
 /**
  * Die Game Klasse ist die Hauptklasse des Spiels und verwaltet die Spiellogik.
@@ -30,7 +30,7 @@ public class Game {
     private static King whiteKing;
     private static King blackKing;
     private String algebraic;
-    private GUI gui;
+    private MainGUI gui;
     public static List<Move> moveQueue;
     private Map<String, Integer> boardStates;
 
@@ -45,7 +45,7 @@ public class Game {
     }
 
     public Game() {
-        gui = new GUI(this);
+        gui = new MainGUI(this);
         whiteAlive = new ArrayList<Piece>();
         blackAlive = new ArrayList<Piece>();
         whiteDead = new ArrayList<Piece>();
@@ -213,9 +213,9 @@ public class Game {
         String anEnd = move.toAlgebraicNotationEnd();
         String anPiece = piece.getAlgebraicNotation();
         String anWholeMove = anPiece + anEnd; // Algebraic Notation
-        if (GUI.startedClock == false) {
-            GUI.startedClock = true;
-            GUI.counter.start();
+        if (MainGUI.startedClock == false) {
+            MainGUI.startedClock = true;
+            MainGUI.counter.start();
         }
         Piece destPiece = Board.board[move.getDestRow()][move.getDestCol()]; // Falls der Move ein Schlag ist
         if (destPiece != piece && destPiece != null) {
@@ -286,34 +286,34 @@ public class Game {
         calculateAllMoves(); // Berechne alle möglichen Züge
         if (checkForCheck(!piece.getColor())) { // Überprüfe ob der König im Schach steht
             String color = piece.getColor() ? "black" : "white";
-            GUI.infoLabel.setText("The " + color + " king is in check!"); 
+            MainGUI.infoLabel.setText("The " + color + " king is in check!"); 
             anWholeMove += "+";
             if (checkForMateOrStalemate(!piece.getColor())) { // Überprüfe ob Schachmatt oder Patt vorliegt
                 anWholeMove = anWholeMove.substring(0, anWholeMove.length() - 1);
                 anWholeMove += "#";
                 if (isWhite = true) {
-                    GUI.infoLabel.setText("White won!");
-                    GUI.counter.interrupt();
+                    MainGUI.infoLabel.setText("White won!");
+                    MainGUI.counter.interrupt();
                 } else {
-                    GUI.infoLabel.setText("Black won!");
-                    GUI.counter.interrupt();
+                    MainGUI.infoLabel.setText("Black won!");
+                    MainGUI.counter.interrupt();
                 }
             }
         } else if (checkForMateOrStalemate(!piece.getColor())) {
-            GUI.infoLabel.setText("Stalemate!");
-            GUI.counter.interrupt();
+            MainGUI.infoLabel.setText("Stalemate!");
+            MainGUI.counter.interrupt();
         } else {
-            GUI.infoLabel.setText(" ");
+            MainGUI.infoLabel.setText(" ");
         }
         addBoardAsString(); // Füge den aktuellen Boardstate zur Map hinzu
         for (String key : boardStates.keySet()) {
             if (boardStates.get(key) == 3) { // Überprüfe auf Draw durch Wiederholung
-                GUI.infoLabel.setText("Draw by repetition!");
-                GUI.counter.interrupt();
+                MainGUI.infoLabel.setText("Draw by repetition!");
+                MainGUI.counter.interrupt();
             }
         }
         algebraic += anWholeMove + ";"; // Füge den Zug zur Algebraic Notation hinzu
-        GUI.movesArea.append(anWholeMove + "\n"); // Füge den Zug zur GUI hinzu
+        MainGUI.movesArea.append(anWholeMove + "\n"); // Füge den Zug zur GUI hinzu
         changeTurn(); // Wechsel den Zug
     }
 
@@ -502,8 +502,8 @@ public class Game {
         boardStates.clear();
         moveQueue.clear();
         algebraic = "";
-        GUI.movesArea.setText("");
-        GUI.infoLabel.setText("Welcome to Chess");
+        MainGUI.movesArea.setText("");
+        MainGUI.infoLabel.setText("Welcome to Chess");
         isWhite = true;
         Board.initializeBoard();
         whiteKing = (King) Board.board[7][4];
