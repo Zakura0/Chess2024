@@ -30,8 +30,6 @@ import Core.Pieces.Piece;
 import Core.Pieces.Queen;
 import Core.Pieces.Rook;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.awt.Color;
 
 /**
@@ -41,7 +39,7 @@ import java.awt.Color;
  * 
  */
 public class MainGUI extends JFrame implements Runnable {
-    public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    public static Dimension screenSize;
     private BoardGUI boardGUI;
     private JPanel capturedWhite;
     private JPanel capturedBlack;
@@ -52,7 +50,7 @@ public class MainGUI extends JFrame implements Runnable {
     private JButton draw;
     private JButton reset;
     protected static int frameWidth;
-    protected static int frameHeigth;
+    protected static int frameHeight;
     public static int timeLimit;
     public static int timeWhite;
     public static int timeBlack;
@@ -70,9 +68,10 @@ public class MainGUI extends JFrame implements Runnable {
     public MainGUI(Game game) {
         this.game = game;
         setTitle("Chess");
-        frameWidth = (int) (screenSize.width * 0.8);
-        frameHeigth = (int) (screenSize.height * 0.8);
-        setPreferredSize(new Dimension(frameWidth, frameHeigth));
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frameWidth = (int) (screenSize.width * 0.9);
+        frameHeight = (int) (screenSize.height * 0.9);
+        setPreferredSize(new Dimension(frameWidth, frameHeight));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         {
             if (!unitTest) {
@@ -101,78 +100,63 @@ public class MainGUI extends JFrame implements Runnable {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcMain = new GridBagConstraints();
-
-        gbcMain.insets = new Insets(0,0,0,0);
         gbcMain.anchor = GridBagConstraints.LINE_START;
-
-        gbcMain.gridx = 0;
-        gbcMain.gridy = 0;
-        gbcMain.gridwidth = 1;
-        mainPanel.add(infoLabel, gbcMain);
-
-       /*  gbcMain.gridx = 1;
-        gbcMain.gridy = 1;
-        gbcMain.gridwidth = 1;
-        mainPanel.add(boardGUI, gbcMain); */
-        
-
         JPanel blackClockPanel = new JPanel();
+        
         blackClockPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcB = new GridBagConstraints();
-        gbcB.insets = new Insets(0, (int) (screenSize.width * 0.0245), (int) (screenSize.width * 0.07), 0);
+        gbcB.insets = new Insets(0, (int) (screenSize.width * 0.05), (int) (screenSize.width * 0.0245), 0);
         blackClockPanel.add(clockBlack, gbcB);
 
         JPanel whiteClockPanel = new JPanel();
         whiteClockPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcW = new GridBagConstraints();
-        gbcW.insets = new Insets((int) (screenSize.width * 0.07), (int) (screenSize.width * 0.0245), 0, 0);
+        gbcW.insets = new Insets((int) (screenSize.width * 0.0245), (int) (screenSize.width * 0.05), 0, 0);
         whiteClockPanel.add(clockWhite, gbcW);
 
         JPanel capturedBlackPanel = new JPanel();
-        capturedBlack = new JPanel(new GridLayout(1, 16, 1, 1));
+        capturedBlack = new JPanel(new GridLayout(1, 0, 0, 0));
+        capturedBlack.setPreferredSize(new Dimension((int) (screenSize.width * 0.4), (int) (screenSize.height * 0.05)));
         capturedBlackPanel.setLayout(new GridBagLayout());
-        capturedBlackPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.4), (int) (screenSize.height * 0.07)));
+        capturedBlackPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.4), (int) (screenSize.height * 0.05)));
         GridBagConstraints gbcCB = new GridBagConstraints();
-        gbcCB.insets = new Insets((int) (screenSize.width * 0.01041), 0, 0, (int)(screenSize.width * 0.4166));
+        gbcCB.insets = new Insets(0, 0, 0, (int)(screenSize.width * 0.35));
         capturedBlackPanel.add(capturedBlack, gbcCB);
 
         JPanel capturedWhitePanel = new JPanel();
-        capturedWhite = new JPanel(new GridLayout(1, 16, 1, 1));
+        capturedWhite = new JPanel(new GridLayout(1, 0, 0, 0));
         capturedWhitePanel.setLayout(new GridBagLayout());
-        capturedWhitePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.4), (int) (screenSize.height * 0.07)));
+        capturedWhitePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.4), (int) (screenSize.height * 0.05)));
         GridBagConstraints gbcCW = new GridBagConstraints();
-        gbcCW.insets = new Insets(0, 0, (int) (screenSize.width * 0.01041), (int)(screenSize.width * 0.4166));
+        gbcCW.insets = new Insets(0, 0, 0, (int)(screenSize.width * 0.35));
         capturedWhitePanel.add(capturedWhite, gbcCW);
 
-        //JPanel spacePanel = new JPanel();
-        //spacePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.15), (int) (screenSize.height * 0.05)));
-
-        Dimension buttonSize = new Dimension((int)(screenSize.width* 0.12),(int)(screenSize.height * 0.1) );
+        Dimension buttonSize = new Dimension((int)(screenSize.width* 0.1),(int)(screenSize.height * 0.08) );
         draw.setPreferredSize(buttonSize);
         reset.setPreferredSize(buttonSize);
 
         JPanel drawPanel = new JPanel();
         drawPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcDraw = new GridBagConstraints();
-        gbcDraw.insets = new Insets(0, (int) (screenSize.width * 0.031),(int) (screenSize.height * 0.02) , 0);
+        gbcDraw.insets = new Insets(0, (int) (screenSize.width * 0.04),(int) (screenSize.height * 0.02) , 0);
         drawPanel.add(draw, gbcDraw);
 
         JPanel resetPanel = new JPanel();
         resetPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcReset = new GridBagConstraints();
-        gbcReset.insets = new Insets(0, (int) (screenSize.width * 0.031), 0, 0);
+        gbcReset.insets = new Insets(0, (int) (screenSize.width * 0.04), 0, 0);
         resetPanel.add(reset, gbcReset);
 
         JPanel eastPanel = new JPanel();
         eastPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         
-        Font PlayerFont = new Font("Arial", Font.PLAIN, 18);
+        Font PlayerFont = new Font("Arial", Font.PLAIN, 25);
         JLabel label = new JLabel();
         label.setFont(PlayerFont);
         label.setHorizontalAlignment(JLabel.CENTER);
         whitePlayerLabel.setPreferredSize(new Dimension((int) (screenSize.width * 0.105), (int) (screenSize.height * 0.033)));
-        blackPlayerLabel.setPreferredSize(new Dimension((int) (screenSize.width * 0.035), (int) (screenSize.height * 0.033)));
+        blackPlayerLabel.setPreferredSize(new Dimension((int) (screenSize.width * 0.105), (int) (screenSize.height * 0.033)));
         whitePlayerLabel.setFont(PlayerFont);
         blackPlayerLabel.setFont(PlayerFont);
 
@@ -180,16 +164,19 @@ public class MainGUI extends JFrame implements Runnable {
         JPanel whitePlayerPanel = new JPanel();
         whitePlayerPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcWP = new GridBagConstraints();
-        gbcWP.insets = new Insets(0, (int) (screenSize.width * 0.12), 0, 0);
+        gbcWP.insets = new Insets(0, 0, 0, 0);
         whitePlayerPanel.add(whitePlayerLabel, gbcWP);
 
         JPanel blackPlayerPanel = new JPanel();
         blackPlayerPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcBP = new GridBagConstraints();
-        gbcBP.insets = new Insets(0, (int) (screenSize.width * 0.05), 0, 0);
+        gbcBP.insets = new Insets(0, 0, 0, 0);
         blackPlayerPanel.add(blackPlayerLabel, gbcBP);
 
-
+        gbcMain.gridx = 0;
+        gbcMain.gridy = 0;
+        gbcMain.gridwidth = 1;
+        mainPanel.add(infoLabel, gbcMain);
         gbc.gridx = 0;
         gbc.gridy = 0;
         eastPanel.add(blackPlayerPanel, gbc);
@@ -217,16 +204,6 @@ public class MainGUI extends JFrame implements Runnable {
         gbcMain.gridx = 1;
         gbcMain.gridy = 1;
         mainPanel.add(middlePanel, gbcMain);
-
-        /*gbcMain.gridx = 1;
-        gbcMain.gridy = 0;
-        mainPanel.add(capturedWhitePanel, gbcMain);
-
-        gbcMain.gridx = 1;
-        gbcMain.gridy = 2;
-        mainPanel.add(capturedBlackPanel, gbcMain); */
-
-
 
         movesArea = new JTextArea();
         movesArea.setEditable(false);
@@ -338,6 +315,7 @@ public class MainGUI extends JFrame implements Runnable {
      */
     private void initButtons() {
         draw = new JButton("Draw");
+        draw.setFont(new Font("Arial", Font.PLAIN, 30));
         draw.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -348,6 +326,7 @@ public class MainGUI extends JFrame implements Runnable {
         });
 
         reset = new JButton("Reset");
+        reset.setFont(new Font("Arial", Font.PLAIN, 30));
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -432,6 +411,7 @@ public class MainGUI extends JFrame implements Runnable {
         panel.removeAll();
         for (Piece piece : capturedPieces) {
             JLabel pieceLabel = new JLabel(new ImageIcon(piece.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH)));
+            pieceLabel.setPreferredSize(new Dimension(50, 50));
             panel.add(pieceLabel);
         }
 

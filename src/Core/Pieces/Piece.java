@@ -130,7 +130,7 @@ public abstract class Piece {
                     imagePath = "src/IMG/white-bishop.png";
                     break;
                 case "knight_w":
-                    imagePath = "src/IMG/white_knight.png";
+                    imagePath = "src/IMG/white-knight.png";
                     break;
                 case "pawn_w":
                     imagePath = "src/IMG/white-pawn.png";
@@ -139,13 +139,13 @@ public abstract class Piece {
                     imagePath = "src/IMG/black-king.png";
                     break;
                 case "queen_b":
-                    imagePath = "src/IMG/wblack-queen.png";
+                    imagePath = "src/IMG/black-queen.png";
                     break;
                 case "rook_b":
-                    imagePath = "src/IMG/wblack-rook.png";
+                    imagePath = "src/IMG/black-rook.png";
                     break;
                 case "bishop_b":
-                    imagePath = "src/IMG/wblack-bishop.png";
+                    imagePath = "src/IMG/black-bishop.png";
                     break;
                 case "knight_b":
                     imagePath = "src/IMG/black-knight.png";

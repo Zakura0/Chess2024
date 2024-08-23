@@ -27,7 +27,7 @@ import java.awt.*;
 
 public class BoardGUI extends JPanel {
 
-    private final int tileSize = (int) (MainGUI.screenSize.width * 0.055);
+    private final int tileSize = (int) (MainGUI.frameHeight * 0.095);
     private final int board = 8;
     private final Color beige = new Color(248, 231, 187);
     private final Color brown = new Color(150, 77, 34);
@@ -143,14 +143,16 @@ public class BoardGUI extends JPanel {
                 int centerX = targetCol * tileSize + tileSize / 2;
                 int centerY = targetRow * tileSize + tileSize / 2;
                 g2.setStroke(new BasicStroke(5));
-                g2.drawOval(centerX - (int)(MainGUI.screenSize.width * 0.02569), centerY - (int)(MainGUI.screenSize.width * 0.02569), 75, 75);
+                int attackCircle = (int)(tileSize * 0.9);
+                g2.drawOval(centerX - attackCircle / 2, centerY - attackCircle / 2, attackCircle, attackCircle);
             } else {
                 g2.setColor(new Color(0, 0, 0, 100));
                 g2.setStroke(new BasicStroke(5));
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
                 int centerX = targetCol * tileSize + tileSize / 2;
                 int centerY = targetRow * tileSize + tileSize / 2;
-                g2.fillOval(centerX - (int)(MainGUI.screenSize.width * 0.00833), centerY - (int)(MainGUI.screenSize.width * 0.02569), 25, 25);
+                int dot = (int)(tileSize * 0.9) / 3;
+                g2.fillOval(centerX - dot / 2, centerY - dot / 2, dot, dot);
             }
         }
     }
