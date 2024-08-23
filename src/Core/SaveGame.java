@@ -23,7 +23,7 @@ public class SaveGame {
      * Speichert das Spiel in einer Datei.
      * @param moveQueue Die Liste der Züge, die gespeichert werden sollen.
      */
-    public static void saveGame(List<Move> moveQueue, JFrame gui) {
+    public static void createSaveFile(List<Move> moveQueue, JFrame gui) {
         try {
             // Open a dialog to save the text file
             FileDialog dialog = new FileDialog(gui, "Save Game", FileDialog.SAVE);
@@ -31,10 +31,25 @@ public class SaveGame {
             dialog.setVisible(true);
             String filePath = dialog.getDirectory() + dialog.getFile();
             File file = new File(filePath);
+            save(moveQueue, file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    /**
+     * Speichert die Züge in einer Datei. Public nur für Testzwecke.
+     * 
+     * @param moveQueue Die Liste der Züge, die gespeichert werden sollen.
+     * 
+     * @param file Die Datei, in die die Züge gespeichert werden sollen.
+     */
+    public static void save(List<Move> moveQueue, File file) {
+        try {
             FileWriter writer = new FileWriter(file);
             for (Move move : moveQueue) {
-            writer.write(move.toString());
+                writer.write(move.toString());
             }
             writer.write("*" + MainGUI.timeWhite + "," + MainGUI.timeBlack);
             writer.write("*" + MainGUI.whitePlayer + "," + MainGUI.blackPlayer);

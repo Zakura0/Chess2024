@@ -516,7 +516,7 @@ public class Game {
      * Diese Methode lädt ein Spiel.
      */
     public void saveGame() {
-        SaveGame.saveGame(moveQueue, gui);
+        SaveGame.createSaveFile(moveQueue, gui);
     }
 
     public String getAlgebraicNotation() {

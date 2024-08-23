@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,16 +61,18 @@ public class SaveGameTest {
         moveQueue.add(new Move(1, 0, 3, 0, 1));
         MainGUI.timeWhite = 300;
         MainGUI.timeBlack = 300;
+        Path filePath = Paths.get("chess_save.txt");
+        Files.createFile(filePath);
+        File file = new File("chess_save.txt");
+        
+        SaveGame.save(moveQueue, file);
+        assertTrue(file.exists());
 
-        SaveGame.saveGame(moveQueue);
+        String content = Files.readString(file.toPath());
+        file.delete();
+        assertEquals("1,0,3,0,1:*300,300*White,Black", content);
 
-        File savedFile = new File("chess_save_1.txt");
-        assertTrue(savedFile.exists());
-
-        String content = Files.readString(savedFile.toPath());
-        assertEquals("1,0,3,0,1:*300,300", content);
-
-        savedFile.delete();
+        
     }
 
     /*
@@ -82,7 +86,7 @@ public class SaveGameTest {
     public void testLoadGameMoves() throws IOException {
         File file = new File(testFileName);
         try (FileWriter writer = new FileWriter(file)) {
-            writer.write("1,0,3,0,1:*300,300");
+            writer.write("1,0,3,0,1:*300,300*White,Black");
         }
 
         ArrayList<Move> moves = SaveGame.loadGameMoves(testFileName);
@@ -96,6 +100,8 @@ public class SaveGameTest {
         assertEquals(1, loadedMove.getTransformation());
         assertEquals(300, MainGUI.timeWhite);
         assertEquals(300, MainGUI.timeBlack);
+        assertEquals("White", MainGUI.whitePlayer);
+        assertEquals("Black", MainGUI.blackPlayer);
     }
 
     /* 

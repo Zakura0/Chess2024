@@ -287,7 +287,7 @@ public class MainGUI extends JFrame implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                SaveGame.saveGame(Game.moveQueue, MainGUI.this);
+                SaveGame.createSaveFile(Game.moveQueue, MainGUI.this);
             }
         });
 
