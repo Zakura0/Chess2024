@@ -182,12 +182,12 @@ public class BoardGUI extends JPanel {
                 g.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                 g.setColor(isWhite ? brown : beige);
                 if (i == 7 && j == 0) {
-                    g.drawString("a", j * tileSize + 70, i * tileSize + 70);
+                    g.drawString("a", j * tileSize + 80, i * tileSize + 90);
                     g.drawString("1", j * tileSize + 4, i * tileSize + 20);
                 } else if (i == 7) {
                     String character = alphabet.substring(0, 1);
                     alphabet = alphabet.substring(1, alphabet.length());
-                    g.drawString(character, j * tileSize + 70, i * tileSize + 70);
+                    g.drawString(character, j * tileSize + 80, i * tileSize + 90);
                 } else if (j == 0) {
                     String character = alphabet.substring(0, 1);
                     alphabet = alphabet.substring(1, alphabet.length());
