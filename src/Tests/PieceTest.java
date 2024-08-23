@@ -67,12 +67,22 @@ public class PieceTest {
      * Testen der implementierten Methoden der abstrakten Klasse Piece
      */
 
+     /*
+      * Testet das Bewegen einer Spielfigur auf eine neue Position (positiver Fall).
+      * Der Test ist POSITIV, wenn die Figur korrekt auf die neue Position bewegt wird.
+      */
+
     @Test
     public void testMovePositive() {
         concretePiece.move(4, 4);
         assertEquals(4, concretePiece.getRow());
         assertEquals(4, concretePiece.getCol());
     }
+
+    /*
+     * Testet das Bewegen einer Spielfigur (negativer Fall).
+     * Der Test ist POSITIV, wenn die Figur nicht auf der alten Position bleibt.
+     */
 
     @Test
     public void testMoveNegative() {
@@ -81,20 +91,40 @@ public class PieceTest {
         assertNotEquals(3, concretePiece.getCol());
     }
 
+    /*
+     * Testet das Abrufen einer Figur von einer bestimmten Position (positiver Fall).
+     * Der Test ist POSITIV, wenn die Figur an der angegebenen Position eine Dame ist.
+     */
+
     @Test
     public void testGetPiecePositive() {
         assertTrue(Piece.getPiece(3, 4) instanceof Queen);
     }
+
+    /*
+     * Testet das Abrufen einer Figur von einer bestimmten Position (negativer Fall).
+     * Der Test ist POSITIV, wenn die Figur an der angegebenen Position keine Dame ist.
+     */
 
     @Test
     public void testGetPieceNegative() {
         assertFalse(Piece.getPiece(2, 2) instanceof Queen);
     }
 
+    /*
+     * Testet das Abrufen einer Figur von einer leeren Position.
+     * Der Test ist POSITIV, wenn null zurückgegeben wird.
+     */
+
     @Test
     public void testGetPieceNull() {
         assertNull(Piece.getPiece(5, 5));
     }
+
+    /*
+     * Testet das Abrufen der Spalte einer Figur.
+     * Der Test ist POSITIV, wenn die Spalte der Figur korrekt zurückgegeben wird.
+     */
 
     @Test
     @Order(1)
@@ -102,11 +132,21 @@ public class PieceTest {
         assertEquals(4, concretePiece.getCol());
     }
 
+    /*
+     * Testet das Abrufen der Reihe einer Figur.
+     * Der Test ist POSITIV, wenn die Reihe der Figur korrekt zurückgegeben wird.
+     */
+
     @Test
     @Order(2)
     public void testGetRow() {
         assertEquals(3, concretePiece.getRow());
     }
+
+    /*
+     * Testet das Abrufen der Farbe einer Figur.
+     * Der Test ist POSITIV, wenn die Farbe der Figur korrekt zurückgegeben wird.
+     */
 
     @Test
     @Order(3)
@@ -114,11 +154,21 @@ public class PieceTest {
         assertEquals(true, concretePiece.getColor());
     }
 
+    /*
+     * Testet das Berechnen der möglichen Züge, wenn keine Züge gesetzt wurden.
+     * Der Test ist POSITIV, wenn die Liste der möglichen Züge leer ist.
+     */
+
     @Test
     public void testCalculatePossibleMovesWhenNotSet() {
         assertNotNull(concretePiece.getPossibleMoves());
         assertTrue(concretePiece.getPossibleMoves().isEmpty());
     }
+
+    /*
+     * Testet das Berechnen der möglichen Züge, wenn Züge gesetzt wurden.
+     * Der Test ist POSITIV, wenn die Liste der möglichen Züge nicht leer ist und den gesetzten Zügen entspricht.
+     */
 
     @Test
     public void testCalculatePossibleMovesWhenSet() {
@@ -127,6 +177,11 @@ public class PieceTest {
         assertFalse(concretePiece.getPossibleMoves().isEmpty());
         assertEquals(move, concretePiece.getPossibleMoves().get(0));
     }
+
+    /*
+     * Testet das Setzen der möglichen Züge (positiver Fall).
+     * Der Test ist POSITIV, wenn die Liste der möglichen Züge korrekt gesetzt wird.
+     */
 
     @Test
     public void testSetPossibleMovesPositive() {
@@ -140,6 +195,11 @@ public class PieceTest {
         assertEquals(moves, concretePiece.getPossibleMoves());
     }
 
+    /*
+     * Testet das Setzen der möglichen Züge mit einer null-Liste.
+     * Der Test ist POSITIV, wenn die Liste der möglichen Züge null ist.
+     */
+
     @Test
     public void testSetPossibleMovesNull() {
         concretePiece.setPossibleMoves(null);
@@ -151,15 +211,30 @@ public class PieceTest {
      * Aus Trivialitaetsgruenden werden getName und getAlgebraicNotation nur einmal getestest
      */
 
+     /*
+     * Testet das Abrufen des Namens der Figur.
+     * Der Test ist POSITIV, wenn der Name korrekt zurückgegeben wird.
+     */
+
      @Test
     public void testGetName() {
         assertEquals("queen_w", concretePiece.getName());
     }
 
+    /*
+     * Testet das Abrufen der algebraischen Notation für eine Nicht-Bauer-Figur.
+     * Der Test ist POSITIV, wenn die Notation korrekt ist.
+     */
+
     @Test
     public void testGetAlgebraicNotationNonPawn() {
         assertEquals("Q", concretePiece.getAlgebraicNotation());
     }
+
+    /*
+     * Testet das Abrufen der algebraischen Notation für einen Bauern.
+     * Der Test ist POSITIV, wenn die Notation für den Bauern korrekt ist (leere Zeichenkette).
+     */
 
     @Test
     public void testGetAlgebraicNotationPawn() {
@@ -170,6 +245,11 @@ public class PieceTest {
      * Pawn
      */
 
+     /*
+     * Testet das Berechnen der möglichen Züge eines Bauern von der Startposition.
+     * Der Test ist POSITIV, wenn die möglichen Züge des Bauern korrekt berechnet werden.
+     */
+
     @Test
     public void testCalculatePossibleMovesStartPos_P() {
         moves.add(new Move(6, 3, 5, 3)); // Normaler Zug, das Feld vor pawn_w ist frei
@@ -178,6 +258,11 @@ public class PieceTest {
         assertNotNull(pawn_w.getPossibleMoves());
         assertEquals(moves, pawn_w.getPossibleMoves());
     }
+
+    /*
+     * Testet das Berechnen der möglichen Züge eines Bauern, einschließlich Diagonal- und En-Passant-Zügen.
+     * Der Test ist POSITIV, wenn die möglichen Züge des Bauern korrekt berechnet werden.
+     */
 
     @Test
     public void testCalculatePossibleMovesStraightDiagonalEnPassant_P() {
@@ -197,11 +282,24 @@ public class PieceTest {
      * Bishop
      */
 
+     /*
+     * Testet die möglichen Züge des Läufers (Bishop) in der Startposition
+     * - Der Läufer sollte in der Startposition blockiert sein.
+     * Der Test ist POSITIV, wenn keine möglichen Züge für den Läufer existieren.
+     */
+
     @Test
     public void testCalculatePossibleMovesStartPos_B() {
         bishop_w.calculatePossibleMoves();
         assertTrue(bishop_w.getPossibleMoves().isEmpty());
     }
+
+    /*
+     * Testet die möglichen Züge des Läufers nach einigen Zügen
+     * - Es werden mehrere Züge durchgeführt, um den Läufer zu befreien.
+     * - Der Läufer bewegt sich dann in eine Position, von der aus er mehrere Züge machen kann.
+     * Der Test ist POSITIV, wenn die berechneten Züge den erwarteten Zügen entsprechen.
+     */
 
     @Test
     public void testCalculatePossibleMoves_B() {
@@ -224,6 +322,12 @@ public class PieceTest {
      * Knight
      */
 
+     /*
+     * Testet die möglichen Züge des Springers (Knight) in der Startposition
+     * - Der Springer kann zu Beginn zwei mögliche Züge machen.
+     * Der Test ist POSITIV, wenn die berechneten Züge den erwarteten Zügen entsprechen.
+     */
+
     @Test
     public void testCalculatePossibleMoves_KN() {
         moves.add(new Move(7, 1, 5, 0));
@@ -236,11 +340,23 @@ public class PieceTest {
      * Rook
      */
 
+    /*
+     * Testet die möglichen Züge des Turms (Rook) in der Startposition
+     * - Der Turm sollte in der Startposition blockiert sein.
+     * Der Test ist POSITIV, wenn keine möglichen Züge für den Turm existieren.
+     */
+
     @Test
     public void testCalculatePossibleMovesStartPos_R() {
         rook_w.calculatePossibleMoves();
         assertTrue(rook_w.getPossibleMoves().isEmpty());
     }
+
+    /*
+     * Testet die möglichen Züge des Turms nach einigen Zügen
+     * - Der Turm wird befreit und bewegt sich in eine Position, von der aus er mehrere Züge machen kann.
+     * Der Test ist POSITIV, wenn die berechneten Züge den erwarteten Zügen entsprechen.
+     */
 
     @Test
     public void testCalculatePossibleMoves_R() {
@@ -267,11 +383,23 @@ public class PieceTest {
      * Queen
      */
 
+     /*
+     * Testet die möglichen Züge der Dame (Queen) in der Startposition
+     * - Die Dame sollte in der Startposition blockiert sein.
+     * Der Test ist POSITIV, wenn keine möglichen Züge für die Dame existieren.
+     */
+
     @Test
     public void testCalculatePossibleMovesStartPos_Q() {
         queen_w.calculatePossibleMoves();
         assertTrue(queen_w.getPossibleMoves().isEmpty());
     }
+
+    /*
+     * Testet die möglichen Züge der Dame nach einigen Zügen
+     * - Die Dame wird befreit und bewegt sich in eine Position, von der aus sie mehrere Züge machen kann.
+     * Der Test ist POSITIV, wenn die berechneten Züge den erwarteten Zügen entsprechen.
+     */
 
     @Test
     public void testCalculatePossibleMoves_Q() {
@@ -302,11 +430,23 @@ public class PieceTest {
      * King
      */
 
+     /*
+     * Testet das Setzen und Abrufen der Rochadeoptionen des Königs (Castle Big)
+     * - Die große Rochade-Option (Castle Big) wird deaktiviert.
+     * Der Test ist POSITIV, wenn die Rochade-Option korrekt gesetzt und abgerufen wird.
+     */
+
     @Test
     public void testGetSetCastleBig() {
         king_w.setCastleBig(false);
         assertFalse(king_w.getCastleBig());
     }
+
+    /*
+     * Testet das Setzen und Abrufen der Rochadeoptionen des Königs (Castle Small)
+     * - Die kleine Rochade-Option (Castle Small) wird deaktiviert.
+     * Der Test ist POSITIV, wenn die Rochade-Option korrekt gesetzt und abgerufen wird.
+     */
 
     @Test
     public void testGetSetCastleSmall() {
@@ -314,11 +454,23 @@ public class PieceTest {
         assertFalse(king_w.getCastleSmall());
     }
 
+    /*
+     * Testet die möglichen Züge des Königs (King) in der Startposition
+     * - Der König sollte in der Startposition blockiert sein.
+     * Der Test ist POSITIV, wenn keine möglichen Züge für den König existieren.
+     */
+
     @Test
     public void testCalculatePossibleMovesStartPos_K() {
         king_w.calculatePossibleMoves();
         assertTrue(king_w.getPossibleMoves().isEmpty());
     }
+
+    /*
+     * Testet die möglichen Züge des Königs nach einigen Zügen
+     * - Der König wird befreit und bewegt sich in eine Position, von der aus er mehrere Züge machen kann.
+     * Der Test ist POSITIV, wenn die berechneten Züge den erwarteten Zügen entsprechen.
+     */
 
     @Test
     public void testCalculatePossibleMoves_K() {
