@@ -143,14 +143,14 @@ public class BoardGUI extends JPanel {
                 int centerX = targetCol * tileSize + tileSize / 2;
                 int centerY = targetRow * tileSize + tileSize / 2;
                 g2.setStroke(new BasicStroke(5));
-                g2.drawOval(centerX - 37, centerY - 37, 75, 75);
+                g2.drawOval(centerX - (int)(MainGUI.screenSize.width * 0.02569), centerY - (int)(MainGUI.screenSize.width * 0.02569), 75, 75);
             } else {
                 g2.setColor(new Color(0, 0, 0, 100));
                 g2.setStroke(new BasicStroke(5));
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
                 int centerX = targetCol * tileSize + tileSize / 2;
                 int centerY = targetRow * tileSize + tileSize / 2;
-                g2.fillOval(centerX - 12, centerY - 12, 25, 25);
+                g2.fillOval(centerX - (int)(MainGUI.screenSize.width * 0.00833), centerY - (int)(MainGUI.screenSize.width * 0.00833), 25, 25);
             }
         }
     }

@@ -126,17 +126,17 @@ public class MainGUI extends JFrame implements Runnable {
         JPanel capturedBlackPanel = new JPanel();
         capturedBlack = new JPanel(new GridLayout(1, 16, 1, 1));
         capturedBlackPanel.setLayout(new GridBagLayout());
-        capturedBlackPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.07)));
+        capturedBlackPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.4), (int) (screenSize.height * 0.07)));
         GridBagConstraints gbcCB = new GridBagConstraints();
-        gbcCB.insets = new Insets(15, 0, 0, 350);
+        gbcCB.insets = new Insets((int) (screenSize.width * 0.01041), 0, 0, (int)(screenSize.width * 0.4166));
         capturedBlackPanel.add(capturedBlack, gbcCB);
 
         JPanel capturedWhitePanel = new JPanel();
         capturedWhite = new JPanel(new GridLayout(1, 16, 1, 1));
         capturedWhitePanel.setLayout(new GridBagLayout());
-        capturedWhitePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.07)));
+        capturedWhitePanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.4), (int) (screenSize.height * 0.07)));
         GridBagConstraints gbcCW = new GridBagConstraints();
-        gbcCW.insets = new Insets(0, 0, 15, 350);
+        gbcCW.insets = new Insets(0, 0, (int) (screenSize.width * 0.01041), (int)(screenSize.width * 0.4166));
         capturedWhitePanel.add(capturedWhite, gbcCW);
 
         //JPanel spacePanel = new JPanel();
