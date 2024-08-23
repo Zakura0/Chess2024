@@ -42,8 +42,10 @@ public class MainGUI extends JFrame implements Runnable {
     private BoardGUI boardGUI;
     private JPanel capturedWhite;
     private JPanel capturedBlack;
-    private String whitePlayer;
-    private String blackPlayer;
+    public static String whitePlayer;
+    public static String blackPlayer;
+    JLabel blackPlayerLabel;
+    JLabel whitePlayerLabel;
     private ClockGUI clockWhite;
     private ClockGUI clockBlack;
     private JButton draw;
@@ -87,8 +89,8 @@ public class MainGUI extends JFrame implements Runnable {
         timeBlack *= 60;
 
         infoLabel = new JLabel("Welcome to Chess");
-        JLabel blackPlayerLabel = new JLabel(blackPlayer);
-        JLabel whitePlayerLabel = new JLabel(whitePlayer);
+        blackPlayerLabel = new JLabel(blackPlayer);
+        whitePlayerLabel = new JLabel(whitePlayer);
         boardGUI = new BoardGUI(game);
         clockWhite = new ClockGUI(timeWhite);
         clockBlack = new ClockGUI(timeBlack);
@@ -285,7 +287,7 @@ public class MainGUI extends JFrame implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                SaveGame.saveGame(Game.moveQueue);
+                SaveGame.saveGame(Game.moveQueue, MainGUI.this);
             }
         });
 
@@ -300,6 +302,8 @@ public class MainGUI extends JFrame implements Runnable {
                     ArrayList<Move> loadedmoveQueue = SaveGame.loadGameMoves(selectedFile.getAbsolutePath());
                     game.resetGame();
                     SaveGame.loadGame(game, loadedmoveQueue);
+                    blackPlayerLabel.setText(blackPlayer);
+                    whitePlayerLabel.setText(whitePlayer);
                 }
             }
         });

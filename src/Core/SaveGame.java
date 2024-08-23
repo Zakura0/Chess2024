@@ -1,11 +1,14 @@
 package Core;
 
 import java.util.ArrayList;
+import java.awt.FileDialog;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.swing.JFrame;
 
 import Core.Pieces.Piece;
 import GUI.MainGUI;
@@ -20,22 +23,21 @@ public class SaveGame {
      * Speichert das Spiel in einer Datei.
      * @param moveQueue Die Liste der Züge, die gespeichert werden sollen.
      */
-    public static void saveGame(List<Move> moveQueue) {
-        int saveNumber = 1;
-        String fileName = "chess_save_" + saveNumber + ".txt";
-        File file = new File(fileName);
-        while (file.exists()) {
-            saveNumber++;
-            fileName = "chess_save_" + saveNumber + ".txt";
-            file = new File(fileName);
-        }
+    public static void saveGame(List<Move> moveQueue, JFrame gui) {
         try {
+            // Open a dialog to save the text file
+            FileDialog dialog = new FileDialog(gui, "Save Game", FileDialog.SAVE);
+            dialog.setFile("game.txt");
+            dialog.setVisible(true);
+            String filePath = dialog.getDirectory() + dialog.getFile();
+            File file = new File(filePath);
+
             FileWriter writer = new FileWriter(file);
             for (Move move : moveQueue) {
-                writer.write(move.toString());
-
+            writer.write(move.toString());
             }
             writer.write("*" + MainGUI.timeWhite + "," + MainGUI.timeBlack);
+            writer.write("*" + MainGUI.whitePlayer + "," + MainGUI.blackPlayer);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,8 +69,13 @@ public class SaveGame {
                 moveQueue.add(move);
             }
             scanner.close();
+            //String name1 
             int whiteTime = Integer.parseInt(moves_and_times[1].split(",")[0]);
             int blackTime = Integer.parseInt(moves_and_times[1].split(",")[1]);
+            String whitePlayer = moves_and_times[2].split(",")[0];
+            String blackPlayer = moves_and_times[2].split(",")[1];
+            MainGUI.whitePlayer = whitePlayer;
+            MainGUI.blackPlayer = blackPlayer;
             MainGUI.timeWhite = whiteTime;
             MainGUI.timeBlack = blackTime;
         } catch (IOException e) {
