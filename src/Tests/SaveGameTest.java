@@ -45,6 +45,14 @@ public class SaveGameTest {
         savedFile.delete();
     }
 
+    /*
+     * Testet, ob die Züge in eine Datei richtig eingelesen werden
+     * - Führt eine Move im Spiel aus
+     * - Speichert die Züge mit saveGame in der Textdatei
+     * Der Test ist POSITIV, wenn der gerade ausgeführte (und alle anderen) Züge
+     * in der Text Datei gespeichert werden
+     */
+
     @Test
     public void testSaveGame() throws IOException {
         List<Move> moveQueue = new ArrayList<>();
@@ -62,6 +70,13 @@ public class SaveGameTest {
 
         savedFile.delete();
     }
+
+    /*
+     * Testet, ob die Züge aus einer Datei richtig ausgelesen werden
+     * - Es wird eine Datei mit einem Zug erstellt
+     * - Die Datei wird mit loadGameMoves ausgelesen
+     * Der Test ist POSITIV, wenn nach dem Laden der Move korrekt in der moveQueue abgespeichert wird
+     */
 
     @Test
     public void testLoadGameMoves() throws IOException {
@@ -82,6 +97,13 @@ public class SaveGameTest {
         assertEquals(300, MainGUI.timeWhite);
         assertEquals(300, MainGUI.timeBlack);
     }
+
+    /* 
+     * Testet, ob ein Spiel korrekt geladen wird, basierend auf geg. einer moveQueue
+     * - Es wird ein Move Objekt zu der moveQueue hinzugefügt.
+     * - Die moveQueue wird mit loadGame geladen
+     * Der Test ist POSITIV, wenn nach dem Laden der moveQueue die Felder richtig gesetzt sind
+     */
 
     @Test
     public void testLoadGame() {

@@ -11,6 +11,12 @@ import Core.Pieces.*;
 public class BoardTest {
 
     Game game;
+
+    /*
+     * Testet, ob das Bord richtig initialisiert wird.
+     * - Es werden einzelne Felder überprüft die gesetzt sein sollten, nach dem das Board initialisiert wird
+     * Der Test ist POSITIV solbald die überprüften Felder korrekt gesetzt sind.
+     */
     
     @Test
     public void testInitializeBoard() {
